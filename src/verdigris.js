@@ -24,14 +24,14 @@
         const coords = e.target.getBoundingClientRect();
         const margin = 5;
         const topOffset = coords.y + coords.height + margin;
-        const left = e.target.offsetLeft;
-        let top =  e.target.offsetTop + coords.height + margin;
+        const left = coords.x;
+        let top =  window.scrollY + coords.y + coords.height + margin;
 
         currentEl = e.target;
         picker.style.display = 'block';
 
         if (topOffset + picker.offsetHeight > document.documentElement.clientHeight) {
-          top = e.target.offsetTop - picker.offsetHeight - 5;        
+          top = window.scrollY + coords.y - picker.offsetHeight - margin;        
         }
 
         picker.style.left = `${left}px`;
