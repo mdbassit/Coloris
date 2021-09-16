@@ -1,0 +1,190 @@
+.vdg-picker {
+  position: absolute;
+  width: 200px;
+  z-index: 1000;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,.05), 0 5px 50px rgba(0,0,0,.2);
+}
+
+.vdg-dark {
+  background-color: #444;
+}
+  
+.vdg-gradient {
+  position: relative;
+  width: 200px;
+  height: 100px;
+  background-image: linear-gradient(rgba(0,0,0,0), #000), linear-gradient(90deg, #fff, currentColor);
+  cursor: pointer;
+}
+
+.vdg-marker {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  background-color: rgba(0,0,0,.1);
+  cursor: pointer;
+}
+
+.vdg-widgets {
+  padding: 20px;
+}
+
+.vdg-widgets input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+}
+
+.vdg-widgets input[type="range"]::-webkit-slider-thumb {
+  width: 8px;
+  height: 8px;
+  -webkit-appearance: none;
+}
+
+.vdg-widgets input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 8px;
+  border: 0;
+}
+
+.vdg-widgets input[type="range"]::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  border: 0;
+}
+
+.vdg-hue {
+  background-image: linear-gradient(to right, #f00 0%, #ff0 16.66%, #0f0 33.33%, #0ff 50%, #00f 66.66%, #f0f 83.33%, #f00 100%);
+}
+
+.vdg-hue,
+.vdg-alpha {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.vdg-alpha:before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 4px;
+  background-image: linear-gradient(90deg, rgba(0,0,0,0), #000);
+}
+
+.vdg-hue input,
+.vdg-alpha input {
+  position: absolute;
+  width: calc(100% + 16px);
+  height: 16px;
+  left: -8px;
+  top: -4px;
+  margin: 0;
+  background-color: transparent;
+  opacity: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.vdg-hue div,
+.vdg-alpha div {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 0;
+  top: 0;
+  margin: -4px 0 0 -8px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background-color: currentColor;
+  box-shadow: 0 0 1px #aaa;
+  pointer-events: none;
+}
+
+.vdg-color {
+  display: flex;
+  padding-top: 10px;
+  justify-content: space-between;
+}
+
+.vdg-color input {
+  width: 120px;
+  height: 32px;
+  padding: 0 15px;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  color: #444;
+  background-color: #fff;
+  font-family: sans-serif;
+  font-size: 14px;
+  text-align: left;
+  box-shadow: none;
+}
+
+.vdg-dark .vdg-color input {
+  color: #fff;
+  border-color: #777;
+  background-color: #555; 
+}
+
+.vdg-color input:focus {
+  outline: none;
+  border: 1px solid #aaa;
+}
+
+.vdg-preview {
+  flex-shrink: 0;
+  order: -1;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.vdg-preview:before,
+.vdg-preview:after {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  border: 1px solid #fff;
+  border-radius: 50%;
+}
+
+.vdg-preview:after {
+  border: 0;
+  background-color: currentColor;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.1);
+}
+
+.vdg-dark .vdg-preview:after {
+  border: 0;
+  background-color: currentColor;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.5);
+}
+
+.vdg-alpha,
+.vdg-preview:before {
+  background-image: repeating-linear-gradient(45deg, #999 25%, transparent 25%, transparent 75%, #999 75%, #999), repeating-linear-gradient(45deg, #999 25%, #fff 25%, #fff 75%, #999 75%, #999);
+  background-position: 0 0, 4px 4px;
+  background-size: 8px 8px;
+}
+
+.vdg-marker,
+.vdg-hue div,
+.vdg-alpha div,
+.vdg-color input {
+  box-sizing: border-box;
+}
