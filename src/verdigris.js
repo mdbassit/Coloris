@@ -301,11 +301,11 @@
     alphaSlider = getEl('vdg-alpha-slider');
     alphaMarker = getEl('vdg-alpha-marker');
 
-    addListener(picker, 'click',function (event) {
+    addListener(picker, 'mousedown',function (event) {
       event.stopPropagation();
     });
 
-    addListener(document, 'click',function (event) {
+    addListener(document, 'mousedown',function (event) {
       dettach();
     });    
 
@@ -337,12 +337,19 @@
       setColorFromStr(this.value);
       pickColor();
     });
+
+    addListener(document, 'keydown', function (event) {
+      if (event.key === 'Escape') {
+        dettach();
+      }
+    });
   }
 
   // Alt names: Coloris, Chroma, Sienna
   window.Verdigris = {
     init: attach,
-    setTheme: setTheme
+    setTheme: setTheme,
+    close: dettach
   };
 
   init();
