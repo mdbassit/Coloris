@@ -19,15 +19,15 @@
   }
 
   function attach(selector) {
-    addListener(document, 'click', function (e) {
-      if (Element.prototype.matches.call(e.target, selector)) {
-        const coords = e.target.getBoundingClientRect();
+    addListener(document, 'click', function (event) {
+      if (Element.prototype.matches.call(event.target, selector)) {
+        const coords = event.target.getBoundingClientRect();
         const margin = 5;
         const topOffset = coords.y + coords.height + margin;
         const left = coords.x;
         let top =  window.scrollY + coords.y + coords.height + margin;
 
-        currentEl = e.target;
+        currentEl = event.target;
         picker.style.display = 'block';
 
         if (topOffset + picker.offsetHeight > document.documentElement.clientHeight) {
@@ -52,7 +52,7 @@
     picker.style.display = 'none';
 
     if (currentEl) {
-      currentEl.dispatchEvent(new Event('change'));
+      currentEl.dispatchEvent(new Event('change', {bubbles: true}));
       currentEl = null;
     }
   }
@@ -60,7 +60,7 @@
   function pickColor() {
     if (currentEl) {
       currentEl.value = colorValue.value;
-      currentEl.dispatchEvent(new Event('input'));
+      currentEl.dispatchEvent(new Event('input', {bubbles: true}));
     }
   }
 
