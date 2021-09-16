@@ -1,4 +1,5 @@
 .vdg-picker {
+  display: none;
   position: absolute;
   width: 200px;
   z-index: 1000;

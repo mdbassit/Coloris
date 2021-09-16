@@ -22,11 +22,27 @@
     addListener(document, 'click', function (e) {
       if (Element.prototype.matches.call(e.target, selector)) {
         const coords = e.target.getBoundingClientRect();
+        const margin = 5;
+        const topOffset = coords.y + coords.height + margin;
+        const left = e.target.offsetLeft;
+        let top =  e.target.offsetTop + coords.height + margin;
 
         currentEl = e.target;
         picker.style.display = 'block';
-        picker.style.left = `${coords.x}px`;
-        picker.style.top = `${coords.y + coords.height + 10}px`;
+
+        if (topOffset + picker.offsetHeight > document.documentElement.clientHeight) {
+          top = e.target.offsetTop - picker.offsetHeight - 5;        
+        }
+
+        picker.style.left = `${left}px`;
+        picker.style.top = `${top}px`;
+        offset = {
+          width: colorArea.offsetWidth,
+          height: colorArea.offsetHeight,
+          x: picker.offsetLeft,
+          y: picker.offsetTop
+        };
+
         setColorFromStr(currentEl.value);
       }
     });
@@ -64,8 +80,8 @@
   }
 
   function moveMarker(event) {
-    let x = event.clientX - offset.x;
-    let y = event.clientY - offset.y;
+    let x = event.pageX - offset.x;
+    let y = event.pageY - offset.y;
 
     x = (x < 0) ? 0 : (x > offset.width) ? offset.width : x;
     y = (y < 0) ? 0 : (y > offset.height) ? offset.height : y;
@@ -284,8 +300,6 @@
     hueMarker = getEl('vdg-hue-marker');
     alphaSlider = getEl('vdg-alpha-slider');
     alphaMarker = getEl('vdg-alpha-marker');
-    offset = colorArea.getBoundingClientRect();
-    picker.style.display = 'none';
 
     addListener(colorArea, 'click',function (event) {
       moveMarker(event);
