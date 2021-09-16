@@ -301,6 +301,14 @@
     alphaSlider = getEl('vdg-alpha-slider');
     alphaMarker = getEl('vdg-alpha-marker');
 
+    addListener(picker, 'click',function (event) {
+      event.stopPropagation();
+    });
+
+    addListener(document, 'click',function (event) {
+      dettach();
+    });    
+
     addListener(colorArea, 'click',function (event) {
       moveMarker(event);
     });
