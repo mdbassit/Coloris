@@ -2,20 +2,27 @@
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
   let picker, offset, colorArea, colorMarker, colorPreview, colorValue,
-      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl; 
+      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, container; 
 
-  function setTheme(theme) {
-    picker.setAttribute('class', `vdg-picker vdg-${theme}`);
-  }
+  function configure(options) {
+    if (typeof options !== 'object') {
+      return;
+    }
 
-  function setColorFromStr(str) {
-    const rgba = strToRGBA(str);
-    const hsva = RGBAtoHSVA(rgba);
-    const hex = getHex(rgba);
-
-    setRGBA(rgba);
-    setHex(hex);
-    updateUI(hsva);
+    for (const key in options) {
+      switch (key) {
+        case 'el':
+          attach(options[key])
+          break;
+        case 'parent':
+          container = document.querySelector(options[key]);
+          container.appendChild(picker);
+          break;
+        case 'theme':
+          picker.setAttribute('class', `vdg-picker vdg-${options[key]}`);
+          break;
+      }
+    }
   }
 
   function attach(selector) {
@@ -24,7 +31,7 @@
         const coords = event.target.getBoundingClientRect();
         const margin = 5;
         const topOffset = coords.y + coords.height + margin;
-        const left = coords.x;
+        let left = coords.x;
         let top =  window.scrollY + coords.y + coords.height + margin;
 
         currentEl = event.target;
@@ -32,6 +39,11 @@
 
         if (topOffset + picker.offsetHeight > document.documentElement.clientHeight) {
           top = window.scrollY + coords.y - picker.offsetHeight - margin;        
+        }
+
+        if (container) {
+          left -= container.offsetLeft;
+          top = top + container.scrollTop - container.offsetTop;
         }
 
         picker.style.left = `${left}px`;
@@ -42,6 +54,11 @@
           x: picker.offsetLeft,
           y: picker.offsetTop
         };
+
+        if (container) {
+          offset.x += container.offsetLeft;
+          offset.y += container.offsetTop;
+        }
 
         setColorFromStr(currentEl.value);
       }
@@ -55,6 +72,16 @@
       currentEl.dispatchEvent(new Event('change', {bubbles: true}));
       currentEl = null;
     }
+  }
+
+  function setColorFromStr(str) {
+    const rgba = strToRGBA(str);
+    const hsva = RGBAtoHSVA(rgba);
+    const hex = getHex(rgba);
+
+    setRGBA(rgba);
+    setHex(hex);
+    updateUI(hsva);
   }
 
   function pickColor() {
@@ -82,6 +109,10 @@
   function moveMarker(event) {
     let x = event.pageX - offset.x;
     let y = event.pageY - offset.y;
+
+    if (container) {
+      y += container.scrollTop;
+    }
 
     x = (x < 0) ? 0 : (x > offset.width) ? offset.width : x;
     y = (y < 0) ? 0 : (y > offset.height) ? offset.height : y;
@@ -346,11 +377,22 @@
   }
 
   // Alt names: Coloris, Chroma, Sienna
-  window.Verdigris = {
-    init: attach,
-    setTheme: setTheme,
-    close: dettach
-  };
+  window.Verdigris = (function () {
+    function Verdigris(options) {
+      if (options) {
+        if (typeof options === 'string') {
+          attach(options);
+        } else {
+          configure(options);
+        }
+      }
+    }
+
+    Verdigris.set = configure;
+    Verdigris.close = dettach;
+
+    return Verdigris;
+  })();
 
   init();
 })();
