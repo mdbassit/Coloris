@@ -156,7 +156,7 @@
       hueSlider.value = hsva.h;
       colorMarker.style.left = `${offset.width * hsva.s / 100}px`;
       colorMarker.style.top = `${100 - (offset.height * hsva.v / 100)}px`;
-      alphaSlider.value = hsva.a * 100;
+      alphaSlider.value = hsva.a;
 
     // Update the picker color when the hue slider is moved  
     } else {
