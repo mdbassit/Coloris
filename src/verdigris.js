@@ -8,7 +8,7 @@
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
   let picker, container, colorArea, colorMarker, colorPreview, colorValue,
-      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, offset, margin = 5; 
+      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, dimensions, margin = 5; 
 
   function configure(options) {
     if (typeof options !== 'object') {
@@ -47,35 +47,32 @@
     addListener(document, 'click', event => {
       if (matches.call(event.target, selector)) {
         const coords = event.target.getBoundingClientRect();
-        const topOffset = coords.y + coords.height + margin;
+        const marginTop = coords.y + coords.height + margin;
+        let offset = { x: 0, y: 0 };
         let left = coords.x;
         let top =  window.scrollY + coords.y + coords.height + margin;
 
         currentEl = event.target;
         picker.style.display = 'block';
 
-        if (topOffset + picker.offsetHeight > document.documentElement.clientHeight) {
+        if (marginTop + picker.offsetHeight > document.documentElement.clientHeight) {
           top = window.scrollY + coords.y - picker.offsetHeight - margin;        
         }
 
         if (container) {
-          left -= container.offsetLeft;
-          top = top + container.scrollTop - container.offsetTop;
+          offset = container.getBoundingClientRect();
+          left -= offset.x;
+          top = top + container.scrollTop - offset.y;
         }
 
         picker.style.left = `${left}px`;
         picker.style.top = `${top}px`;
-        offset = {
+        dimensions = {
           width: colorArea.offsetWidth,
           height: colorArea.offsetHeight,
-          x: picker.offsetLeft,
-          y: picker.offsetTop
+          x: picker.offsetLeft + offset.x,
+          y: picker.offsetTop + offset.y
         };
-
-        if (container) {
-          offset.x += container.offsetLeft;
-          offset.y += container.offsetTop;
-        }
 
         setColorFromStr(currentEl.value);
       }
@@ -128,8 +125,8 @@
   function updateColor(x, y) {
     const hsva = {
       h: hueSlider.value * 1,
-      s: x / offset.width * 100,
-      v: 100 - (y / offset.height * 100),
+      s: x / dimensions.width * 100,
+      v: 100 - (y / dimensions.height * 100),
       a: alphaSlider.value * 1
     };
     const rgba = HSVAtoRGBA(hsva);
@@ -141,15 +138,15 @@
   }
 
   function moveMarker(event) {
-    let x = event.pageX - offset.x;
-    let y = event.pageY - offset.y;
+    let x = event.pageX - dimensions.x;
+    let y = event.pageY - dimensions.y;
 
     if (container) {
       y += container.scrollTop;
     }
 
-    x = (x < 0) ? 0 : (x > offset.width) ? offset.width : x;
-    y = (y < 0) ? 0 : (y > offset.height) ? offset.height : y;
+    x = (x < 0) ? 0 : (x > dimensions.width) ? dimensions.width : x;
+    y = (y < 0) ? 0 : (y > dimensions.height) ? dimensions.height : y;
 
     colorMarker.style.left = `${x}px`;
     colorMarker.style.top = `${y}px`;
@@ -183,8 +180,8 @@
   function updateUI(hsva) {
     if (hsva) {
       hueSlider.value = hsva.h;
-      colorMarker.style.left = `${offset.width * hsva.s / 100}px`;
-      colorMarker.style.top = `${100 - (offset.height * hsva.v / 100)}px`;
+      colorMarker.style.left = `${dimensions.width * hsva.s / 100}px`;
+      colorMarker.style.top = `${100 - (dimensions.height * hsva.v / 100)}px`;
       alphaSlider.value = hsva.a;
 
     // Update the picker color when the hue slider is moved  
