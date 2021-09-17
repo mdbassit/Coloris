@@ -12,7 +12,7 @@
     for (const key in options) {
       switch (key) {
         case 'el':
-          attach(options[key])
+          attach(options[key]);
           break;
         case 'parent':
           container = document.querySelector(options[key]);
@@ -25,13 +25,21 @@
           options[key] = Number(options[key]);
           margin = !isNaN(options[key]) ? options[key] : margin;
           break;
+        case 'wrap':
+          if (options.el && options[key]) {
+            wrapFields(options.el);
+          }
+          break;
       }
     }
   }
 
   function attach(selector) {
+    const matches = Element.prototype.matches;
+
+    // Show the color picker on click on the field
     addListener(document, 'click', function (event) {
-      if (Element.prototype.matches.call(event.target, selector)) {
+      if (matches.call(event.target, selector)) {
         const coords = event.target.getBoundingClientRect();
         const topOffset = coords.y + coords.height + margin;
         let left = coords.x;
@@ -65,6 +73,23 @@
 
         setColorFromStr(currentEl.value);
       }
+    });
+
+    // Set the color of the parent of the field to the picked color
+    addListener(document, 'input', function (event) {
+      if (matches.call(event.target, selector)) {
+        const parent = event.target.parentNode;
+
+        if (parent.classList.contains('vdg-field')) {
+          parent.style.color = event.target.value;
+        }
+      }
+    });
+  }
+
+  function wrapFields(selector) {
+    document.querySelectorAll(selector).forEach(function (field) {
+      field.outerHTML = `<div class="vdg-field" style="color: ${field.value};">${field.outerHTML}</div>`;
     });
   }
 
@@ -392,6 +417,7 @@
     }
 
     Verdigris.set = configure;
+    Verdigris.wrap = wrapFields;
     Verdigris.close = dettach;
 
     return Verdigris;
