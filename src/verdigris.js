@@ -169,7 +169,7 @@
     alphaMarker.style.color = `rgba(0,0,0,${alpha})`;
     alphaMarker.style.left = `${alpha * 100}%`;
     currentColor.a = alpha;
-    
+
     setHex(getHex(currentColor));
     pickColor();
   }
@@ -252,7 +252,7 @@
     const regex = /^((rgba)|rgb)[\D]+([\d.]+)[\D]+([\d.]+)[\D]+([\d.]+)[\D]*?([\d.]+|$)/i;
     let match, rgba;
 
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = '#000';
     ctx.fillStyle = str;
     match = regex.exec(ctx.fillStyle);
 
