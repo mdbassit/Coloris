@@ -1,0 +1,29 @@
+{
+  "name": "Verdigris",
+  "version": "0.1.0",
+  "description": "A lightweight and elegant color picker.",
+  "author": "Momo Bassit",
+  "license": "UNLICENSED",
+  "main": "verdigris.js",
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/register": "^7.15.3",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2"
+  },
+  "browserslist": "> 0.25%, not dead",
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "loose": true
+        }
+      ]
+    ]
+  }
+}
