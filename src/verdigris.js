@@ -1,8 +1,8 @@
 (function () {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
-  let picker, offset, colorArea, colorMarker, colorPreview, colorValue,
-      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, container; 
+  let picker, container, colorArea, colorMarker, colorPreview, colorValue,
+      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, offset, margin = 5; 
 
   function configure(options) {
     if (typeof options !== 'object') {
@@ -21,6 +21,10 @@
         case 'theme':
           picker.setAttribute('class', `vdg-picker vdg-${options[key]}`);
           break;
+        case 'margin':
+          options[key] = Number(options[key]);
+          margin = !isNaN(options[key]) ? options[key] : margin;
+          break;
       }
     }
   }
@@ -29,7 +33,6 @@
     addListener(document, 'click', function (event) {
       if (Element.prototype.matches.call(event.target, selector)) {
         const coords = event.target.getBoundingClientRect();
-        const margin = 5;
         const topOffset = coords.y + coords.height + margin;
         let left = coords.x;
         let top =  window.scrollY + coords.y + coords.height + margin;
