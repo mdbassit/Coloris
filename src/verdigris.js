@@ -1,3 +1,9 @@
+/*!
+  Copyright (c) 2021 Momo Bassit.
+  Licensed under the MIT License (MIT), see
+  https://github.com/mdbassit/Verdigris
+*/
+
 (() => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
@@ -402,24 +408,44 @@
     });
   }
 
+  function ready(callback, args) {
+    if (document.readyState != 'loading') {
+      callback(args);
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        callback(args);
+      });
+    }
+  }
+
   // Alt names: Coloris, Chroma, Sienna
   window.Verdigris = (() => {
-    function Verdigris(options) {
-      if (options) {
-        if (typeof options === 'string') {
-          attach(options);
-        } else {
-          configure(options);
-        }
-      }
+    const methods = {
+      set: configure,
+      wrap: wrapFields,
+      close: dettach
     }
 
-    Verdigris.set = configure;
-    Verdigris.wrap = wrapFields;
-    Verdigris.close = dettach;
+    function Verdigris(options) {
+      ready(() => {
+        if (options) {
+          if (typeof options === 'string') {
+            attach(options);
+          } else {
+            configure(options);
+          }
+        }
+      });
+    }
+
+    for (const key in methods) {
+      Verdigris[key] = args => {
+        ready(methods[key], args);
+      };
+    }
 
     return Verdigris;
   })();
 
-  init();
+  ready(init);
 })();
