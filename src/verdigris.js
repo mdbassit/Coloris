@@ -1,4 +1,4 @@
-(function () {
+(() => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
   let picker, container, colorArea, colorMarker, colorPreview, colorValue,
@@ -38,7 +38,7 @@
     const matches = Element.prototype.matches;
 
     // Show the color picker on click on the field
-    addListener(document, 'click', function (event) {
+    addListener(document, 'click', event => {
       if (matches.call(event.target, selector)) {
         const coords = event.target.getBoundingClientRect();
         const topOffset = coords.y + coords.height + margin;
@@ -76,7 +76,7 @@
     });
 
     // Set the color of the parent of the field to the picked color
-    addListener(document, 'input', function (event) {
+    addListener(document, 'input', event => {
       if (matches.call(event.target, selector)) {
         const parent = event.target.parentNode;
 
@@ -88,7 +88,7 @@
   }
 
   function wrapFields(selector) {
-    document.querySelectorAll(selector).forEach(function (field) {
+    document.querySelectorAll(selector).forEach(field => {
       field.outerHTML = `<div class="vdg-field" style="color: ${field.value};">${field.outerHTML}</div>`;
     });
   }
@@ -158,20 +158,18 @@
     currentColor.a = rgba.a;
   }
 
-  function setHex(hex, keepValue) {
+  function setHex(hex) {
     colorPreview.style.color = hex;
-
-    if (!keepValue) {
-      colorValue.value = hex;
-    }
+    colorValue.value = hex;
   }
 
   function setAlpha() {
     const alpha = alphaSlider.value;
+
     alphaMarker.style.color = `rgba(0,0,0,${alpha})`;
     alphaMarker.style.left = `${alpha * 100}%`;
-
     currentColor.a = alpha;
+    
     setHex(getHex(currentColor));
     pickColor();
   }
@@ -360,44 +358,44 @@
     alphaSlider = getEl('vdg-alpha-slider');
     alphaMarker = getEl('vdg-alpha-marker');
 
-    addListener(picker, 'mousedown',function (event) {
+    addListener(picker, 'mousedown', event => {
       event.stopPropagation();
     });
 
-    addListener(document, 'mousedown',function (event) {
+    addListener(document, 'mousedown', event => {
       dettach();
     });    
 
-    addListener(colorArea, 'click',function (event) {
+    addListener(colorArea, 'click', event => {
       moveMarker(event);
     });
 
-    addListener(colorArea, 'mousedown',function (event) {
+    addListener(colorArea, 'mousedown', event => {
       addListener(document, 'mousemove', moveMarker);
     });
 
-    addListener(colorMarker, 'mousedown',function (event) {
+    addListener(colorMarker, 'mousedown', event => {
       addListener(document, 'mousemove', moveMarker);
     });
 
-    addListener(document, 'mouseup',function (event) {
+    addListener(document, 'mouseup', event => {
       document.removeEventListener('mousemove', moveMarker);
     });
 
-    addListener(hueSlider, 'input',function (event) {
+    addListener(hueSlider, 'input', event => {
       updateUI();
     });
 
-    addListener(alphaSlider, 'input',function (event) {
+    addListener(alphaSlider, 'input', event => {
       setAlpha();
     });
 
-    addListener(colorValue, 'change',function (event) {
+    addListener(colorValue, 'change', event => {
       setColorFromStr(this.value);
       pickColor();
     });
 
-    addListener(document, 'keydown', function (event) {
+    addListener(document, 'keydown', event => {
       if (event.key === 'Escape') {
         dettach();
       }
@@ -405,7 +403,7 @@
   }
 
   // Alt names: Coloris, Chroma, Sienna
-  window.Verdigris = (function () {
+  window.Verdigris = (() => {
     function Verdigris(options) {
       if (options) {
         if (typeof options === 'string') {
