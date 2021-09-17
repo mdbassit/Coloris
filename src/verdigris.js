@@ -47,7 +47,6 @@
     addListener(document, 'click', event => {
       if (matches.call(event.target, selector)) {
         const coords = event.target.getBoundingClientRect();
-        const marginTop = coords.y + coords.height + margin;
         let offset = { x: 0, y: 0 };
         let left = coords.x;
         let top =  window.scrollY + coords.y + coords.height + margin;
@@ -55,14 +54,23 @@
         currentEl = event.target;
         picker.style.display = 'block';
 
-        if (marginTop + picker.offsetHeight > document.documentElement.clientHeight) {
-          top = window.scrollY + coords.y - picker.offsetHeight - margin;        
-        }
-
         if (container) {
+          const style = window.getComputedStyle(container);
+          const marginTop = parseFloat(style.marginTop);
+          const borderTop = parseFloat(style.borderTopWidth);
+
           offset = container.getBoundingClientRect();
+          offset.y += borderTop;
           left -= offset.x;
           top = top + container.scrollTop - offset.y;
+
+          if (top + picker.offsetHeight >  container.clientHeight  + container.scrollTop - marginTop) {
+            top -= coords.height + picker.offsetHeight + margin * 2;        
+          }
+        } else {
+          if (top + picker.offsetHeight > document.documentElement.clientHeight) {
+            top = window.scrollY + coords.y - picker.offsetHeight - margin;        
+          }
         }
 
         picker.style.left = `${left}px`;
