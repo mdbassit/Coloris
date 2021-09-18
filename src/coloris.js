@@ -8,7 +8,7 @@
   const ctx = document.createElement('canvas').getContext('2d');
   const markerLabel = 'Saturation: {s}. Brightness: {v}.';
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
-  let currentEl, picker, parent, colorArea, colorMarker, colorPreview, colorValue,
+  let currentEl, oldColor, picker, parent, colorArea, colorMarker, colorPreview, colorValue,
       hueSlider, hueMarker, alphaSlider, alphaMarker, format, gradientDims, margin = 2; 
 
 
@@ -67,6 +67,7 @@
         let top =  window.scrollY + coords.y + coords.height + margin;
 
         currentEl = target;
+        oldColor = currentEl.value;
         picker.style.display = 'block';
 
         // If the color picker is inside a custom container
@@ -146,7 +147,7 @@
    */
   function closePicker(tiggerChange) {
     if (currentEl) {
-      if (tiggerChange) {
+      if (tiggerChange && oldColor !== currentEl.value) {
         currentEl.dispatchEvent(new Event('change', {bubbles: true}));
       }
 
