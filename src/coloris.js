@@ -104,7 +104,16 @@
 
   function wrapFields(selector) {
     document.querySelectorAll(selector).forEach(field => {
-      field.outerHTML = `<div class="clr-field" style="color: ${field.value};">${field.outerHTML}</div>`;
+      const parentNode = field.parentNode;
+      
+      if (!parentNode.classList.contains('clr-field')) {
+        const wrapper = document.createElement('div');
+
+        parentNode.insertBefore(wrapper, field);
+        wrapper.setAttribute('class', 'clr-field');
+        wrapper.style.color = field.value;
+        wrapper.appendChild(field);
+      }
     });
   }
 
