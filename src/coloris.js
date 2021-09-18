@@ -6,6 +6,7 @@
 
 ((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
+  const markerLabel = 'Saturation: {s}. Brightness: {v}.';
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
   let currentEl, picker, parent, colorArea, colorMarker, colorPreview, colorValue,
       hueSlider, hueMarker, alphaSlider, alphaMarker, format, gradientDims, margin = 2; 
@@ -101,6 +102,7 @@
         };
 
         setColorFromStr(currentEl.value);
+        colorMarker.focus();
       }
     });
 
@@ -161,6 +163,7 @@
     const rgba = strToRGBA(str);
     const hsva = RGBAtoHSVA(rgba);
 
+    updateMarkerA11yLabel(hsva.s, hsva.v);
     updateColor(rgba);
     
     // Update the UI
@@ -171,7 +174,7 @@
     colorMarker.style.left = `${gradientDims.width * hsva.s / 100}px`;
     colorMarker.style.top = `${100 - (gradientDims.height * hsva.v / 100)}px`;
 
-    alphaSlider.value = hsva.a;
+    alphaSlider.value = hsva.a * 100;
     alphaMarker.style.left = `${hsva.a * 100}%`;
   }
 
@@ -195,12 +198,28 @@
       h: hueSlider.value * 1,
       s: x / gradientDims.width * 100,
       v: 100 - (y / gradientDims.height * 100),
-      a: alphaSlider.value * 1
+      a: alphaSlider.value / 100
     };
     const rgba = HSVAtoRGBA(hsva);
 
+    updateMarkerA11yLabel(hsva.s, hsva.v);
     updateColor(rgba);
     pickColor();
+  }
+
+  /**
+   * Update the color marker's accessibility label.
+   * @param {number} saturation
+   * @param {number} value
+   */
+  function updateMarkerA11yLabel(saturation, value) {
+    let label = markerLabel;
+
+    saturation = saturation.toFixed(1) * 1;
+    value = value.toFixed(1) * 1;
+    label = label.replace('{s}', saturation);
+    label = label.replace('{v}', value);
+    colorMarker.setAttribute('aria-label', label);
   }
 
   /**
@@ -217,6 +236,21 @@
 
     x = (x < 0) ? 0 : (x > gradientDims.width) ? gradientDims.width : x;
     y = (y < 0) ? 0 : (y > gradientDims.height) ? gradientDims.height : y;
+
+    colorMarker.style.left = `${x}px`;
+    colorMarker.style.top = `${y}px`;
+
+    setColorAtPosition(x, y);
+  }
+
+  /**
+   * Move the color marker when the arrow keys are pressed.
+   * @param {number} offsetX The horizontal amount to move.
+   * * @param {number} offsetY The vertical amount to move.
+   */
+  function moveMarkerOnKeydown(offsetX, offsetY) {
+    const x = colorMarker.style.left.replace('px', '') * 1 + offsetX;
+    const y =  colorMarker.style.top.replace('px', '') * 1 + offsetY;
 
     colorMarker.style.left = `${x}px`;
     colorMarker.style.top = `${y}px`;
@@ -272,7 +306,7 @@
    * Set the alpha when its slider is moved.
    */
   function setAlpha() {
-    const alpha = alphaSlider.value * 1;
+    const alpha = alphaSlider.value / 100;
 
     alphaMarker.style.left = `${alpha * 100}%`;
     updateColor({ a: alpha });
@@ -436,20 +470,20 @@
     picker.setAttribute('id', 'clr-picker');
     picker.setAttribute('class', 'clr-picker');
     picker.innerHTML =
-    '<div id="clr-color-area" class="clr-gradient">'+
-      '<div id="clr-color-marker" class="clr-marker"></div>'+
+    '<div id="clr-color-area" class="clr-gradient" role="application" aria-label="Saturation and brightness thumb. Use up, down, left and right arrow keys to select.">'+
+      '<div id="clr-color-marker" class="clr-marker" tabindex="0" aria-label="Saturation: 0. Brightness: 0."></div>'+
     '</div>'+
     '<div class="clr-widgets">'+
       '<div class="clr-hue">'+
-        '<input id="clr-hue-slider" type="range" min="0" max="360" step="1">'+
+        '<input id="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="Hue slider">'+
         '<div id="clr-hue-marker"></div>'+
       '</div>'+
       '<div class="clr-alpha">'+
-        '<input id="clr-alpha-slider" type="range" min="0" max="1" step=".01">'+
+        '<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="Opacity slider">'+
         '<div id="clr-alpha-marker"></div>'+
       '</div>'+
       '<div class="clr-color">'+
-        '<input id="clr-color-value" type="text" value="">'+
+        '<input id="clr-color-value" type="text" value="" aria-label="Color value field">'+
         '<div id="clr-color-preview" class="clr-preview"></div>'+
       '</div>'+
     '</div>';
@@ -495,6 +529,20 @@
     addListener(document, 'keydown', event => {
       if (event.key === 'Escape') {
         closePicker(true);
+      }
+    });
+
+    addListener(colorMarker, 'keydown', event => {
+      const movements = {
+        ArrowUp: [0, -1],
+        ArrowDown: [0, 1],
+        ArrowLeft: [-1, 0],
+        ArrowRight: [1, 0]
+      };
+
+      if (Object.keys(movements).indexOf(event.key) !== -1) {
+        moveMarkerOnKeydown(...movements[event.key]);
+        event.preventDefault();
       }
     });
 

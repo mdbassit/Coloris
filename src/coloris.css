@@ -5,7 +5,7 @@
   z-index: 1000;
   border-radius: 10px;
   background-color: #fff;
-  box-shadow: 0 0 5px rgba(0,0,0,.05), 0 5px 30px rgba(0,0,0,.1);
+  box-shadow: 0 0 5px rgba(0,0,0,.05), 0 5px 20px rgba(0,0,0,.1);
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
@@ -230,4 +230,11 @@
   background-image: repeating-linear-gradient(45deg, #aaa 25%, transparent 25%, transparent 75%, #aaa 75%, #aaa), repeating-linear-gradient(45deg, #aaa 25%, #fff 25%, #fff 75%, #aaa 75%, #aaa);
   background-position: 0 0, 4px 4px;
   background-size: 8px 8px;
+}
+
+.clr-marker:focus,
+.clr-hue input:focus + div,
+.clr-alpha input:focus + div {
+  outline: none;
+  box-shadow: 0 0 0 2px #1e90ff, 0 0 2px 2px #fff;
 }
