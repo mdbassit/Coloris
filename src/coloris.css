@@ -1,4 +1,4 @@
-.vdg-picker {
+.clr-picker {
   display: none;
   position: absolute;
   width: 200px;
@@ -11,11 +11,11 @@
   user-select: none;
 }
 
-.vdg-dark {
+.clr-dark {
   background-color: #444;
 }
   
-.vdg-gradient {
+.clr-gradient {
   position: relative;
   width: 100%;
   height: 100px;
@@ -24,7 +24,7 @@
   cursor: pointer;
 }
 
-.vdg-marker {
+.clr-marker {
   position: absolute;
   width: 12px;
   height: 12px;
@@ -35,39 +35,39 @@
   cursor: pointer;
 }
 
-.vdg-widgets {
+.clr-widgets {
   padding: 20px;
 }
 
-.vdg-widgets input[type="range"]::-webkit-slider-runnable-track {
+.clr-widgets input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   height: 8px;
 }
 
-.vdg-widgets input[type="range"]::-webkit-slider-thumb {
+.clr-widgets input[type="range"]::-webkit-slider-thumb {
   width: 8px;
   height: 8px;
   -webkit-appearance: none;
 }
 
-.vdg-widgets input[type="range"]::-moz-range-track {
+.clr-widgets input[type="range"]::-moz-range-track {
   width: 100%;
   height: 8px;
   border: 0;
 }
 
-.vdg-widgets input[type="range"]::-moz-range-thumb {
+.clr-widgets input[type="range"]::-moz-range-thumb {
   width: 8px;
   height: 8px;
   border: 0;
 }
 
-.vdg-hue {
+.clr-hue {
   background-image: linear-gradient(to right, #f00 0%, #ff0 16.66%, #0f0 33.33%, #0ff 50%, #00f 66.66%, #f0f 83.33%, #f00 100%);
 }
 
-.vdg-hue,
-.vdg-alpha {
+.clr-hue,
+.clr-alpha {
   position: relative;
   width: 100%;
   height: 8px;
@@ -75,7 +75,7 @@
   border-radius: 4px;
 }
 
-.vdg-alpha:before {
+.clr-alpha:before {
   content: '';
   position: absolute;
   height: 100%;
@@ -86,8 +86,8 @@
   background-image: linear-gradient(90deg, rgba(0,0,0,0), #000);
 }
 
-.vdg-hue input,
-.vdg-alpha input {
+.clr-hue input,
+.clr-alpha input {
   position: absolute;
   width: calc(100% + 16px);
   height: 16px;
@@ -101,8 +101,8 @@
   -webkit-appearance: none;
 }
 
-.vdg-hue div,
-.vdg-alpha div {
+.clr-hue div,
+.clr-alpha div {
   position: absolute;
   width: 16px;
   height: 16px;
@@ -116,13 +116,13 @@
   pointer-events: none;
 }
 
-.vdg-color {
+.clr-color {
   display: flex;
   padding-top: 10px;
   justify-content: space-between;
 }
 
-.vdg-color input {
+.clr-color input {
   width: 120px;
   height: 32px;
   padding: 0 15px;
@@ -136,18 +136,18 @@
   box-shadow: none;
 }
 
-.vdg-dark .vdg-color input {
+.clr-dark .clr-color input {
   color: #fff;
   border-color: #777;
   background-color: #555; 
 }
 
-.vdg-color input:focus {
+.clr-color input:focus {
   outline: none;
   border: 1px solid #aaa;
 }
 
-.vdg-preview {
+.clr-preview {
   flex-shrink: 0;
   order: -1;
   position: relative;
@@ -157,8 +157,8 @@
   overflow: hidden;
 }
 
-.vdg-preview:before,
-.vdg-preview:after {
+.clr-preview:before,
+.clr-preview:after {
   content: '';
   position: absolute;
   height: 100%;
@@ -169,39 +169,31 @@
   border-radius: 50%;
 }
 
-.vdg-preview:after {
+.clr-preview:after {
   border: 0;
   background-color: currentColor;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.1);
 }
 
-.vdg-dark .vdg-preview:after {
-  border: 0;
-  background-color: currentColor;
+.clr-dark .clr-preview:after {
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.5);
 }
 
-.vdg-alpha,
-.vdg-preview:before {
-  background-image: repeating-linear-gradient(45deg, #999 25%, transparent 25%, transparent 75%, #999 75%, #999), repeating-linear-gradient(45deg, #999 25%, #fff 25%, #fff 75%, #999 75%, #999);
-  background-position: 0 0, 4px 4px;
-  background-size: 8px 8px;
-}
-
-.vdg-marker,
-.vdg-hue div,
-.vdg-alpha div,
-.vdg-color input {
+.clr-marker,
+.clr-hue div,
+.clr-alpha div,
+.clr-color input {
   box-sizing: border-box;
 }
 
-.vdg-field {
+.clr-field {
   display: inline-block;
   position: relative;
   color: #000;
 }
 
-.vdg-field:before {
+.clr-field:before,
+.clr-field:after {
   content: '';
   display: block;
   position: absolute;
@@ -210,7 +202,20 @@
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+  border: 1px solid #fff;
+  pointer-events: none;
+}
+
+.clr-field:after {
+  border: 0;
   background-color: currentColor;
   box-shadow: inset 0 0 1px rgba(0,0,0,.5);
-  pointer-events: none;
+}
+
+.clr-alpha,
+.clr-preview:before,
+.clr-field:before {
+  background-image: repeating-linear-gradient(45deg, #999 25%, transparent 25%, transparent 75%, #999 75%, #999), repeating-linear-gradient(45deg, #999 25%, #fff 25%, #fff 75%, #999 75%, #999);
+  background-position: 0 0, 4px 4px;
+  background-size: 8px 8px;
 }

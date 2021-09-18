@@ -1,7 +1,7 @@
 /*!
   Copyright (c) 2021 Momo Bassit.
   Licensed under the MIT License (MIT), see
-  https://github.com/mdbassit/Verdigris
+  https://github.com/mdbassit/Coloris
 */
 
 (() => {
@@ -25,7 +25,7 @@
           container.appendChild(picker);
           break;
         case 'theme':
-          picker.setAttribute('class', `vdg-picker vdg-${options[key]}`);
+          picker.setAttribute('class', `clr-picker clr-${options[key]}`);
           break;
         case 'margin':
           options[key] = Number(options[key]);
@@ -91,7 +91,7 @@
       if (matches.call(event.target, selector)) {
         const parent = event.target.parentNode;
 
-        if (parent.classList.contains('vdg-field')) {
+        if (parent.classList.contains('clr-field')) {
           parent.style.color = event.target.value;
         }
       }
@@ -100,7 +100,7 @@
 
   function wrapFields(selector) {
     document.querySelectorAll(selector).forEach(field => {
-      field.outerHTML = `<div class="vdg-field" style="color: ${field.value};">${field.outerHTML}</div>`;
+      field.outerHTML = `<div class="clr-field" style="color: ${field.value};">${field.outerHTML}</div>`;
     });
   }
 
@@ -206,6 +206,11 @@
     alphaMarker.style.left = `${alphaSlider.value * 100}%`;
   }
 
+  /**
+   * Convert HSVA to RGBA.
+   * @param hsva Object containing the hue, saturation, value and alpha values.
+   * @return Object Red, green, blue and alpha values.
+   */
   function HSVAtoRGBA(hsva) {
     const saturation = hsva.s / 100;
     const value = hsva.v / 100;
@@ -321,25 +326,25 @@
   // Render the UI of color picker
   function render() {
     picker = document.createElement('div');
-    picker.setAttribute('id', 'vdg-picker');
-    picker.setAttribute('class', 'vdg-picker');
+    picker.setAttribute('id', 'clr-picker');
+    picker.setAttribute('class', 'clr-picker');
 
     picker.innerHTML =
-    '<div id="vdg-color-area" class="vdg-gradient">'+
-      '<div class="vdg-marker" id="vdg-color-marker"></div>'+
+    '<div id="clr-color-area" class="clr-gradient">'+
+      '<div class="clr-marker" id="clr-color-marker"></div>'+
     '</div>'+
-    '<div class="vdg-widgets">'+
-      '<div class="vdg-hue">'+
-        '<input id="vdg-hue-slider" type="range" min="0" max="360" step="1">'+
-        '<div id="vdg-hue-marker"></div>'+
+    '<div class="clr-widgets">'+
+      '<div class="clr-hue">'+
+        '<input id="clr-hue-slider" type="range" min="0" max="360" step="1">'+
+        '<div id="clr-hue-marker"></div>'+
       '</div>'+
-      '<div class="vdg-alpha">'+
-        '<input id="vdg-alpha-slider" type="range" min="0" max="1" step=".01">'+
-        '<div id="vdg-alpha-marker"></div>'+
+      '<div class="clr-alpha">'+
+        '<input id="clr-alpha-slider" type="range" min="0" max="1" step=".01">'+
+        '<div id="clr-alpha-marker"></div>'+
       '</div>'+
-      '<div class="vdg-color">'+
-        '<input id="vdg-color-value" type="text" value="">'+
-        '<div id="vdg-color-preview" class="vdg-preview"></div>'+
+      '<div class="clr-color">'+
+        '<input id="clr-color-value" type="text" value="">'+
+        '<div id="clr-color-preview" class="clr-preview"></div>'+
       '</div>'+
     '</div>';
 
@@ -360,14 +365,14 @@
   function init() {
     render();
 
-    colorArea = getEl('vdg-color-area');
-    colorMarker = getEl('vdg-color-marker');
-    colorPreview = getEl('vdg-color-preview');
-    colorValue = getEl('vdg-color-value');
-    hueSlider = getEl('vdg-hue-slider');
-    hueMarker = getEl('vdg-hue-marker');
-    alphaSlider = getEl('vdg-alpha-slider');
-    alphaMarker = getEl('vdg-alpha-marker');
+    colorArea = getEl('clr-color-area');
+    colorMarker = getEl('clr-color-marker');
+    colorPreview = getEl('clr-color-preview');
+    colorValue = getEl('clr-color-value');
+    hueSlider = getEl('clr-hue-slider');
+    hueMarker = getEl('clr-hue-marker');
+    alphaSlider = getEl('clr-alpha-slider');
+    alphaMarker = getEl('clr-alpha-marker');
 
     addListener(picker, 'mousedown', event => {
       event.stopPropagation();
@@ -424,14 +429,14 @@
   }
 
   // Alt names: Coloris, Chroma, Sienna
-  window.Verdigris = (() => {
+  window.Coloris = (() => {
     const methods = {
       set: configure,
       wrap: wrapFields,
       close: dettach
     }
 
-    function Verdigris(options) {
+    function Coloris(options) {
       ready(() => {
         if (options) {
           if (typeof options === 'string') {
@@ -444,12 +449,12 @@
     }
 
     for (const key in methods) {
-      Verdigris[key] = args => {
+      Coloris[key] = args => {
         ready(methods[key], args);
       };
     }
 
-    return Verdigris;
+    return Coloris;
   })();
 
   ready(init);
