@@ -62,7 +62,7 @@
           const borderTop = parseFloat(style.borderTopWidth);
 
           offset = parent.getBoundingClientRect();
-          offset.y += borderTop;
+          offset.y += borderTop + window.scrollY;
           left -= offset.x;
           top = top + parent.scrollTop - offset.y;
 
