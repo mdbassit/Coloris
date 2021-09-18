@@ -108,11 +108,13 @@
     });
   }
 
-  function closePicker() {
-    picker.style.display = 'none';
-
+  function closePicker(tiggerChange) {
     if (currentEl) {
-      currentEl.dispatchEvent(new Event('change', {bubbles: true}));
+      if (tiggerChange) {
+        currentEl.dispatchEvent(new Event('change', {bubbles: true}));
+      }
+
+      picker.style.display = 'none';
       currentEl = null;
     }
   }
