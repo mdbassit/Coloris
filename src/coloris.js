@@ -1,8 +1,8 @@
 /*!
-  Copyright (c) 2021 Momo Bassit.
-  Licensed under the MIT License (MIT)
-  https://github.com/mdbassit/Coloris
-*/
+ * Copyright (c) 2021 Momo Bassit.
+ * Licensed under the MIT License (MIT)
+ * https://github.com/mdbassit/Coloris
+ */
 
 ((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
@@ -10,6 +10,11 @@
   let currentEl, picker, parent, colorArea, colorMarker, colorPreview, colorValue,
       hueSlider, hueMarker, alphaSlider, alphaMarker, gradientDims, margin = 2; 
 
+
+  /**
+   * Configure the color picker.
+   * @param {object} options Configuration options.
+   */
   function configure(options) {
     if (typeof options !== 'object') {
       return;
@@ -40,10 +45,14 @@
     }
   }
 
+  /**
+   * Attach the color picker to input fields that match the selector.
+   * @param {string} selector One or more selectors pointing to input fields.
+   */
   function attachFields(selector) {
     const matches = Element.prototype.matches;
 
-    // Show the color picker on click on the field
+    // Show the color picker on click on the input fields that match the selector
     addListener(document, 'click', event => {
       const target = event.target;
 
@@ -56,6 +65,8 @@
         currentEl = target;
         picker.style.display = 'block';
 
+        // If the color picker is inside a custom container
+        // set the position relative to it
         if (parent) {
           const style = window.getComputedStyle(parent);
           const marginTop = parseFloat(style.marginTop);
@@ -69,6 +80,8 @@
           if (top + picker.offsetHeight >  parent.clientHeight  + parent.scrollTop - marginTop) {
             top -= coords.height + picker.offsetHeight + margin * 2;        
           }
+
+        // Otherwise set the position relative to the whole document
         } else {
           if (top + picker.offsetHeight > document.documentElement.clientHeight) {
             top = window.scrollY + coords.y - picker.offsetHeight - margin;        
@@ -88,13 +101,14 @@
       }
     });
 
-    // Set the color of the parent of the field to the picked color
+    // Update the color preview of the input fields that match the selector
     addListener(document, 'input', event => {
       const target = event.target;
 
       if (matches.call(target, selector)) {
         const parent = target.parentNode;
 
+        // Only update the preview if the field has been previously wrapped
         if (parent.classList.contains('clr-field')) {
           parent.style.color = target.value;
         }
@@ -102,10 +116,14 @@
     });
   }
 
+  /**
+   * Wrap the linked input fields in a div that adds a color preview.
+   * @param {string} selector One or more selectors pointing to input fields.
+   */
   function wrapFields(selector) {
     document.querySelectorAll(selector).forEach(field => {
       const parentNode = field.parentNode;
-      
+
       if (!parentNode.classList.contains('clr-field')) {
         const wrapper = document.createElement('div');
 
@@ -117,6 +135,10 @@
     });
   }
 
+  /**
+   * Close the color picker.
+   * @param {boolean} tiggerChange If true, trigger a "change" event on the linked input field.
+   */
   function closePicker(tiggerChange) {
     if (currentEl) {
       if (tiggerChange) {
@@ -128,6 +150,10 @@
     }
   }
 
+  /**
+   * Set the active color from a string.
+   * @param {string} str String representing a color.
+   */
   function setColorFromStr(str) {
     const rgba = strToRGBA(str);
     const hsva = RGBAtoHSVA(rgba);
@@ -147,6 +173,9 @@
     alphaMarker.style.left = `${hsva.a * 100}%`;
   }
 
+  /**
+   * Copy the active color to the linked input field.
+   */
   function pickColor() {
     if (currentEl) {
       currentEl.value = colorValue.value;
@@ -154,6 +183,11 @@
     }
   }
 
+  /**
+   * Set the active color based on a specific point in the color gradient.
+   * @param {number} x Left position.
+   * @param {number} y Top position.
+   */
   function setColorAtPosition(x, y) {
     const hsva = {
       h: hueSlider.value * 1,
@@ -167,6 +201,10 @@
     pickColor();
   }
 
+  /**
+   * Move the color marker when dragged.
+   * @param {object} event The MouseEvent object.
+   */
   function moveMarker(event) {
     let x = event.pageX - gradientDims.x;
     let y = event.pageY - gradientDims.y;
@@ -184,6 +222,10 @@
     setColorAtPosition(x, y);
   }
 
+  /**
+   * Update the color picker's input field and preview thumb.
+   * @param {Object} rgba Red, green, blue and alpha values.
+   */
   function updateColor(rgba) {
     for (const key in rgba) {
       currentColor[key] = rgba[key];
@@ -194,6 +236,9 @@
     colorValue.value = hex;
   }
 
+  /**
+   * Set the hue when its slider is moved.
+   */
   function setHue() {
     const hue = hueSlider.value;
     const x = colorMarker.style.left.replace('px', '') * 1;
@@ -205,6 +250,9 @@
     setColorAtPosition(x, y);
   }
 
+  /**
+   * Set the alpha when its slider is moved.
+   */
   function setAlpha() {
     const alpha = alphaSlider.value;
 
@@ -215,11 +263,10 @@
     pickColor();
   }
 
-
   /**
    * Convert HSVA to RGBA.
-   * @param hsva Object containing the hue, saturation, value and alpha values.
-   * @return Object Red, green, blue and alpha values.
+   * @param {object} hsva Hue, saturation, value and alpha values.
+   * @return {object} Red, green, blue and alpha values.
    */
   function HSVAtoRGBA(hsva) {
     const saturation = hsva.s / 100;
@@ -246,6 +293,11 @@
     }
   }
 
+  /**
+   * Convert RGBA to HSVA.
+   * @param {object} rgba Red, green, blue and alpha values.
+   * @return {object} Hue, saturation, value and alpha values.
+   */
   function RGBAtoHSVA(rgba) {
     const red   = rgba.r / 255;
     const green = rgba.g / 255;
@@ -274,11 +326,19 @@
     }
   }
 
+  /**
+   * Parse a string to RGBA.
+   * @param {string} str String representing a color.
+   * @return {object} Red, green, blue and alpha values.
+   */
   function strToRGBA(str) {
     const regex = /^((rgba)|rgb)[\D]+([\d.]+)[\D]+([\d.]+)[\D]+([\d.]+)[\D]*?([\d.]+|$)/i;
     let match, rgba;
 
+    // Default to black for invalid color strings
     ctx.fillStyle = '#000';
+
+    // Use canvas to convert the string to a valid color string 
     ctx.fillStyle = str;
     match = regex.exec(ctx.fillStyle);
 
@@ -303,6 +363,11 @@
     return rgba;
   }
 
+  /**
+   * Convert RGBA to Hex.
+   * @param {object} rgba Red, green, blue and alpha values.
+   * @return {string} Hex color string.
+   */
   function RGBAToHex(rgba) {
     let R = rgba.r.toString(16);
     let G = rgba.g.toString(16);
@@ -333,7 +398,9 @@
     return '#' + R + G + B + A;
   }
 
-  // Render the UI of color picker
+  /**
+   * Init the color picker.
+   */ 
   function init() {
     // Render the UI
     picker = document.createElement('div');
@@ -358,8 +425,10 @@
       '</div>'+
     '</div>';
 
+    // Append the color picker to the DOM
     document.body.appendChild(picker);
 
+    // Reference the UI elements
     colorArea = getEl('clr-color-area');
     colorMarker = getEl('clr-color-marker');
     colorPreview = getEl('clr-color-preview');
@@ -405,16 +474,30 @@
     addListener(alphaSlider, 'input', setAlpha);
   }
 
-  // Shortcut for document.getElementById()
+  /**
+   * Shortcut for getElementById to optimize the minified JS.
+   * @param {string} id The element id.
+   * @return {object} The DOM element with the provided id.
+   */ 
   function getEl(id) {
     return document.getElementById(id);
   }
 
-  // Shortcut for context.addEventListener()
-  function addListener(context, type, handler) {
-    context.addEventListener(type, handler);
+  /**
+   * Shortcut for addEventListener to optimize the minified JS.
+   * @param {object} context The context to which the listener is attached.
+   * @param {string} type Event type.
+   * @param {function} fn Event handler.
+   */ 
+  function addListener(context, type, fn) {
+    context.addEventListener(type, fn);
   }
 
+  /**
+   * Call a function only when the DOM is ready.
+   * @param {function} fn The function to call.
+   * @param {*} args Argument to pass to the function.
+   */ 
   function DOMReady(fn, args) {
     if (document.readyState !== 'loading') {
       fn(args);
