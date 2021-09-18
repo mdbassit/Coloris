@@ -131,11 +131,20 @@
   function setColorFromStr(str) {
     const rgba = strToRGBA(str);
     const hsva = RGBAtoHSVA(rgba);
-    const hex = getHex(rgba);
 
-    setRGBA(rgba);
-    setHex(hex);
-    updateUI(hsva);
+    updateColor(rgba);
+    
+    // Update the UI
+    hueSlider.value = hsva.h;
+    picker.style.color = `hsl(${hsva.h}, 100%, 50%)`;
+    hueMarker.style.left = `${hsva.h / 360 * 100}%`;
+
+    colorMarker.style.left = `${gradientDims.width * hsva.s / 100}px`;
+    colorMarker.style.top = `${100 - (gradientDims.height * hsva.v / 100)}px`;
+
+    alphaSlider.value = hsva.a;
+    alphaMarker.style.color = `rgba(0,0,0,${hsva.a})`;
+    alphaMarker.style.left = `${hsva.a * 100}%`;
   }
 
   function pickColor() {
@@ -153,10 +162,8 @@
       a: alphaSlider.value * 1
     };
     const rgba = HSVAtoRGBA(hsva);
-    const hex = getHex(rgba);
 
-    setRGBA(rgba);
-    setHex(hex);
+    updateColor(rgba);
     pickColor();
   }
 
@@ -177,14 +184,12 @@
     setColorAtPosition(x, y);
   }
 
-  function setRGBA(rgba) {
-    currentColor.r = rgba.r;
-    currentColor.g = rgba.g;
-    currentColor.b = rgba.b;
-    currentColor.a = rgba.a;
-  }
+  function updateColor(rgba) {
+    for (const key in rgba) {
+      currentColor[key] = rgba[key];
+    }
 
-  function setHex(hex) {
+    const hex = RGBAToHex(currentColor);
     colorPreview.style.color = hex;
     colorValue.value = hex;
   }
@@ -205,24 +210,11 @@
 
     alphaMarker.style.color = `rgba(0,0,0,${alpha})`;
     alphaMarker.style.left = `${alpha * 100}%`;
-    currentColor.a = alpha;
 
-    setHex(getHex(currentColor));
+    updateColor({ a: alpha });
     pickColor();
   }
 
-  function updateUI(hsva) {
-    hueSlider.value = hsva.h;
-    picker.style.color = `hsl(${hsva.h}, 100%, 50%)`;
-    hueMarker.style.left = `${hsva.h / 360 * 100}%`;
-
-    colorMarker.style.left = `${gradientDims.width * hsva.s / 100}px`;
-    colorMarker.style.top = `${100 - (gradientDims.height * hsva.v / 100)}px`;
-
-    alphaSlider.value = hsva.a;
-    alphaMarker.style.color = `rgba(0,0,0,${hsva.a})`;
-    alphaMarker.style.left = `${hsva.a * 100}%`;
-  }
 
   /**
    * Convert HSVA to RGBA.
@@ -311,7 +303,7 @@
     return rgba;
   }
 
-  function getHex(rgba) {
+  function RGBAToHex(rgba) {
     let R = rgba.r.toString(16);
     let G = rgba.g.toString(16);
     let B = rgba.b.toString(16);
@@ -342,11 +334,11 @@
   }
 
   // Render the UI of color picker
-  function render() {
+  function init() {
+    // Render the UI
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
     picker.setAttribute('class', 'clr-picker');
-
     picker.innerHTML =
     '<div id="clr-color-area" class="clr-gradient">'+
       '<div id="clr-color-marker" class="clr-marker"></div>'+
@@ -367,11 +359,6 @@
     '</div>';
 
     document.body.appendChild(picker);
-  }
-
-  // Init the color picker
-  function init() {
-    render();
 
     colorArea = getEl('clr-color-area');
     colorMarker = getEl('clr-color-marker');
@@ -428,12 +415,12 @@
     context.addEventListener(type, handler);
   }
 
-  function ready(callback, args) {
-    if (document.readyState != 'loading') {
-      callback(args);
+  function DOMReady(fn, args) {
+    if (document.readyState !== 'loading') {
+      fn(args);
     } else {
       document.addEventListener('DOMContentLoaded', () => {
-        callback(args);
+        fn(args);
       });
     }
   }
@@ -447,7 +434,7 @@
     }
 
     function Coloris(options) {
-      ready(() => {
+      DOMReady(() => {
         if (options) {
           if (typeof options === 'string') {
             attachFields(options);
@@ -460,13 +447,14 @@
 
     for (const key in methods) {
       Coloris[key] = args => {
-        ready(methods[key], args);
+        DOMReady(methods[key], args);
       };
     }
 
     return Coloris;
   })();
 
-  ready(init);
+  // Init the color picker when the DOM is ready
+  DOMReady(init);
 
 })(window, document, Math);
