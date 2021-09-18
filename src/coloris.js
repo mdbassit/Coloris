@@ -103,7 +103,7 @@
         };
 
         setColorFromStr(currentEl.value);
-        colorMarker.focus();
+        colorValue.focus();
       }
     });
 
@@ -152,6 +152,7 @@
       }
 
       picker.style.display = 'none';
+      currentEl.focus();
       currentEl = null;
     }
   }
