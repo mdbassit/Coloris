@@ -3,6 +3,7 @@ import babel from 'gulp-babel';
 import uglify from 'gulp-uglify';
 import cleanCSS from 'gulp-clean-css';
 import rename from 'gulp-rename';
+import replace from 'gulp-replace';
 
 
 const path = {
@@ -20,6 +21,7 @@ function minifyJS() {
         comments: /^!/
       }
     }))
+    .pipe(replace('"use strict";\n', ''))
     .pipe(rename(function (path) {
       path.basename += '.min';
     }))
