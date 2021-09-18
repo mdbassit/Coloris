@@ -1,14 +1,14 @@
 /*!
   Copyright (c) 2021 Momo Bassit.
-  Licensed under the MIT License (MIT), see
+  Licensed under the MIT License (MIT)
   https://github.com/mdbassit/Coloris
 */
 
-(() => {
+((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
-  let picker, container, colorArea, colorMarker, colorPreview, colorValue,
-      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, dimensions, margin = 5; 
+  let currentEl, picker, parent, colorArea, colorMarker, colorPreview, colorValue,
+      hueSlider, hueMarker, alphaSlider, alphaMarker, gradientDims, margin = 2; 
 
   function configure(options) {
     if (typeof options !== 'object') {
@@ -18,17 +18,17 @@
     for (const key in options) {
       switch (key) {
         case 'el':
-          attach(options[key]);
+          attachFields(options[key]);
           break;
         case 'parent':
-          container = document.querySelector(options[key]);
-          container.appendChild(picker);
+          parent = document.querySelector(options[key]);
+          parent.appendChild(picker);
           break;
         case 'theme':
           picker.setAttribute('class', `clr-picker clr-${options[key]}`);
           break;
         case 'margin':
-          options[key] = Number(options[key]);
+          options[key] = options[key] * 1;
           margin = !isNaN(options[key]) ? options[key] : margin;
           break;
         case 'wrap':
@@ -40,31 +40,33 @@
     }
   }
 
-  function attach(selector) {
+  function attachFields(selector) {
     const matches = Element.prototype.matches;
 
     // Show the color picker on click on the field
     addListener(document, 'click', event => {
-      if (matches.call(event.target, selector)) {
-        const coords = event.target.getBoundingClientRect();
+      const target = event.target;
+
+      if (matches.call(target, selector)) {
+        const coords = target.getBoundingClientRect();
         let offset = { x: 0, y: 0 };
         let left = coords.x;
         let top =  window.scrollY + coords.y + coords.height + margin;
 
-        currentEl = event.target;
+        currentEl = target;
         picker.style.display = 'block';
 
-        if (container) {
-          const style = window.getComputedStyle(container);
+        if (parent) {
+          const style = window.getComputedStyle(parent);
           const marginTop = parseFloat(style.marginTop);
           const borderTop = parseFloat(style.borderTopWidth);
 
-          offset = container.getBoundingClientRect();
+          offset = parent.getBoundingClientRect();
           offset.y += borderTop;
           left -= offset.x;
-          top = top + container.scrollTop - offset.y;
+          top = top + parent.scrollTop - offset.y;
 
-          if (top + picker.offsetHeight >  container.clientHeight  + container.scrollTop - marginTop) {
+          if (top + picker.offsetHeight >  parent.clientHeight  + parent.scrollTop - marginTop) {
             top -= coords.height + picker.offsetHeight + margin * 2;        
           }
         } else {
@@ -75,7 +77,7 @@
 
         picker.style.left = `${left}px`;
         picker.style.top = `${top}px`;
-        dimensions = {
+        gradientDims = {
           width: colorArea.offsetWidth,
           height: colorArea.offsetHeight,
           x: picker.offsetLeft + offset.x,
@@ -88,11 +90,13 @@
 
     // Set the color of the parent of the field to the picked color
     addListener(document, 'input', event => {
-      if (matches.call(event.target, selector)) {
-        const parent = event.target.parentNode;
+      const target = event.target;
+
+      if (matches.call(target, selector)) {
+        const parent = target.parentNode;
 
         if (parent.classList.contains('clr-field')) {
-          parent.style.color = event.target.value;
+          parent.style.color = target.value;
         }
       }
     });
@@ -104,7 +108,7 @@
     });
   }
 
-  function dettach() {
+  function closePicker() {
     picker.style.display = 'none';
 
     if (currentEl) {
@@ -130,11 +134,11 @@
     }
   }
 
-  function updateColor(x, y) {
+  function setColorAtPosition(x, y) {
     const hsva = {
       h: hueSlider.value * 1,
-      s: x / dimensions.width * 100,
-      v: 100 - (y / dimensions.height * 100),
+      s: x / gradientDims.width * 100,
+      v: 100 - (y / gradientDims.height * 100),
       a: alphaSlider.value * 1
     };
     const rgba = HSVAtoRGBA(hsva);
@@ -146,20 +150,20 @@
   }
 
   function moveMarker(event) {
-    let x = event.pageX - dimensions.x;
-    let y = event.pageY - dimensions.y;
+    let x = event.pageX - gradientDims.x;
+    let y = event.pageY - gradientDims.y;
 
-    if (container) {
-      y += container.scrollTop;
+    if (parent) {
+      y += parent.scrollTop;
     }
 
-    x = (x < 0) ? 0 : (x > dimensions.width) ? dimensions.width : x;
-    y = (y < 0) ? 0 : (y > dimensions.height) ? dimensions.height : y;
+    x = (x < 0) ? 0 : (x > gradientDims.width) ? gradientDims.width : x;
+    y = (y < 0) ? 0 : (y > gradientDims.height) ? gradientDims.height : y;
 
     colorMarker.style.left = `${x}px`;
     colorMarker.style.top = `${y}px`;
 
-    updateColor(x, y);
+    setColorAtPosition(x, y);
   }
 
   function setRGBA(rgba) {
@@ -174,6 +178,17 @@
     colorValue.value = hex;
   }
 
+  function setHue() {
+    const hue = hueSlider.value;
+    const x = colorMarker.style.left.replace('px', '') * 1;
+    const y =  colorMarker.style.top.replace('px', '') * 1;
+
+    picker.style.color = `hsl(${hue}, 100%, 50%)`;
+    hueMarker.style.left = `${hue / 360 * 100}%`;
+
+    setColorAtPosition(x, y);
+  }
+
   function setAlpha() {
     const alpha = alphaSlider.value;
 
@@ -186,24 +201,16 @@
   }
 
   function updateUI(hsva) {
-    if (hsva) {
-      hueSlider.value = hsva.h;
-      colorMarker.style.left = `${dimensions.width * hsva.s / 100}px`;
-      colorMarker.style.top = `${100 - (dimensions.height * hsva.v / 100)}px`;
-      alphaSlider.value = hsva.a;
+    hueSlider.value = hsva.h;
+    picker.style.color = `hsl(${hsva.h}, 100%, 50%)`;
+    hueMarker.style.left = `${hsva.h / 360 * 100}%`;
 
-    // Update the picker color when the hue slider is moved  
-    } else {
-      const x = Number(colorMarker.style.left.replace('px', ''));
-      const y =  Number(colorMarker.style.top.replace('px', ''));
-      updateColor(x, y);
-    }
+    colorMarker.style.left = `${gradientDims.width * hsva.s / 100}px`;
+    colorMarker.style.top = `${100 - (gradientDims.height * hsva.v / 100)}px`;
 
-    picker.style.color = `hsl(${hueSlider.value}, 100%, 50%)`;
-    hueMarker.style.left = `${hueSlider.value / 360 * 100}%`;
-
-    alphaMarker.style.color = `rgba(0,0,0,${alphaSlider.value})`;
-    alphaMarker.style.left = `${alphaSlider.value * 100}%`;
+    alphaSlider.value = hsva.a;
+    alphaMarker.style.color = `rgba(0,0,0,${hsva.a})`;
+    alphaMarker.style.left = `${hsva.a * 100}%`;
   }
 
   /**
@@ -331,7 +338,7 @@
 
     picker.innerHTML =
     '<div id="clr-color-area" class="clr-gradient">'+
-      '<div class="clr-marker" id="clr-color-marker"></div>'+
+      '<div id="clr-color-marker" class="clr-marker"></div>'+
     '</div>'+
     '<div class="clr-widgets">'+
       '<div class="clr-hue">'+
@@ -351,16 +358,6 @@
     document.body.appendChild(picker);
   }
 
-  // Shortcut for document.getElementById()
-  function getEl(id) {
-    return document.getElementById(id);
-  }
-
-  // Shortcut for context.addEventListener()
-  function addListener(context, type, handler) {
-    context.addEventListener(type, handler);
-  }
-
   // Init the color picker
   function init() {
     render();
@@ -378,14 +375,6 @@
       event.stopPropagation();
     });
 
-    addListener(document, 'mousedown', event => {
-      dettach();
-    });    
-
-    addListener(colorArea, 'click', event => {
-      moveMarker(event);
-    });
-
     addListener(colorArea, 'mousedown', event => {
       addListener(document, 'mousemove', moveMarker);
     });
@@ -394,28 +383,38 @@
       addListener(document, 'mousemove', moveMarker);
     });
 
+    addListener(colorValue, 'change', event => {
+      setColorFromStr(colorValue.value);
+      pickColor();
+    });
+
     addListener(document, 'mouseup', event => {
       document.removeEventListener('mousemove', moveMarker);
     });
 
-    addListener(hueSlider, 'input', event => {
-      updateUI();
-    });
-
-    addListener(alphaSlider, 'input', event => {
-      setAlpha();
-    });
-
-    addListener(colorValue, 'change', event => {
-      setColorFromStr(this.value);
-      pickColor();
+    addListener(document, 'mousedown', event => {
+      closePicker(true);
     });
 
     addListener(document, 'keydown', event => {
       if (event.key === 'Escape') {
-        dettach();
+        closePicker(true);
       }
     });
+
+    addListener(colorArea, 'click', moveMarker);
+    addListener(hueSlider, 'input', setHue);
+    addListener(alphaSlider, 'input', setAlpha);
+  }
+
+  // Shortcut for document.getElementById()
+  function getEl(id) {
+    return document.getElementById(id);
+  }
+
+  // Shortcut for context.addEventListener()
+  function addListener(context, type, handler) {
+    context.addEventListener(type, handler);
   }
 
   function ready(callback, args) {
@@ -428,19 +427,19 @@
     }
   }
 
-  // Alt names: Coloris, Chroma, Sienna
+  // Expose the color picker to the global scope
   window.Coloris = (() => {
     const methods = {
       set: configure,
       wrap: wrapFields,
-      close: dettach
+      close: closePicker
     }
 
     function Coloris(options) {
       ready(() => {
         if (options) {
           if (typeof options === 'string') {
-            attach(options);
+            attachFields(options);
           } else {
             configure(options);
           }
@@ -458,4 +457,5 @@
   })();
 
   ready(init);
-})();
+
+})(window, document, Math);
