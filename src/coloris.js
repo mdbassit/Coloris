@@ -485,7 +485,7 @@
       '</div>'+
       '<div class="clr-color">'+
         '<input id="clr-color-value" type="text" value="" aria-label="Color value field">'+
-        '<div id="clr-color-preview" class="clr-preview"></div>'+
+        '<button id="clr-color-preview" class="clr-preview" aria-label="Close color picker"></button>'+
       '</div>'+
     '</div>';
 
@@ -517,6 +517,10 @@
     addListener(colorValue, 'change', event => {
       setColorFromStr(colorValue.value);
       pickColor();
+    });
+
+    addListener(colorPreview, 'click', event => {
+      closePicker(true);
     });
 
     addListener(document, 'mouseup', event => {
