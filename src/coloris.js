@@ -8,7 +8,7 @@
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
   let currentEl, picker, parent, colorArea, colorMarker, colorPreview, colorValue,
-      hueSlider, hueMarker, alphaSlider, alphaMarker, gradientDims, margin = 2; 
+      hueSlider, hueMarker, alphaSlider, alphaMarker, format, gradientDims, margin = 2; 
 
 
   /**
@@ -40,6 +40,9 @@
           if (options.el && options[key]) {
             wrapFields(options.el);
           }
+          break;
+        case 'format':
+          format = options[key];
           break;
       }
     }
@@ -232,19 +235,30 @@
 
     const hex = RGBAToHex(currentColor);
     const opaqueHex = hex.substring(0, 7);
+    const rgbStr = RGBAToStr(currentColor);
 
     colorMarker.style.color = opaqueHex;
     alphaMarker.parentNode.style.color = opaqueHex;
     alphaMarker.style.color = hex;
     colorPreview.style.color = hex;
     colorValue.value = hex;
+
+    switch (format) {
+      case 'mixed':
+        if (currentColor.a === 1) {
+          break;
+        }
+      case 'rgb':
+        colorValue.value = rgbStr;
+        break;
+    }
   }
 
   /**
    * Set the hue when its slider is moved.
    */
   function setHue() {
-    const hue = hueSlider.value;
+    const hue = hueSlider.value * 1;
     const x = colorMarker.style.left.replace('px', '') * 1;
     const y =  colorMarker.style.top.replace('px', '') * 1;
 
@@ -258,7 +272,7 @@
    * Set the alpha when its slider is moved.
    */
   function setAlpha() {
-    const alpha = alphaSlider.value;
+    const alpha = alphaSlider.value * 1;
 
     alphaMarker.style.left = `${alpha * 100}%`;
     updateColor({ a: alpha });
@@ -398,6 +412,19 @@
     }
 
     return '#' + R + G + B + A;
+  }
+
+  /**
+   * Convert RGBA values to a CSS rgb/rgba string.
+   * @param {object} rgba Red, green, blue and alpha values.
+   * @return {string} CSS color string.
+   */
+  function RGBAToStr(rgba) {
+    if (rgba.a === 1) {
+      return `rgb(${rgba.r},${rgba.g},${rgba.b})`;
+    } else {
+      return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
+    }
   }
 
   /**
