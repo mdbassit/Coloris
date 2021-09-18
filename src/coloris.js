@@ -169,7 +169,6 @@
     colorMarker.style.top = `${100 - (gradientDims.height * hsva.v / 100)}px`;
 
     alphaSlider.value = hsva.a;
-    alphaMarker.style.color = `rgba(0,0,0,${hsva.a})`;
     alphaMarker.style.left = `${hsva.a * 100}%`;
   }
 
@@ -232,6 +231,11 @@
     }
 
     const hex = RGBAToHex(currentColor);
+    const opaqueHex = hex.substring(0, 7);
+
+    colorMarker.style.color = opaqueHex;
+    alphaMarker.parentNode.style.color = opaqueHex;
+    alphaMarker.style.color = hex;
     colorPreview.style.color = hex;
     colorValue.value = hex;
   }
@@ -256,9 +260,7 @@
   function setAlpha() {
     const alpha = alphaSlider.value;
 
-    alphaMarker.style.color = `rgba(0,0,0,${alpha})`;
     alphaMarker.style.left = `${alpha * 100}%`;
-
     updateColor({ a: alpha });
     pickColor();
   }
