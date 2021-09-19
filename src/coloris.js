@@ -5,7 +5,6 @@
  */
 
 ((window, document, Math) => {
-  const matches = Element.prototype.matches;
   const ctx = document.createElement('canvas').getContext('2d');
   const markerLabel = 'Saturation: {s}. Brightness: {v}.';
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
@@ -56,67 +55,59 @@
    */
   function attachFields(selector) {
     // Show the color picker on click on the input fields that match the selector
-    addListener(document, 'click', event => {
-      const target = event.target;
+    addListener(document, 'click', selector, event => {
+      const coords = event.target.getBoundingClientRect();
+      let offset = { x: 0, y: 0 };
+      let left = coords.x;
+      let top =  window.scrollY + coords.y + coords.height + margin;
 
-      if (matches.call(target, selector)) {
-        const coords = target.getBoundingClientRect();
-        let offset = { x: 0, y: 0 };
-        let left = coords.x;
-        let top =  window.scrollY + coords.y + coords.height + margin;
+      currentEl = event.target;
+      oldColor = currentEl.value;
+      picker.style.visibility = 'visible';
 
-        currentEl = target;
-        oldColor = currentEl.value;
-        picker.style.visibility = 'visible';
+      // If the color picker is inside a custom container
+      // set the position relative to it
+      if (parent) {
+        const style = window.getComputedStyle(parent);
+        const marginTop = parseFloat(style.marginTop);
+        const borderTop = parseFloat(style.borderTopWidth);
 
-        // If the color picker is inside a custom container
-        // set the position relative to it
-        if (parent) {
-          const style = window.getComputedStyle(parent);
-          const marginTop = parseFloat(style.marginTop);
-          const borderTop = parseFloat(style.borderTopWidth);
+        offset = parent.getBoundingClientRect();
+        offset.y += borderTop + window.scrollY;
+        left -= offset.x;
+        top = top + parent.scrollTop - offset.y;
 
-          offset = parent.getBoundingClientRect();
-          offset.y += borderTop + window.scrollY;
-          left -= offset.x;
-          top = top + parent.scrollTop - offset.y;
-
-          if (top + picker.offsetHeight >  parent.clientHeight  + parent.scrollTop - marginTop) {
-            top -= coords.height + picker.offsetHeight + margin * 2;        
-          }
-
-        // Otherwise set the position relative to the whole document
-        } else {
-          if (top + picker.offsetHeight > document.documentElement.clientHeight) {
-            top = window.scrollY + coords.y - picker.offsetHeight - margin;        
-          }
+        if (top + picker.offsetHeight >  parent.clientHeight  + parent.scrollTop - marginTop) {
+          top -= coords.height + picker.offsetHeight + margin * 2;        
         }
 
-        picker.style.left = `${left}px`;
-        picker.style.top = `${top}px`;
-        gradientDims = {
-          width: colorArea.offsetWidth,
-          height: colorArea.offsetHeight,
-          x: picker.offsetLeft + offset.x,
-          y: picker.offsetTop + offset.y
-        };
-
-        setColorFromStr(currentEl.value);
-        colorValue.focus({ preventScroll: true });
+      // Otherwise set the position relative to the whole document
+      } else {
+        if (top + picker.offsetHeight > document.documentElement.clientHeight) {
+          top = window.scrollY + coords.y - picker.offsetHeight - margin;        
+        }
       }
+
+      picker.style.left = `${left}px`;
+      picker.style.top = `${top}px`;
+      gradientDims = {
+        width: colorArea.offsetWidth,
+        height: colorArea.offsetHeight,
+        x: picker.offsetLeft + offset.x,
+        y: picker.offsetTop + offset.y
+      };
+
+      setColorFromStr(currentEl.value);
+      colorValue.focus({ preventScroll: true });
     });
 
     // Update the color preview of the input fields that match the selector
-    addListener(document, 'input', event => {
-      const target = event.target;
+    addListener(document, 'input', selector, event => {
+      const parent = event.target.parentNode;
 
-      if (matches.call(target, selector)) {
-        const parent = target.parentNode;
-
-        // Only update the preview if the field has been previously wrapped
-        if (parent.classList.contains('clr-field')) {
-          parent.style.color = target.value;
-        }
+      // Only update the preview if the field has been previously wrapped
+      if (parent.classList.contains('clr-field')) {
+        parent.style.color = event.target.value;
       }
     });
   }
@@ -534,12 +525,8 @@
       }
     });
 
-    addListener(document, 'click', event => {
-      const target = event.target;
-
-      if (matches.call(target, '.clr-field button')) {
-        target.nextElementSibling.dispatchEvent(new Event('click', {bubbles: true}));
-      }
+    addListener(document, 'click', '.clr-field button', event => {
+      event.target.nextElementSibling.dispatchEvent(new Event('click', {bubbles: true}));
     });
 
     addListener(colorMarker, 'keydown', event => {
@@ -574,10 +561,26 @@
    * Shortcut for addEventListener to optimize the minified JS.
    * @param {object} context The context to which the listener is attached.
    * @param {string} type Event type.
-   * @param {function} fn Event handler.
+   * @param {(string|function)} selector Event target if delegation is used, event handler if not.
+   * @param {function} [fn] Event handler if delegation is used.
    */ 
-  function addListener(context, type, fn) {
-    context.addEventListener(type, fn);
+  function addListener(context, type, selector, fn) {
+    const matches = Element.prototype.matches;
+
+    // Delegate event to the target of the selector
+    if (typeof selector === 'string') {
+      context.addEventListener(type, event => {
+        if (matches.call(event.target, selector)) {
+          fn.call(event.target, event);
+        }
+      });
+
+    // If the selector is not a string then it's a function
+    // in which case we need regular event listener
+    } else {
+      fn = selector;
+      context.addEventListener(type, fn);
+    }
   }
 
   /**
