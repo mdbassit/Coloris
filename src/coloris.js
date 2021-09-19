@@ -45,6 +45,19 @@
         case 'format':
           format = options[key];
           break;
+        case 'swatches':
+          if (Array.isArray(options[key])) {
+            const swatches = [];
+
+            options[key].forEach(swatch => {
+              swatches.push(`<button style="color: ${swatch};">${swatch}</button>`);
+            });
+
+            if (swatches.length) {
+              getEl('clr-swatches').innerHTML = `<div>${swatches.join('')}</div>`;
+            }
+          }
+          break;
       }
     }
   }
@@ -475,6 +488,7 @@
       '<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="Opacity slider">'+
       '<div id="clr-alpha-marker"></div>'+
     '</div>'+
+    '<div id="clr-swatches" class="clr-swatches"></div>'+
     '<button id="clr-color-preview" class="clr-preview" aria-label="Close color picker"></button>';
 
     // Append the color picker to the DOM
@@ -509,6 +523,11 @@
 
     addListener(colorPreview, 'click', event => {
       closePicker(true);
+    });
+
+    addListener(picker, 'click', '.clr-swatches button', event => {
+      setColorFromStr(event.target.innerHTML);
+      pickColor();
     });
 
     addListener(document, 'mouseup', event => {
