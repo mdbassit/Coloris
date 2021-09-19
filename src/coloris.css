@@ -200,10 +200,7 @@
   color: #000;
 }
 
-.clr-field:before,
-.clr-field:after {
-  content: '';
-  display: block;
+.clr-field button {
   position: absolute;
   width: 30px;
   height: 100%;
@@ -211,11 +208,22 @@
   top: 50%;
   transform: translateY(-50%);
   border: 1px solid #fff;
+  color: inherit;
+  text-indent: -1000px;
+  white-space: nowrap;
+  overflow: hidden;
   pointer-events: none;
 }
 
-.clr-field:after {
-  border: 0;
+.clr-field button:after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border-radius: inherit;
   background-color: currentColor;
   box-shadow: inset 0 0 1px rgba(0,0,0,.5);
 }
@@ -223,7 +231,7 @@
 .clr-alpha,
 .clr-alpha div,
 .clr-preview:before,
-.clr-field:before {
+.clr-field button {
   background-image: repeating-linear-gradient(45deg, #aaa 25%, transparent 25%, transparent 75%, #aaa 75%, #aaa), repeating-linear-gradient(45deg, #aaa 25%, #fff 25%, #fff 75%, #aaa 75%, #aaa);
   background-position: 0 0, 4px 4px;
   background-size: 8px 8px;

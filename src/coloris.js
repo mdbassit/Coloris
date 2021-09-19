@@ -5,6 +5,7 @@
  */
 
 ((window, document, Math) => {
+  const matches = Element.prototype.matches;
   const ctx = document.createElement('canvas').getContext('2d');
   const markerLabel = 'Saturation: {s}. Brightness: {v}.';
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
@@ -54,8 +55,6 @@
    * @param {string} selector One or more selectors pointing to input fields.
    */
   function attachFields(selector) {
-    const matches = Element.prototype.matches;
-
     // Show the color picker on click on the input fields that match the selector
     addListener(document, 'click', event => {
       const target = event.target;
@@ -133,6 +132,7 @@
       if (!parentNode.classList.contains('clr-field')) {
         const wrapper = document.createElement('div');
 
+        wrapper.innerHTML = '<button>Open color picker</button>';
         parentNode.insertBefore(wrapper, field);
         wrapper.setAttribute('class', 'clr-field');
         wrapper.style.color = field.value;
@@ -531,6 +531,14 @@
     addListener(document, 'keydown', event => {
       if (event.key === 'Escape') {
         closePicker(true);
+      }
+    });
+
+    addListener(document, 'click', event => {
+      const target = event.target;
+
+      if (matches.call(target, '.clr-field button')) {
+        target.nextElementSibling.dispatchEvent(new Event('click', {bubbles: true}));
       }
     });
 
