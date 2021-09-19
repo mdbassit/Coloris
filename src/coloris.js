@@ -505,6 +505,7 @@
     alphaMarker = getEl('clr-alpha-marker');
 
     addListener(picker, 'mousedown', event => {
+      picker.classList.remove('clr-keyboard-nav');
       event.stopPropagation();
     });
 
@@ -535,12 +536,15 @@
     });
 
     addListener(document, 'mousedown', event => {
+      picker.classList.remove('clr-keyboard-nav');
       closePicker(true);
     });
 
     addListener(document, 'keydown', event => {
       if (event.key === 'Escape') {
         closePicker(true);
+      } else if (event.key === 'Tab') {
+        picker.classList.add('clr-keyboard-nav');
       }
     });
 

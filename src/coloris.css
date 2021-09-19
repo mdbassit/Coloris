@@ -287,9 +287,9 @@
   background-size: 8px 8px;
 }
 
-.clr-marker:focus,
-.clr-hue input:focus + div,
-.clr-alpha input:focus + div {
+.clr-keyboard-nav .clr-marker:focus,
+.clr-keyboard-nav .clr-hue input:focus + div,
+.clr-keyboard-nav .clr-alpha input:focus + div {
   outline: none;
   box-shadow: 0 0 0 2px #1e90ff, 0 0 2px 2px #fff;
 }
