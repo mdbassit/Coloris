@@ -104,6 +104,7 @@
 
         setColorFromStr(currentEl.value);
         colorValue.focus();
+        colorValue.focus({ preventScroll: true });
       }
     });
 
@@ -153,6 +154,7 @@
 
       picker.style.display = 'none';
       currentEl.focus();
+      currentEl.focus({ preventScroll: true });
       currentEl = null;
     }
   }
