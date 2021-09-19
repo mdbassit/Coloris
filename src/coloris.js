@@ -68,7 +68,7 @@
 
         currentEl = target;
         oldColor = currentEl.value;
-        picker.style.display = 'block';
+        picker.style.visibility = 'visible';
 
         // If the color picker is inside a custom container
         // set the position relative to it
@@ -103,7 +103,6 @@
         };
 
         setColorFromStr(currentEl.value);
-        colorValue.focus();
         colorValue.focus({ preventScroll: true });
       }
     });
@@ -152,8 +151,7 @@
         currentEl.dispatchEvent(new Event('change', {bubbles: true}));
       }
 
-      picker.style.display = 'none';
-      currentEl.focus();
+      picker.style.visibility = 'hidden';
       currentEl.focus({ preventScroll: true });
       currentEl = null;
     }
@@ -474,23 +472,19 @@
     picker.setAttribute('id', 'clr-picker');
     picker.setAttribute('class', 'clr-picker');
     picker.innerHTML =
+    '<input id="clr-color-value" class="clr-color" type="text" value="" aria-label="Color value field">'+
     '<div id="clr-color-area" class="clr-gradient" role="application" aria-label="Saturation and brightness thumb. Use up, down, left and right arrow keys to select.">'+
       '<div id="clr-color-marker" class="clr-marker" tabindex="0" aria-label="Saturation: 0. Brightness: 0."></div>'+
     '</div>'+
-    '<div class="clr-widgets">'+
-      '<div class="clr-hue">'+
-        '<input id="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="Hue slider">'+
-        '<div id="clr-hue-marker"></div>'+
-      '</div>'+
-      '<div class="clr-alpha">'+
-        '<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="Opacity slider">'+
-        '<div id="clr-alpha-marker"></div>'+
-      '</div>'+
-      '<div class="clr-color">'+
-        '<input id="clr-color-value" type="text" value="" aria-label="Color value field">'+
-        '<button id="clr-color-preview" class="clr-preview" aria-label="Close color picker"></button>'+
-      '</div>'+
-    '</div>';
+    '<div class="clr-hue">'+
+      '<input id="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="Hue slider">'+
+      '<div id="clr-hue-marker"></div>'+
+    '</div>'+
+    '<div class="clr-alpha">'+
+      '<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="Opacity slider">'+
+      '<div id="clr-alpha-marker"></div>'+
+    '</div>'+
+    '<button id="clr-color-preview" class="clr-preview" aria-label="Close color picker"></button>';
 
     // Append the color picker to the DOM
     document.body.appendChild(picker);

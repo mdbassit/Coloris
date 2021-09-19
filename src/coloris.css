@@ -1,10 +1,13 @@
 .clr-picker {
-  display: none;
+  display: flex;
+  flex-wrap: wrap;
+  visibility: hidden;
   position: absolute;
   width: 200px;
   z-index: 1000;
   border-radius: 10px;
   background-color: #fff;
+  justify-content: space-between;
   box-shadow: 0 0 5px rgba(0,0,0,.05), 0 5px 20px rgba(0,0,0,.1);
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -19,6 +22,7 @@
   position: relative;
   width: 100%;
   height: 100px;
+  margin-bottom: 15px;
   border-radius: 3px 3px 0 0;
   background-image: linear-gradient(rgba(0,0,0,0), #000), linear-gradient(90deg, #fff, currentColor);
   cursor: pointer;
@@ -35,28 +39,24 @@
   cursor: pointer;
 }
 
-.clr-widgets {
-  padding: 20px;
-}
-
-.clr-widgets input[type="range"]::-webkit-slider-runnable-track {
+.clr-picker input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   height: 8px;
 }
 
-.clr-widgets input[type="range"]::-webkit-slider-thumb {
+.clr-picker input[type="range"]::-webkit-slider-thumb {
   width: 8px;
   height: 8px;
   -webkit-appearance: none;
 }
 
-.clr-widgets input[type="range"]::-moz-range-track {
+.clr-picker input[type="range"]::-moz-range-track {
   width: 100%;
   height: 8px;
   border: 0;
 }
 
-.clr-widgets input[type="range"]::-moz-range-thumb {
+.clr-picker input[type="range"]::-moz-range-thumb {
   width: 8px;
   height: 8px;
   border: 0;
@@ -69,9 +69,9 @@
 .clr-hue,
 .clr-alpha {
   position: relative;
-  width: 100%;
+  width: calc(100% - 40px);
   height: 8px;
-  margin-bottom: 10px;
+  margin: 5px 20px;
   border-radius: 4px;
 }
 
@@ -128,14 +128,10 @@
 }
 
 .clr-color {
-  display: flex;
-  padding-top: 10px;
-  justify-content: space-between;
-}
-
-.clr-color input {
+  order: 1;
   width: 120px;
   height: 32px;
+  margin: 15px 20px 15px 0;
   padding: 0 15px;
   border: 1px solid #ddd;
   border-radius: 16px;
@@ -147,23 +143,22 @@
   box-shadow: none;
 }
 
-.clr-dark .clr-color input {
+.clr-dark .clr-color {
   color: #fff;
   border-color: #777;
   background-color: #555; 
 }
 
-.clr-color input:focus {
+.clr-color:focus {
   outline: none;
   border: 1px solid #aaa;
 }
 
 .clr-preview {
-  flex-shrink: 0;
-  order: -1;
   position: relative;
   width: 32px;
   height: 32px;
+  margin: 15px 0 20px 20px;
   border: 0;
   border-radius: 50%;
   overflow: hidden;
