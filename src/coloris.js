@@ -665,6 +665,8 @@
    * @param {array} args Arguments to pass to the function.
    */ 
   function DOMReady(fn, args) {
+    args = args !== undefined ? args : [];
+     
     if (document.readyState !== 'loading') {
       fn(...args);
     } else {
