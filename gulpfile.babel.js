@@ -16,12 +16,15 @@ const path = {
 function minifyJS() {
   return src(path.js)
     .pipe(babel())
+    .pipe(replace('"use strict";\n', ''))
+    // Output the non-minified version
+    .pipe(dest(path.dist))
+    // Minify and rename to *.min.js
     .pipe(uglify({
       output: {
         comments: /^!/
       }
     }))
-    .pipe(replace('"use strict";\n', ''))
     .pipe(rename(function (path) {
       path.basename += '.min';
     }))
@@ -38,7 +41,7 @@ function minifyCSS() {
 }
 
 function copySource() {
-    return src(path.src)
+    return src(path.css)
         .pipe(dest(path.dist));
 }
 
