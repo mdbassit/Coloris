@@ -662,14 +662,14 @@
   /**
    * Call a function only when the DOM is ready.
    * @param {function} fn The function to call.
-   * @param {*} args Argument to pass to the function.
+   * @param {array} args Arguments to pass to the function.
    */ 
   function DOMReady(fn, args) {
     if (document.readyState !== 'loading') {
-      fn(args);
+      fn(...args);
     } else {
       document.addEventListener('DOMContentLoaded', () => {
-        fn(args);
+        fn(...args);
       });
     }
   }
@@ -695,7 +695,7 @@
     }
 
     for (const key in methods) {
-      Coloris[key] = args => {
+      Coloris[key] = (...args) => {
         DOMReady(methods[key], args);
       };
     }
