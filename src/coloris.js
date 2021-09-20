@@ -50,7 +50,10 @@
             const swatches = [];
 
             options[key].forEach(swatch => {
-              swatches.push(`<button style="color: ${swatch};">${swatch}</button>`);
+              swatches.push(`<button style="color: ${swatch};">`+
+                              '<span>Color swatch</span> '+
+                              `<span>${swatch}</span>`+
+                            '</button>');
             });
 
             if (swatches.length) {
@@ -527,7 +530,7 @@
     });
 
     addListener(picker, 'click', '.clr-swatches button', event => {
-      setColorFromStr(event.target.innerHTML);
+      setColorFromStr(event.target.style.color);
       pickColor();
     });
 
