@@ -6,11 +6,21 @@
 
 ((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
-  const markerLabel = 'Saturation: {s}. Brightness: {v}.';
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
   let currentEl, oldColor, picker, parent, colorArea, colorMarker, colorPreview, colorValue,
       hueSlider, hueMarker, alphaSlider, alphaMarker, format, gradientDims, margin = 2; 
 
+  // Accessibility labels
+  const labels = {
+    open: 'Open color picker',
+    close: 'Close color picker',
+    marker: 'Saturation: {s}. Brightness: {v}.',
+    hueSlider: 'Hue slider',
+    alphaSlider: 'Opacity slider',
+    input: 'Color value field',
+    swatch: 'Color swatch',
+    instruction: 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
+  };
 
   /**
    * Configure the color picker.
@@ -51,7 +61,7 @@
 
             options[key].forEach(swatch => {
               swatches.push(`<button style="color: ${swatch};">`+
-                              '<span>Color swatch</span> '+
+                              `<span>${labels.swatch}</span> `+
                               `<span>${swatch}</span>`+
                             '</button>');
             });
@@ -139,7 +149,7 @@
       if (!parentNode.classList.contains('clr-field')) {
         const wrapper = document.createElement('div');
 
-        wrapper.innerHTML = '<button>Open color picker</button>';
+        wrapper.innerHTML = `<button>${labels.open}</button>`;
         parentNode.insertBefore(wrapper, field);
         wrapper.setAttribute('class', 'clr-field');
         wrapper.style.color = field.value;
@@ -222,7 +232,7 @@
    * @param {number} value
    */
   function updateMarkerA11yLabel(saturation, value) {
-    let label = markerLabel;
+    let label = labels.marker;
 
     saturation = saturation.toFixed(1) * 1;
     value = value.toFixed(1) * 1;
@@ -479,20 +489,20 @@
     picker.setAttribute('id', 'clr-picker');
     picker.setAttribute('class', 'clr-picker');
     picker.innerHTML =
-    '<input id="clr-color-value" class="clr-color" type="text" value="" aria-label="Color value field">'+
-    '<div id="clr-color-area" class="clr-gradient" role="application" aria-label="Saturation and brightness thumb. Use up, down, left and right arrow keys to select.">'+
-      '<div id="clr-color-marker" class="clr-marker" tabindex="0" aria-label="Saturation: 0. Brightness: 0."></div>'+
+    `<input id="clr-color-value" class="clr-color" type="text" value="" aria-label="${labels.input}">`+
+    `<div id="clr-color-area" class="clr-gradient" role="application" aria-label="${labels.instruction}">`+
+      '<div id="clr-color-marker" class="clr-marker" tabindex="0"></div>'+
     '</div>'+
     '<div class="clr-hue">'+
-      '<input id="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="Hue slider">'+
+      `<input id="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="${labels.hueSlider}">`+
       '<div id="clr-hue-marker"></div>'+
     '</div>'+
     '<div class="clr-alpha">'+
-      '<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="Opacity slider">'+
+      `<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${labels.alphaSlider}">`+
       '<div id="clr-alpha-marker"></div>'+
     '</div>'+
     '<div id="clr-swatches" class="clr-swatches"></div>'+
-    '<button id="clr-color-preview" class="clr-preview" aria-label="Close color picker"></button>';
+    `<button id="clr-color-preview" class="clr-preview" aria-label="${labels.input}"></button>`;
 
     // Append the color picker to the DOM
     document.body.appendChild(picker);
