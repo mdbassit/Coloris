@@ -90,5 +90,5 @@ Coloris.close();
 ## License
 
 Copyright (c) 2021 Momo Bassit.
-**Coloris** is licensed under the [MIT license](http://github.com/mdbassit/Coloris/raw/master/LICENSE).
+**Coloris** is licensed under the [MIT license](https://github.com/mdbassit/Coloris/blob/main/LICENSE).
 
