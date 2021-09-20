@@ -7,19 +7,28 @@
 ((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
-  let currentEl, oldColor, picker, parent, colorArea, colorMarker, colorPreview, colorValue,
-      hueSlider, hueMarker, alphaSlider, alphaMarker, format, gradientDims, margin = 2; 
+  let picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue,
+      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, oldColor; 
 
-  // Accessibility labels
-  const labels = {
-    open: 'Open color picker',
-    close: 'Close color picker',
-    marker: 'Saturation: {s}. Brightness: {v}.',
-    hueSlider: 'Hue slider',
-    alphaSlider: 'Opacity slider',
-    input: 'Color value field',
-    swatch: 'Color swatch',
-    instruction: 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
+  // Default settings
+  const settings = {
+    el: '[data-coloris]',
+    parent: null,
+    theme: 'light',
+    wrap: true,
+    margin: 2,
+    format: 'hex',
+    swatches: [],
+    a11y: {
+      open: 'Open color picker',
+      close: 'Close color picker',
+      marker: 'Saturation: {s}. Brightness: {v}.',
+      hueSlider: 'Hue slider',
+      alphaSlider: 'Opacity slider',
+      input: 'Color value field',
+      swatch: 'Color swatch',
+      instruction: 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
+    }
   };
 
   /**
@@ -37,15 +46,17 @@
           attachFields(options[key]);
           break;
         case 'parent':
-          parent = document.querySelector(options[key]);
-          parent.appendChild(picker);
+          settings.parent = document.querySelector(options[key]);
+          if (settings.parent) {
+            settings.parent.appendChild(picker);
+          }
           break;
         case 'theme':
           picker.setAttribute('class', `clr-picker clr-${options[key]}`);
           break;
         case 'margin':
           options[key] = options[key] * 1;
-          margin = !isNaN(options[key]) ? options[key] : margin;
+          settings.margin = !isNaN(options[key]) ? options[key] : settings.margin;
           break;
         case 'wrap':
           if (options.el && options[key]) {
@@ -53,17 +64,14 @@
           }
           break;
         case 'format':
-          format = options[key];
+          settings.format = options[key];
           break;
         case 'swatches':
           if (Array.isArray(options[key])) {
             const swatches = [];
 
-            options[key].forEach(swatch => {
-              swatches.push(`<button style="color: ${swatch};">`+
-                              `<span>${labels.swatch}</span> `+
-                              `<span>${swatch}</span>`+
-                            '</button>');
+            options[key].forEach((swatch, i) => {
+              swatches.push(`<button id="clr-swatch-${i}" aria-labelledby="clr-swatch-label clr-swatch-${i}" style="color: ${swatch};">${swatch}</button>`);
             });
 
             if (swatches.length) {
@@ -71,6 +79,31 @@
             }
           }
           break;
+        case 'a11y':
+          const labels = options[key];
+          let update = false;
+
+          if (typeof labels === 'object') {
+            for (const label in labels) {
+              if (labels[label] && settings.a11y[label]) {
+                settings.a11y[label] = labels[label];
+                update = true;
+              }
+            }
+          }
+
+          if (update) {
+            const openLabel = getEl('clr-open-label');
+            const swatchLabel = getEl('clr-swatch-label');
+
+            openLabel.innerHTML = settings.a11y.open;
+            swatchLabel.innerHTML = settings.a11y.swatch;
+            colorPreview.setAttribute('aria-label', settings.a11y.close);
+            hueSlider.setAttribute('aria-label', settings.a11y.hueSlider);
+            alphaSlider.setAttribute('aria-label', settings.a11y.alphaSlider);
+            colorValue.setAttribute('aria-label', settings.a11y.input);
+            colorArea.setAttribute('aria-label', settings.a11y.instruction);
+          }
       }
     }
   }
@@ -82,10 +115,11 @@
   function attachFields(selector) {
     // Show the color picker on click on the input fields that match the selector
     addListener(document, 'click', selector, event => {
+      const parent = settings.parent;
       const coords = event.target.getBoundingClientRect();
       let offset = { x: 0, y: 0 };
       let left = coords.x;
-      let top =  window.scrollY + coords.y + coords.height + margin;
+      let top =  window.scrollY + coords.y + coords.height + settings.margin;
 
       currentEl = event.target;
       oldColor = currentEl.value;
@@ -104,19 +138,19 @@
         top = top + parent.scrollTop - offset.y;
 
         if (top + picker.offsetHeight >  parent.clientHeight  + parent.scrollTop - marginTop) {
-          top -= coords.height + picker.offsetHeight + margin * 2;        
+          top -= coords.height + picker.offsetHeight + settings.margin * 2;        
         }
 
       // Otherwise set the position relative to the whole document
       } else {
         if (top + picker.offsetHeight > document.documentElement.clientHeight) {
-          top = window.scrollY + coords.y - picker.offsetHeight - margin;        
+          top = window.scrollY + coords.y - picker.offsetHeight - settings.margin;        
         }
       }
 
       picker.style.left = `${left}px`;
       picker.style.top = `${top}px`;
-      gradientDims = {
+      colorAreaDims = {
         width: colorArea.offsetWidth,
         height: colorArea.offsetHeight,
         x: picker.offsetLeft + offset.x,
@@ -149,7 +183,7 @@
       if (!parentNode.classList.contains('clr-field')) {
         const wrapper = document.createElement('div');
 
-        wrapper.innerHTML = `<button>${labels.open}</button>`;
+        wrapper.innerHTML = `<button aria-labelledby="clr-open-label"></button>`;
         parentNode.insertBefore(wrapper, field);
         wrapper.setAttribute('class', 'clr-field');
         wrapper.style.color = field.value;
@@ -190,8 +224,8 @@
     picker.style.color = `hsl(${hsva.h}, 100%, 50%)`;
     hueMarker.style.left = `${hsva.h / 360 * 100}%`;
 
-    colorMarker.style.left = `${gradientDims.width * hsva.s / 100}px`;
-    colorMarker.style.top = `${100 - (gradientDims.height * hsva.v / 100)}px`;
+    colorMarker.style.left = `${colorAreaDims.width * hsva.s / 100}px`;
+    colorMarker.style.top = `${100 - (colorAreaDims.height * hsva.v / 100)}px`;
 
     alphaSlider.value = hsva.a * 100;
     alphaMarker.style.left = `${hsva.a * 100}%`;
@@ -215,8 +249,8 @@
   function setColorAtPosition(x, y) {
     const hsva = {
       h: hueSlider.value * 1,
-      s: x / gradientDims.width * 100,
-      v: 100 - (y / gradientDims.height * 100),
+      s: x / colorAreaDims.width * 100,
+      v: 100 - (y / colorAreaDims.height * 100),
       a: alphaSlider.value / 100
     };
     const rgba = HSVAtoRGBA(hsva);
@@ -232,7 +266,7 @@
    * @param {number} value
    */
   function updateMarkerA11yLabel(saturation, value) {
-    let label = labels.marker;
+    let label = settings.a11y.marker;
 
     saturation = saturation.toFixed(1) * 1;
     value = value.toFixed(1) * 1;
@@ -246,15 +280,15 @@
    * @param {object} event The MouseEvent object.
    */
   function moveMarker(event) {
-    let x = event.pageX - gradientDims.x;
-    let y = event.pageY - gradientDims.y;
+    let x = event.pageX - colorAreaDims.x;
+    let y = event.pageY - colorAreaDims.y;
 
-    if (parent) {
-      y += parent.scrollTop;
+    if (settings.parent) {
+      y += settings.parent.scrollTop;
     }
 
-    x = (x < 0) ? 0 : (x > gradientDims.width) ? gradientDims.width : x;
-    y = (y < 0) ? 0 : (y > gradientDims.height) ? gradientDims.height : y;
+    x = (x < 0) ? 0 : (x > colorAreaDims.width) ? colorAreaDims.width : x;
+    y = (y < 0) ? 0 : (y > colorAreaDims.height) ? colorAreaDims.height : y;
 
     colorMarker.style.left = `${x}px`;
     colorMarker.style.top = `${y}px`;
@@ -296,7 +330,7 @@
     colorPreview.style.color = hex;
     colorValue.value = hex;
 
-    switch (format) {
+    switch (settings.format) {
       case 'mixed':
         if (currentColor.a === 1) {
           break;
@@ -487,22 +521,24 @@
     // Render the UI
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
-    picker.setAttribute('class', 'clr-picker');
+    picker.setAttribute('class', `clr-picker clr-${settings.theme}`);
     picker.innerHTML =
-    `<input id="clr-color-value" class="clr-color" type="text" value="" aria-label="${labels.input}">`+
-    `<div id="clr-color-area" class="clr-gradient" role="application" aria-label="${labels.instruction}">`+
+    `<input id="clr-color-value" class="clr-color" type="text" value="" aria-label="${settings.a11y.input}">`+
+    `<div id="clr-color-area" class="clr-gradient" role="application" aria-label="${settings.a11y.instruction}">`+
       '<div id="clr-color-marker" class="clr-marker" tabindex="0"></div>'+
     '</div>'+
     '<div class="clr-hue">'+
-      `<input id="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="${labels.hueSlider}">`+
+      `<input id="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="${settings.a11y.hueSlider}">`+
       '<div id="clr-hue-marker"></div>'+
     '</div>'+
     '<div class="clr-alpha">'+
-      `<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${labels.alphaSlider}">`+
+      `<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${settings.a11y.alphaSlider}">`+
       '<div id="clr-alpha-marker"></div>'+
     '</div>'+
     '<div id="clr-swatches" class="clr-swatches"></div>'+
-    `<button id="clr-color-preview" class="clr-preview" aria-label="${labels.input}"></button>`;
+    `<button id="clr-color-preview" class="clr-preview" aria-label="${settings.a11y.close}"></button>`+
+    `<span id="clr-open-label" hidden>${settings.a11y.open}</span>`+
+    `<span id="clr-swatch-label" hidden>${settings.a11y.swatch}</span>`;
 
     // Append the color picker to the DOM
     document.body.appendChild(picker);
@@ -516,6 +552,10 @@
     hueMarker = getEl('clr-hue-marker');
     alphaSlider = getEl('clr-alpha-slider');
     alphaMarker = getEl('clr-alpha-marker');
+
+    // Attach the picker to the default selector
+    attachFields(settings.el);
+    wrapFields(settings.el);
 
     addListener(picker, 'mousedown', event => {
       picker.classList.remove('clr-keyboard-nav');
