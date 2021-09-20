@@ -1,7 +1,7 @@
 
 # Coloris
 
-<img src="https://github.com/mdbassit/Coloris/blob/master/images/coloris-light-dark.png?raw=true" alt="Coloris in light and dark themes" width="473"/>
+<img src="https://github.com/mdbassit/Coloris/blob/main/images/coloris-light-dark.png?raw=true" alt="Coloris in light and dark themes" width="473"/>
 
 A lightweight and elegant JavaScript color picker. Written in vanilla ES6, no dependencies. Accessible.
 Convert any text input field into a color field.
@@ -30,8 +30,8 @@ Download the [latest version](https://github.com/mdbassit/Coloris/releases/lates
 
 Or include from a CDN:
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@master/dist/coloris.min.css"/>
-<script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@master/dist/coloris.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@main/dist/coloris.min.css"/>
+<script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@main/dist/coloris.min.js"></script>
 ```
 
 Then just add the data-coloris attribute to your input fields:
