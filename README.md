@@ -1,7 +1,7 @@
 
 # Coloris
 
-<img src="https://github.com/mdbassit/Coloris/blob/main/images/coloris-light-dark.png?raw=true" alt="Coloris in light and dark themes" width="473"/>
+<img src="https://raw.githubusercontent.com/mdbassit/Coloris/gh-pages/images/coloris-light-dark.png" alt="Coloris in light and dark themes" width="473"/>
 
 A lightweight and elegant JavaScript color picker. Written in vanilla ES6, no dependencies. Accessible.
 Convert any text input field into a color field.
