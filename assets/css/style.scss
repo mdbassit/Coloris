@@ -1,0 +1,32 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 25px 0 15px 0;
+}
+
+img {
+  box-shadow: none;
+}
+
+pre, code {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+#main_content_wrap {
+  background: #fff;
+}
+
+#forkme_banner {
+  border-radius: 0 0 5px 5px;
+  background-color: #E94560;
+}
+
+.highlight {
+  border-radius: 5px;
+  background-color: #eee;
+}
+
