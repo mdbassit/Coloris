@@ -1,7 +1,6 @@
 .clr-picker {
-  display: flex;
+  display: none;
   flex-wrap: wrap;
-  visibility: hidden;
   position: absolute;
   width: 200px;
   z-index: 1000;
@@ -239,7 +238,7 @@
 .clr-marker,
 .clr-hue div,
 .clr-alpha div,
-.clr-color input {
+.clr-color {
   box-sizing: border-box;
 }
 

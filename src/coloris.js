@@ -43,34 +43,37 @@
     for (const key in options) {
       switch (key) {
         case 'el':
-          attachFields(options[key]);
+          attachFields(options.el);
+          if (options.wrap !== false) {
+            wrapFields(options.el);
+          }
           break;
         case 'parent':
-          settings.parent = document.querySelector(options[key]);
+          settings.parent = document.querySelector(options.parent);
           if (settings.parent) {
             settings.parent.appendChild(picker);
           }
           break;
         case 'theme':
-          picker.setAttribute('class', `clr-picker clr-${options[key]}`);
+          picker.setAttribute('class', `clr-picker clr-${options.theme}`);
           break;
         case 'margin':
-          options[key] = options[key] * 1;
-          settings.margin = !isNaN(options[key]) ? options[key] : settings.margin;
+          options.margin *= 1;
+          settings.margin = !isNaN(options.margin) ? options.margin : settings.margin;
           break;
         case 'wrap':
-          if (options.el && options[key]) {
+          if (options.el && options.wrap) {
             wrapFields(options.el);
           }
           break;
         case 'format':
-          settings.format = options[key];
+          settings.format = options.format;
           break;
         case 'swatches':
-          if (Array.isArray(options[key])) {
+          if (Array.isArray(options.swatches)) {
             const swatches = [];
 
-            options[key].forEach((swatch, i) => {
+            options.swatches.forEach((swatch, i) => {
               swatches.push(`<button id="clr-swatch-${i}" aria-labelledby="clr-swatch-label clr-swatch-${i}" style="color: ${swatch};">${swatch}</button>`);
             });
 
@@ -80,7 +83,7 @@
           }
           break;
         case 'a11y':
-          const labels = options[key];
+          const labels = options.a11y;
           let update = false;
 
           if (typeof labels === 'object') {
@@ -123,7 +126,7 @@
 
       currentEl = event.target;
       oldColor = currentEl.value;
-      picker.style.visibility = 'visible';
+      picker.style.display = 'flex';
 
       // If the color picker is inside a custom container
       // set the position relative to it
@@ -202,7 +205,7 @@
         currentEl.dispatchEvent(new Event('change', {bubbles: true}));
       }
 
-      picker.style.visibility = 'hidden';
+      picker.style.display = 'none';
       currentEl.focus({ preventScroll: true });
       currentEl = null;
     }
