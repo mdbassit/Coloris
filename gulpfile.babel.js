@@ -15,8 +15,8 @@ const path = {
 
 function minifyJS() {
   return src(path.js)
-    .pipe(babel())
-    .pipe(replace('"use strict";\n', ''))
+    .pipe(babel({ retainLines: true }))
+    .pipe(replace('"use strict";', ''))
     // Output the non-minified version
     .pipe(dest(path.dist))
     // Minify and rename to *.min.js
