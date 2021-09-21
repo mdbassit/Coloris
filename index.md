@@ -1,6 +1,4 @@
 
-# Coloris
-
 <img src="https://raw.githubusercontent.com/mdbassit/Coloris/gh-pages/images/coloris-light-dark.png" alt="Coloris in light and dark themes" width="473"/>
 
 A lightweight and elegant JavaScript color picker. Written in vanilla ES6, no dependencies.  
