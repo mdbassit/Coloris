@@ -641,7 +641,7 @@
    * @param {function} [fn] Event handler if delegation is used.
    */ 
   function addListener(context, type, selector, fn) {
-    const matches = Element.prototype.matches;
+    const matches = Element.prototype.matches || Element.prototype.msMatchesSelector;
 
     // Delegate event to the target of the selector
     if (typeof selector === 'string') {
@@ -674,6 +674,11 @@
         fn(...args);
       });
     }
+  }
+
+  // Polyfill for Nodelist.forEach
+  if (NodeList !== undefined && NodeList.prototype && !NodeList.prototype.forEach) {
+      NodeList.prototype.forEach = Array.prototype.forEach;
   }
 
   // Expose the color picker to the global scope
