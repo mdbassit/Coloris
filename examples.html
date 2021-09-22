@@ -9,9 +9,10 @@
     @import url(https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap);
 
     body {
+      height: 120vh;
       margin: 30px;
       color: #444;
-      background-color: #eee;
+      background-color: #fff;
       font-family: 'Lato', sans-serif;
     }
 
@@ -32,6 +33,8 @@
     }
 
     .example {
+      display: inline-block;
+      width: 24%;
       margin-bottom: 30px;
     }
 
@@ -79,7 +82,7 @@
       <p>Full size thumbnail</p>
       <input type="text" class="coloris" value="#ffcc00">
     </div>
-    <div class="example square" style="margin-top: 300px;">
+    <div class="example square" style="position: absolute; left: 30px; bottom: 30px; margin;margin: 0;">
       <p>The dialog will appear on top of this field for lack of space under it.</p>
       <input type="text" class="coloris" value="#00a5cc">
     </div>
