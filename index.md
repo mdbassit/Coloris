@@ -14,6 +14,7 @@ Convert any text input field into a color field.
 * Opacity support
 * Color swatches
 * Multiple color formats
+* Touch support
 * Fully accessible
 * Works on all modern browsers (released since 2015)
 
@@ -106,12 +107,6 @@ Coloris.close();
 // Close the dialog and trigger a change event if the color has changed
 Coloris.close(true);
 ```
-
-## TODO
-
-* Touch support
-* Re-position on window resize
-* Examples
 
 ## License
 
