@@ -314,6 +314,7 @@
 
     // Prevent scrolling while dragging the marker
     event.preventDefault();
+    event.stopPropagation();
   }
 
   /**
@@ -593,6 +594,10 @@
 
     addListener(colorArea, 'mousedown', function (event) {
       addListener(document, 'mousemove', moveMarker);
+    });
+
+    addListener(colorArea, 'touchstart', function (event) {
+      document.addEventListener('touchmove', moveMarker, { passive: false });
     });
 
     addListener(colorMarker, 'mousedown', function (event) {
