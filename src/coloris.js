@@ -333,6 +333,14 @@
     colorPreview.style.color = hex;
     colorValue.value = hex;
 
+    // Force repaint the color and alpha gradients as a workaround for a Google Chrome bug
+    colorArea.style.display = 'none';
+    colorArea.offsetHeight;
+    colorArea.style.display = '';
+    alphaMarker.nextElementSibling.style.display = 'none';
+    alphaMarker.nextElementSibling.offsetHeight;
+    alphaMarker.nextElementSibling.style.display = '';    
+
     switch (settings.format) {
       case 'mixed':
         if (currentColor.a === 1) {
@@ -537,6 +545,7 @@
     '<div class="clr-alpha">'+
       `<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${settings.a11y.alphaSlider}">`+
       '<div id="clr-alpha-marker"></div>'+
+      '<span></span>'+
     '</div>'+
     '<div id="clr-swatches" class="clr-swatches"></div>'+
     `<button id="clr-color-preview" class="clr-preview" aria-label="${settings.a11y.close}"></button>`+
