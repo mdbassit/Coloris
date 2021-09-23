@@ -278,13 +278,27 @@
     colorMarker.setAttribute('aria-label', label);
   }
 
+  // 
+  /**
+   * Get the pageX and pageY positions of the pointer.
+   * @param {object} event The MouseEvent or TouchEvent object.
+   * @return {object} The pageX and pageY positions.
+   */
+  function getPointerPosition(event) {
+    return {
+      pageX: event.changedTouches ? event.changedTouches[0].pageX : event.pageX,
+      pageY: event.changedTouches ? event.changedTouches[0].pageY : event.pageY
+    };
+  }
+
   /**
    * Move the color marker when dragged.
    * @param {object} event The MouseEvent object.
    */
   function moveMarker(event) {
-    let x = event.pageX - colorAreaDims.x;
-    let y = event.pageY - colorAreaDims.y;
+    const pointer = getPointerPosition(event);
+    let x = pointer.pageX - colorAreaDims.x;
+    let y = pointer.pageY - colorAreaDims.y;
 
     if (settings.parent) {
       y += settings.parent.scrollTop;
@@ -297,6 +311,9 @@
     colorMarker.style.top = `${y}px`;
 
     setColorAtPosition(x, y);
+
+    // Prevent scrolling while dragging the marker
+    event.preventDefault();
   }
 
   /**
@@ -582,6 +599,10 @@
       addListener(document, 'mousemove', moveMarker);
     });
 
+    addListener(colorMarker, 'touchstart', event => {
+      document.addEventListener('touchmove', moveMarker, { passive: false })
+    });
+
     addListener(colorValue, 'change', event => {
       setColorFromStr(colorValue.value);
       pickColor();
@@ -598,6 +619,10 @@
 
     addListener(document, 'mouseup', event => {
       document.removeEventListener('mousemove', moveMarker);
+    });
+
+    addListener(document, 'touchend', event => {
+      document.removeEventListener('touchmove', moveMarker);
     });
 
     addListener(document, 'mousedown', event => {
