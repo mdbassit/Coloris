@@ -140,13 +140,13 @@
         left -= offset.x;
         top = top + parent.scrollTop - offset.y;
 
-        if (top + picker.offsetHeight >  parent.clientHeight  + parent.scrollTop - marginTop) {
+        if (top + picker.offsetHeight >  parent.clientHeight + parent.scrollTop - marginTop) {
           top -= coords.height + picker.offsetHeight + settings.margin * 2;        
         }
 
       // Otherwise set the position relative to the whole document
       } else {
-        if (top + picker.offsetHeight > document.documentElement.clientHeight) {
+        if (top + picker.offsetHeight - window.scrollY > document.documentElement.clientHeight) {
           top = window.scrollY + coords.y - picker.offsetHeight - settings.margin;        
         }
       }
