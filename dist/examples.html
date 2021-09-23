@@ -6,12 +6,14 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="coloris.min.css">
     <style type="text/css">
+    @import url(https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap);
 
     body {
+      height: 120vh;
       margin: 30px;
       color: #444;
-      background-color: #eee;
-      font-family: sans-serif;
+      background-color: #fff;
+      font-family: 'Lato', sans-serif;
     }
 
     h1 {
@@ -22,15 +24,22 @@
       width: 150px;
       height: 32px;
       padding: 0 10px;
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
       border-radius: 5px;
       font-family: inherit;
       font-size: inherit;
       font-weight: inherit;
       box-sizing: border-box;
     }
+      
+    .examples {
+      display: flex;
+      flex-wrap: wrap;
+    }
 
     .example {
+      flex-shrink: 0;
+      width: 300px;
       margin-bottom: 30px;
     }
 
@@ -61,26 +70,29 @@
     </style>
   </head>
   <body>
-    <h1>Examples</h1>
-    <div class="example">
-      <p>Default color thumbnail</p>
-      <input type="text" value="green" data-coloris>
-    </div>
-    <div class="example square">
-      <p>Custom rounded square thumbnail</p>
-      <input type="text" class="coloris" value="rgb(255, 0, 0)">
-    </div>
-    <div class="example circle">
-      <p>Circular thumbnail</p>
-      <input type="text" class="coloris" value="#cc458faa">
-    </div>
-    <div class="example full">
-      <p>Full size thumbnail</p>
-      <input type="text" class="coloris" value="#ffcc00">
-    </div>
-    <div class="example square" style="margin-top: 300px;">
-      <p>The dialog will appear on top of this field for lack of space under it.</p>
-      <input type="text" class="coloris" value="#00a5cc">
+    <a href="https://github.com/mdbassit/Coloris">View <b>Coloris</b> on GitHub</a>
+    <h1>Coloris examples</h1>
+    <div class="examples">
+      <div class="example">
+        <p>Default color thumbnail</p>
+        <input type="text" value="green" data-coloris>
+      </div>
+      <div class="example square">
+        <p>Custom rounded square thumbnail</p>
+        <input type="text" class="coloris" value="rgb(255, 0, 0)">
+      </div>
+      <div class="example circle">
+        <p>Circular thumbnail</p>
+        <input type="text" class="coloris" value="#cc458faa">
+      </div>
+      <div class="example full">
+        <p>Full size thumbnail</p>
+        <input type="text" class="coloris" value="#ffcc00">
+      </div>
+      <div class="example square" style="position: relative; top: 300px; padding-bottom: 30px;">
+        <p>The dialog will appear on top of this field for lack of space under it.</p>
+        <input type="text" class="coloris" value="#00a5cc">
+      </div>
     </div>
     <script type="text/javascript" src="coloris.min.js"></script>
     <script type="text/javascript">
