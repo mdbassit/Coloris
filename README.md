@@ -33,8 +33,8 @@ Download the [latest version](https://github.com/mdbassit/Coloris/releases/lates
 
 Or include from a CDN:
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@main/dist/coloris.min.css"/>
-<script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@main/dist/coloris.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
+<script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
 ```
 
 Then just add the data-coloris attribute to your input fields:
