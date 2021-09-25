@@ -43,7 +43,7 @@
     for (var key in options) {
       switch (key) {
         case 'el':
-          attachFields(options.el);
+          bindFields(options.el);
           if (options.wrap !== false) {
             wrapFields(options.el);
           }
@@ -112,21 +112,25 @@
   }
 
   /**
-   * Attach the color picker to input fields that match the selector.
+   * Bind the color picker to input fields that match the selector.
    * @param {string} selector One or more selectors pointing to input fields.
    */
-  function attachFields(selector) {
+  function bindFields(selector) {
     // Show the color picker on click on the input fields that match the selector
     addListener(document, 'click', selector, function (event) {
       var parent = settings.parent;
       var coords = event.target.getBoundingClientRect();
+      var scrollY = window.scrollY;
       var offset = { x: 0, y: 0 };
       var left = coords.x;
-      var top = window.scrollY + coords.y + coords.height + settings.margin;
+      var top = scrollY + coords.y + coords.height + settings.margin;
 
       currentEl = event.target;
       oldColor = currentEl.value;
       picker.style.display = 'flex';
+
+      var pickerWidth = picker.offsetWidth;
+      var pickerHeight = picker.offsetHeight;
 
       // If the color picker is inside a custom container
       // set the position relative to it
@@ -136,18 +140,28 @@
         var borderTop = parseFloat(style.borderTopWidth);
 
         offset = parent.getBoundingClientRect();
-        offset.y += borderTop + window.scrollY;
+        offset.y += borderTop + scrollY;
         left -= offset.x;
-        top = top + parent.scrollTop - offset.y;
+        top -= offset.y;
 
-        if (top + picker.offsetHeight > parent.clientHeight + parent.scrollTop - marginTop) {
-          top -= coords.height + picker.offsetHeight + settings.margin * 2;
+        if (left + pickerWidth > parent.clientWidth) {
+          left += coords.width - pickerWidth;
         }
+
+        if (top + pickerHeight > parent.clientHeight - marginTop) {
+          top -= coords.height + pickerHeight + settings.margin * 2;
+        }
+
+        top += parent.scrollTop;
 
         // Otherwise set the position relative to the whole document
       } else {
-        if (top + picker.offsetHeight - window.scrollY > document.documentElement.clientHeight) {
-          top = window.scrollY + coords.y - picker.offsetHeight - settings.margin;
+        if (left + pickerWidth > document.documentElement.clientWidth) {
+          left += coords.width - pickerWidth;
+        }
+
+        if (top + pickerHeight - scrollY > document.documentElement.clientHeight) {
+          top = scrollY + coords.y - pickerHeight - settings.margin;
         }
       }
 
@@ -583,8 +597,8 @@
     alphaSlider = getEl('clr-alpha-slider');
     alphaMarker = getEl('clr-alpha-marker');
 
-    // Attach the picker to the default selector
-    attachFields(settings.el);
+    // Bind the picker to the default selector
+    bindFields(settings.el);
     wrapFields(settings.el);
 
     addListener(picker, 'mousedown', function (event) {
@@ -735,7 +749,7 @@
       DOMReady(function () {
         if (options) {
           if (typeof options === 'string') {
-            attachFields(options);
+            bindFields(options);
           } else {
             configure(options);
           }
