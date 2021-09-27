@@ -121,13 +121,14 @@
       const parent = settings.parent;
       const coords = event.target.getBoundingClientRect();
       const scrollY = window.scrollY;
+      let reposition = {left: false, top: false};
       let offset = { x: 0, y: 0 };
       let left = coords.x;
       let top =  scrollY + coords.y + coords.height + settings.margin;
 
       currentEl = event.target;
       oldColor = currentEl.value;
-      picker.style.display = 'flex';
+      picker.classList.add('clr-open');
 
       const pickerWidth = picker.offsetWidth;
       const pickerHeight = picker.offsetHeight;
@@ -146,10 +147,12 @@
 
         if (left + pickerWidth > parent.clientWidth) {
           left += coords.width - pickerWidth;
+          reposition.left = true;
         }
 
         if (top + pickerHeight >  parent.clientHeight - marginTop) {
           top -= coords.height + pickerHeight + settings.margin * 2;
+          reposition.top = true;
         }
 
         top += parent.scrollTop;
@@ -158,10 +161,12 @@
       } else {
         if (left + pickerWidth > document.documentElement.clientWidth) {
           left += coords.width - pickerWidth;
+          reposition.left = true;
         }
 
         if (top + pickerHeight - scrollY > document.documentElement.clientHeight) {
           top = scrollY + coords.y - pickerHeight - settings.margin;
+          reposition.top = true;
         }
       }
 
@@ -174,6 +179,8 @@
         y: picker.offsetTop + offset.y
       };
 
+      picker.classList.toggle('clr-left', reposition.left);
+      picker.classList.toggle('clr-top', reposition.top);
       setColorFromStr(currentEl.value);
       colorValue.focus({ preventScroll: true });
     });
@@ -219,7 +226,7 @@
         currentEl.dispatchEvent(new Event('change', {bubbles: true}));
       }
 
-      picker.style.display = 'none';
+      picker.classList.remove('clr-open');
       currentEl.focus({ preventScroll: true });
       currentEl = null;
     }

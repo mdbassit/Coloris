@@ -13,6 +13,10 @@
   user-select: none;
 }
 
+.clr-picker.clr-open {
+  display: flex;
+}
+
 .clr-dark {
   background-color: #444;
 }
@@ -172,7 +176,7 @@
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.3);
 }
 
-.clr-color {
+input.clr-color {
   order: 1;
   width: 120px;
   height: 32px;
@@ -188,13 +192,13 @@
   box-shadow: none;
 }
 
-.clr-dark .clr-color {
+.clr-dark input.clr-color {
   color: #fff;
   border-color: #777;
   background-color: #555; 
 }
 
-.clr-color:focus {
+input.clr-color:focus {
   outline: none;
   border: 1px solid #aaa;
 }
