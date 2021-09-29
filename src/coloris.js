@@ -170,6 +170,8 @@
         }
       }
 
+      picker.classList.toggle('clr-left', reposition.left);
+      picker.classList.toggle('clr-top', reposition.top);
       picker.style.left = `${left}px`;
       picker.style.top = `${top}px`;
       colorAreaDims = {
@@ -179,8 +181,6 @@
         y: picker.offsetTop + offset.y
       };
 
-      picker.classList.toggle('clr-left', reposition.left);
-      picker.classList.toggle('clr-top', reposition.top);
       setColorFromStr(currentEl.value);
       colorValue.focus({ preventScroll: true });
     });
