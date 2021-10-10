@@ -6,7 +6,7 @@
 A lightweight and elegant JavaScript color picker written in vanilla ES6.  
 Convert any text input field into a color field.
 
-[**View demo**](https://mdbassit.github.io/Coloris/examples.html)
+[**View demo**](https://coloris.js.org/examples.html)
 
 ## Features
 
