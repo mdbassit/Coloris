@@ -177,8 +177,8 @@
       colorAreaDims = {
         width: colorArea.offsetWidth,
         height: colorArea.offsetHeight,
-        x: picker.offsetLeft + offset.x,
-        y: picker.offsetTop + offset.y };
+        x: picker.offsetLeft + colorArea.offsetLeft + offset.x,
+        y: picker.offsetTop + colorArea.offsetTop + offset.y };
 
 
       setColorFromStr(currentEl.value);
@@ -249,7 +249,7 @@
     hueMarker.style.left = hsva.h / 360 * 100 + "%";
 
     colorMarker.style.left = colorAreaDims.width * hsva.s / 100 + "px";
-    colorMarker.style.top = 100 - colorAreaDims.height * hsva.v / 100 + "px";
+    colorMarker.style.top = colorAreaDims.height - colorAreaDims.height * hsva.v / 100 + "px";
 
     alphaSlider.value = hsva.a * 100;
     alphaMarker.style.left = hsva.a * 100 + "%";
@@ -571,7 +571,7 @@
     // Render the UI
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
-    picker.setAttribute('class', "clr-picker clr-" + settings.theme);
+    picker.setAttribute('class', 'clr-picker');
     picker.innerHTML =
     "<input id=\"clr-color-value\" class=\"clr-color\" type=\"text\" value=\"\" aria-label=\"" + settings.a11y.input + "\">" + ("<div id=\"clr-color-area\" class=\"clr-gradient\" role=\"application\" aria-label=\"" +
     settings.a11y.instruction + "\">") +
