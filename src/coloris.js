@@ -249,7 +249,7 @@
     hueMarker.style.left = `${hsva.h / 360 * 100}%`;
 
     colorMarker.style.left = `${colorAreaDims.width * hsva.s / 100}px`;
-    colorMarker.style.top = `${100 - (colorAreaDims.height * hsva.v / 100)}px`;
+    colorMarker.style.top = `${colorAreaDims.height - (colorAreaDims.height * hsva.v / 100)}px`;
 
     alphaSlider.value = hsva.a * 100;
     alphaMarker.style.left = `${hsva.a * 100}%`;
