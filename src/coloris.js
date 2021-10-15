@@ -571,7 +571,7 @@
     // Render the UI
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
-    picker.setAttribute('class', `clr-picker clr-${settings.theme}`);
+    picker.setAttribute('class', 'clr-picker');
     picker.innerHTML =
     `<input id="clr-color-value" class="clr-color" type="text" value="" aria-label="${settings.a11y.input}">`+
     `<div id="clr-color-area" class="clr-gradient" role="application" aria-label="${settings.a11y.instruction}">`+
