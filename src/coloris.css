@@ -107,8 +107,9 @@
   width: 16px;
   height: 16px;
   left: 0;
-  top: 0;
-  margin: -4px 0 0 -8px;
+  top: 50%;
+  margin-left: -8px;
+  transform: translateY(-50%);
   border: 2px solid #fff;
   border-radius: 50%;
   background-color: currentColor;
@@ -178,9 +179,9 @@
 
 input.clr-color {
   order: 1;
-  width: 120px;
+  width: calc(100% - 80px);
   height: 32px;
-  margin: 15px 20px 15px 0;
+  margin: 15px 20px 20px 0;
   padding: 0 15px;
   border: 1px solid #ddd;
   border-radius: 16px;
