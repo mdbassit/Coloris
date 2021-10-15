@@ -177,8 +177,8 @@
       colorAreaDims = {
         width: colorArea.offsetWidth,
         height: colorArea.offsetHeight,
-        x: picker.offsetLeft + offset.x,
-        y: picker.offsetTop + offset.y
+        x: picker.offsetLeft + colorArea.offsetLeft + offset.x,
+        y: picker.offsetTop + colorArea.offsetTop + offset.y
       };
 
       setColorFromStr(currentEl.value);
