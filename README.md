@@ -63,7 +63,8 @@ Coloris({
   // the accessible button (not recommended).
   wrap: true,
 
-  // Choose between a "light" and a "dark" theme. More themes might be added in the future.
+  // Available themes: light, dark, polaroid, polaroid-dark.
+  // More themes might be added in the future.
   theme: 'light',
 
   // The margin between the input fields and the color picker's dialog.
@@ -84,7 +85,7 @@ Coloris({
     'rgb(244,162,97)',
     '#e76f51',
     '#d62828',
-    '#023e8a',
+    'navy',
     '#07b',
     '#0096c7',
     '#00b4d880',
