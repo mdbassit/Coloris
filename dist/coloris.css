@@ -308,6 +308,38 @@ input.clr-color:focus {
   box-shadow: 0 0 5px rgba(0,0,0,.1), 0 5px 30px rgba(0,0,0,.2);
 }
 
+.clr-picker.clr-polaroid:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 16px;
+  height: 10px;
+  left: 20px;
+  top: -10px;
+  border: solid transparent;
+  border-width: 0 8px 10px 8px;
+  border-bottom-color: currentColor;
+  box-sizing: border-box;
+  color: #fff;
+  filter: drop-shadow(0 -4px 3px rgba(0,0,0,.1));
+  pointer-events: none;
+}
+
+.clr-picker.clr-polaroid.clr-dark:before {
+  color: #444;
+}
+
+.clr-picker.clr-polaroid.clr-left:before {
+  left: auto;
+  right: 20px;
+}
+
+.clr-picker.clr-polaroid.clr-top:before {
+  top: auto;
+  bottom: -10px;
+  transform: rotateZ(180deg);
+}
+
 .clr-polaroid .clr-gradient {
   width: calc(100% - 20px);
   height: 120px;
@@ -331,6 +363,9 @@ input.clr-color:focus {
 .clr-polaroid .clr-swatches {
   width: calc(100% - 20px);
   margin: 0 10px;
+}
+.clr-polaroid .clr-swatches div {
+  padding-bottom: 10px;
 }
 
 .clr-polaroid .clr-swatches button {
