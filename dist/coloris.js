@@ -55,7 +55,7 @@
           }
           break;
         case 'theme':
-          picker.setAttribute('class', "clr-picker clr-" + options.theme);
+          picker.setAttribute('class', "clr-picker clr-" + options.theme.split('-').join(' clr-'));
           break;
         case 'margin':
           options.margin *= 1;
