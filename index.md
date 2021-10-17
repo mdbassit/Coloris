@@ -8,7 +8,7 @@ Convert any text input field into a color field.
 ## Features
 
 * Zero dependencies
-* Very ease to use
+* Very easy to use
 * Customizable
 * Dark theme
 * Opacity support
