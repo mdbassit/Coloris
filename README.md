@@ -19,7 +19,7 @@ Convert any text input field into a color field.
 * Multiple color formats
 * Touch support
 * Fully accessible
-* Works on all modern browsers (released since 2015)
+* Works on all modern browsers (no IE support)
 
 ## Getting Started
 
