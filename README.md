@@ -76,6 +76,12 @@ Coloris({
   //  * mixed: defaults to #RRGGBB when alpha is 1, otherwise rgba(R,G,B,A).
   format: 'mixed',
 
+  // Show an optional clear button and set its label
+  clearButton: {
+    show: true,
+    label: 'Clear'
+  },
+
   // An array of the desired color swatches to display. If omitted or the array is empty,
   // the color swatches will be disabled.
   swatches: [

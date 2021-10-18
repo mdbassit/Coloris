@@ -190,6 +190,22 @@ input.clr-color:focus {
   border: 1px solid #aaa;
 }
 
+.clr-clear {
+  display: none;
+  order: 2;
+  height: 24px;
+  margin: 0 20px 20px auto;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 12px;
+  color: #fff;
+  background-color: #666;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
 .clr-preview {
   position: relative;
   width: 32px;
@@ -229,7 +245,7 @@ input.clr-color:focus {
 .clr-field {
   display: inline-block;
   position: relative;
-  color: #000;
+  color: transparent;
 }
 
 .clr-field button {
@@ -376,6 +392,10 @@ input.clr-color:focus {
 .clr-polaroid input.clr-color {
   width: calc(100% - 60px);
   margin: 10px 10px 15px 0;
+}
+
+.clr-polaroid .clr-clear {
+  margin: 0 10px 15px auto;
 }
 
 .clr-polaroid .clr-preview {

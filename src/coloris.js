@@ -7,7 +7,7 @@
 ((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, a: 1 };
-  let picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue,
+  let picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
       hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, oldColor; 
 
   // Default settings
@@ -19,6 +19,10 @@
     margin: 2,
     format: 'hex',
     swatches: [],
+    clearButton: {
+      show: false,
+      label: 'Clear'
+    },
     a11y: {
       open: 'Open color picker',
       close: 'Close color picker',
@@ -81,6 +85,19 @@
               getEl('clr-swatches').innerHTML = `<div>${swatches.join('')}</div>`;
             }
           }
+          break;
+        case 'clearButton':
+          let display = 'none'
+
+          if (options.clearButton.show) {
+            display = 'block';
+          }
+
+          if (options.clearButton.label) {
+            clearButton.innerHTML = options.clearButton.label;
+          }          
+
+          clearButton.style.display = display;
           break;
         case 'a11y':
           const labels = options.a11y;
@@ -257,10 +274,11 @@
 
   /**
    * Copy the active color to the linked input field.
+   * @param {number} [color] Color value to override the active color.
    */
-  function pickColor() {
+  function pickColor(color) {
     if (currentEl) {
-      currentEl.value = colorValue.value;
+      currentEl.value = color !== undefined ? color : colorValue.value;
       currentEl.dispatchEvent(new Event('input', {bubbles: true}));
     }
   }
@@ -587,6 +605,7 @@
       '<span></span>'+
     '</div>'+
     '<div id="clr-swatches" class="clr-swatches"></div>'+
+    `<button id="clr-clear" class="clr-clear">${settings.clearButton.label}</button>`+
     `<button id="clr-color-preview" class="clr-preview" aria-label="${settings.a11y.close}"></button>`+
     `<span id="clr-open-label" hidden>${settings.a11y.open}</span>`+
     `<span id="clr-swatch-label" hidden>${settings.a11y.swatch}</span>`;
@@ -597,6 +616,7 @@
     // Reference the UI elements
     colorArea = getEl('clr-color-area');
     colorMarker = getEl('clr-color-marker');
+    clearButton = getEl('clr-clear');
     colorPreview = getEl('clr-color-preview');
     colorValue = getEl('clr-color-value');
     hueSlider = getEl('clr-hue-slider');
@@ -634,7 +654,13 @@
       pickColor();
     });
 
+    addListener(clearButton, 'click', event => {
+      pickColor('');
+      closePicker(true);
+    });
+
     addListener(colorPreview, 'click', event => {
+      pickColor();
       closePicker(true);
     });
 
