@@ -118,6 +118,29 @@ Coloris.close();
 Coloris.close(true);
 ```
 
+## Building from source
+
+Clone the git repo:
+```bash
+git clone git@github.com:mdbassit/Coloris.git
+```
+
+Enter the Coloris directory and install the development dependencies:
+```bash
+cd Coloris && npm install
+```
+
+Run the build script:
+```bash
+npm run build
+```
+The built version will be in the `dist` directory in both minified and full copies.
+
+Alternatively, you can start a gulp watch task to automatically build when the source files are modified:
+```bash
+npm run start
+```
+
 ## License
 
 Copyright (c) 2021 Momo Bassit.
