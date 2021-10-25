@@ -40,21 +40,17 @@ function minifyCSS() {
     .pipe(dest(path.dist));
 }
 
-function copySource() {
-    return src(path.css)
-        .pipe(dest(path.dist));
+function copySourceCSS() {
+    return src(path.css).pipe(dest(path.dist));
 }
 
 function watchFiles() {
-  watch(path.js, series(minifyJS, copySource));
-  watch(path.css, series(minifyCSS, copySource));
+  watch(path.js, minifyJS);
+  watch(path.css, series(minifyCSS, copySourceCSS));
 }
 
-export default parallel(
-  minifyJS, 
-  minifyCSS, 
-  copySource, 
-  watchFiles
-);
+export const build = parallel(minifyJS, minifyCSS, copySourceCSS);
+
+export default series(build, watchFiles);
 
 
