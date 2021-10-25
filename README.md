@@ -143,5 +143,5 @@ npm run start
 
 ## License
 
-Copyright (c) 2021 Momo Bassit.
+Copyright (c) 2021 Momo Bassit.  
 **Coloris** is licensed under the [MIT license](https://github.com/mdbassit/Coloris/blob/main/LICENSE).
