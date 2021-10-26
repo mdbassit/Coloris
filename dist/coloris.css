@@ -16,7 +16,7 @@
 .clr-picker.clr-open {
   display: flex;
 }
-  
+
 .clr-gradient {
   position: relative;
   width: 100%;
@@ -126,8 +126,8 @@
 
 .clr-swatches {
   order: 2;
-  width: calc(100% - 40px);
-  margin: 0 20px;
+  width: calc(100% - 32px);
+  margin: 0 16px;
 }
 
 .clr-swatches div {
@@ -141,7 +141,7 @@
   position: relative;
   width: 20px;
   height: 20px;
-  margin: 0 8px 6px 0;
+  margin: 0 4px 6px 4px;
   border: 0;
   border-radius: 50%;
   color: inherit;
@@ -149,11 +149,6 @@
   white-space: nowrap;
   overflow: hidden;
   cursor: pointer;
-}
-
-.clr-swatches button:last-child,
-.clr-swatches button:nth-child(6n) {
-  margin-right: 0;
 }
 
 .clr-swatches button:after {
@@ -310,7 +305,7 @@ input.clr-color:focus {
 .clr-dark input.clr-color {
   color: #fff;
   border-color: #777;
-  background-color: #555; 
+  background-color: #555;
 }
 
 .clr-dark .clr-preview:after {
@@ -377,8 +372,8 @@ input.clr-color:focus {
 }
 
 .clr-polaroid .clr-swatches {
-  width: calc(100% - 20px);
-  margin: 0 10px;
+  width: calc(100% - 12px);
+  margin: 0 6px;
 }
 .clr-polaroid .clr-swatches div {
   padding-bottom: 10px;
