@@ -372,8 +372,8 @@ input.clr-color:focus {
 }
 
 .clr-polaroid .clr-swatches {
-  width: calc(100% - 20px);
-  margin: 0 10px;
+  width: calc(100% - 12px);
+  margin: 0 6px;
 }
 .clr-polaroid .clr-swatches div {
   padding-bottom: 10px;
