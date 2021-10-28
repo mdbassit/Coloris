@@ -465,6 +465,28 @@
   }
 
   /**
+   * Convert HSVA to HSLA.
+   * @param {object} hsva Hue, saturation, value and alpha values.
+   * @return {object} Hue, saturation, lightness and alpha values.
+   */
+  function HSVAtoHSLA(hsva) {
+    const value = hsva.v / 100;
+    const lightness = value * (1 - (hsva.s / 100) / 2);
+    let saturation;
+    
+    if (lightness > 0 && lightness < 1) {
+      saturation = Math.round((value - lightness) / Math.min(lightness, 1 - lightness) * 100);
+    }
+
+    return {
+      h: hsva.h,
+      s: saturation || 0,
+      l: Math.round(lightness * 100),
+      a: hsva.a
+    }
+  }
+
+  /**
    * Convert RGBA to HSVA.
    * @param {object} rgba Red, green, blue and alpha values.
    * @return {object} Hue, saturation, value and alpha values.
