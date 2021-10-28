@@ -138,7 +138,7 @@
       const parent = settings.parent;
       const coords = event.target.getBoundingClientRect();
       const scrollY = window.scrollY;
-      let reposition = {left: false, top: false};
+      let reposition = { left: false, top: false };
       let offset = { x: 0, y: 0 };
       let left = coords.x;
       let top =  scrollY + coords.y + coords.height + settings.margin;
@@ -240,7 +240,7 @@
   function closePicker(tiggerChange) {
     if (currentEl) {
       if (tiggerChange && oldColor !== currentEl.value) {
-        currentEl.dispatchEvent(new Event('change', {bubbles: true}));
+        currentEl.dispatchEvent(new Event('change', { bubbles: true }));
       }
 
       picker.classList.remove('clr-open');
@@ -279,7 +279,7 @@
   function pickColor(color) {
     if (currentEl) {
       currentEl.value = color !== undefined ? color : colorValue.value;
-      currentEl.dispatchEvent(new Event('input', {bubbles: true}));
+      currentEl.dispatchEvent(new Event('input', { bubbles: true }));
     }
   }
 
@@ -713,7 +713,7 @@
     });
 
     addListener(document, 'click', '.clr-field button', event => {
-      event.target.nextElementSibling.dispatchEvent(new Event('click', {bubbles: true}));
+      event.target.nextElementSibling.dispatchEvent(new Event('click', { bubbles: true }));
     });
 
     addListener(colorMarker, 'keydown', event => {
