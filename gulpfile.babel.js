@@ -46,7 +46,7 @@ function copySourceCSS() {
 
 function watchFiles() {
   watch(path.js, minifyJS);
-  watch(path.css, series(minifyCSS, copySourceCSS));
+  watch(path.css, parallel(minifyCSS, copySourceCSS));
 }
 
 export const build = parallel(minifyJS, minifyCSS, copySourceCSS);
