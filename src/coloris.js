@@ -235,11 +235,19 @@
 
   /**
    * Close the color picker.
-   * @param {boolean} tiggerChange If true, trigger a "change" event on the linked input field.
+   * @param {boolean} [revert] If true, revert the color to the original value.
    */
-  function closePicker(tiggerChange) {
+  function closePicker(revert) {
     if (currentEl) {
-      if (tiggerChange && oldColor !== currentEl.value) {
+      // Revert the color to the original value if needed
+      if (revert && oldColor !== currentEl.value) {
+        currentEl.value = oldColor;
+
+        // Trigger an "input" event to force update the thumbnail next to the input field
+        currentEl.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+
+      if (oldColor !== currentEl.value) {
         currentEl.dispatchEvent(new Event('change', { bubbles: true }));
       }
 
@@ -698,12 +706,12 @@
 
     addListener(clearButton, 'click', event => {
       pickColor('');
-      closePicker(true);
+      closePicker();
     });
 
     addListener(colorPreview, 'click', event => {
       pickColor();
-      closePicker(true);
+      closePicker();
     });
 
     addListener(picker, 'click', '.clr-swatches button', event => {
@@ -721,7 +729,7 @@
 
     addListener(document, 'mousedown', event => {
       picker.classList.remove('clr-keyboard-nav');
-      closePicker(true);
+      closePicker();
     });
 
     addListener(document, 'keydown', event => {

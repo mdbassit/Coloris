@@ -108,14 +108,14 @@ A "change" event is triggered when the color picker is closed and if the color h
 
 ### Closing the color picker
 
-The color picker dialog can be closed by clicking anywhere on the page or by pressing the ESC on the keyboard.
+The color picker dialog can be closed by clicking anywhere on the page or by pressing the ESC on the keyboard. The later will also revert the color to its original value.
 
 If you would like to close the dialog programmatically, you can do so by calling the close() method:
 ```js
 // Close the dialog
 Coloris.close();
 
-// Close the dialog and trigger a change event if the color has changed
+// Close the dialog and revert the color to its original value
 Coloris.close(true);
 ```
 
