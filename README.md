@@ -71,10 +71,11 @@ Coloris({
   margin: 2,
 
   // Set the prefered color string format:
-  //  * hex: outputs #RRGGBB or #RRGGBBAA.
-  //  * rgb: outputs rgb(R,G,B) or rgba(R,G,B,A).
-  //  * mixed: defaults to #RRGGBB when alpha is 1, otherwise rgba(R,G,B,A).
-  format: 'mixed',
+  //  * hex: outputs #RRGGBB or #RRGGBBAA (default).
+  //  * rgb: outputs rgb(R, G, B) or rgba(R, G, B, A).
+  //  * hsl: outputs hsl(H, S, L) or hsla(H, S, L, A).
+  //  * mixed: outputs #RRGGBB when alpha is 1; otherwise rgba(R, G, B, A).
+  format: 'hex',
 
   // Show an optional clear button and set its label
   clearButton: {
