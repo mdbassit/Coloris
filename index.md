@@ -68,10 +68,11 @@ Coloris({
   margin: 2,
 
   // Set the prefered color string format:
-  //  * hex: outputs #RRGGBB or #RRGGBBAA.
-  //  * rgb: outputs rgb(R,G,B) or rgba(R,G,B,A).
-  //  * mixed: defaults to #RRGGBB when alpha is 1, otherwise rgba(R,G,B,A).
-  format: 'mixed',
+  //  * hex: outputs #RRGGBB or #RRGGBBAA (default).
+  //  * rgb: outputs rgb(R, G, B) or rgba(R, G, B, A).
+  //  * hsl: outputs hsl(H, S, L) or hsla(H, S, L, A).
+  //  * mixed: outputs #RRGGBB when alpha is 1; otherwise rgba(R, G, B, A).
+  format: 'hex',
 
   // Show an optional clear button and set its label
   clearButton: {
@@ -104,14 +105,14 @@ A "change" event is triggered when the color picker is closed and if the color h
 
 ### Closing the color picker
 
-The color picker dialog can be closed by clicking anywhere on the page or by pressing the ESC on the keyboard.
+The color picker dialog can be closed by clicking anywhere on the page or by pressing the ESC on the keyboard. The later will also revert the color to its original value.
 
 If you would like to close the dialog programmatically, you can do so by calling the close() method:
 ```js
 // Close the dialog
 Coloris.close();
 
-// Close the dialog and trigger a change event if the color has changed
+// Close the dialog and revert the color to its original value
 Coloris.close(true);
 ```
 
