@@ -6,7 +6,7 @@
 
 ((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
-  const currentColor = { r: 0, g: 0, b: 0, a: 1 };
+  const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   let picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
       hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, oldColor; 
 
@@ -258,7 +258,7 @@
     const hsva = RGBAtoHSVA(rgba);
 
     updateMarkerA11yLabel(hsva.s, hsva.v);
-    updateColor(rgba);
+    updateColor(rgba, hsva);
     
     // Update the UI
     hueSlider.value = hsva.h;
@@ -298,7 +298,7 @@
     const rgba = HSVAtoRGBA(hsva);
 
     updateMarkerA11yLabel(hsva.s, hsva.v);
-    updateColor(rgba);
+    updateColor(rgba, hsva);
     pickColor();
   }
 
@@ -374,15 +374,19 @@
   /**
    * Update the color picker's input field and preview thumb.
    * @param {Object} rgba Red, green, blue and alpha values.
+   * @param {Object} [hsva] Hue, saturation, value and alpha values.
    */
-  function updateColor(rgba) {
+  function updateColor(rgba, hsva = {}) {
     for (const key in rgba) {
       currentColor[key] = rgba[key];
     }
 
+    for (const key in hsva) {
+      currentColor[key] = hsva[key];
+    }
+
     const hex = RGBAToHex(currentColor);
     const opaqueHex = hex.substring(0, 7);
-    const rgbStr = RGBAToStr(currentColor);
 
     colorMarker.style.color = opaqueHex;
     alphaMarker.parentNode.style.color = opaqueHex;
@@ -404,7 +408,10 @@
           break;
         }
       case 'rgb':
-        colorValue.value = rgbStr;
+        colorValue.value = RGBAToStr(currentColor);
+        break;
+      case 'hsl':
+        colorValue.value = HSLAToStr(HSVAtoHSLA(currentColor));
         break;
     }
   }
@@ -598,9 +605,22 @@
    */
   function RGBAToStr(rgba) {
     if (rgba.a === 1) {
-      return `rgb(${rgba.r},${rgba.g},${rgba.b})`;
+      return `rgb(${rgba.r}, ${rgba.g}, ${rgba.b})`;
     } else {
-      return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
+      return `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
+    }
+  }
+
+  /**
+   * Convert HSLA values to a CSS hsl/hsla string.
+   * @param {object} hsla Hue, saturation, lightness and alpha values.
+   * @return {string} CSS color string.
+   */
+  function HSLAToStr(hsla) {
+    if (hsla.a === 1) {
+      return `hsl(${hsla.h}, ${hsla.s}%, ${hsla.l}%)`;
+    } else {
+      return `hsla(${hsla.h}, ${hsla.s}%, ${hsla.l}%, ${hsla.a})`;
     }
   }
 
