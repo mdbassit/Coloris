@@ -6,7 +6,7 @@
 
 (function (window, document, Math) {
   var ctx = document.createElement('canvas').getContext('2d');
-  var currentColor = { r: 0, g: 0, b: 0, a: 1 };
+  var currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   var picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
   hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, oldColor;
 
@@ -235,11 +235,19 @@
 
   /**
    * Close the color picker.
-   * @param {boolean} tiggerChange If true, trigger a "change" event on the linked input field.
+   * @param {boolean} [revert] If true, revert the color to the original value.
    */
-  function closePicker(tiggerChange) {
+  function closePicker(revert) {
     if (currentEl) {
-      if (tiggerChange && oldColor !== currentEl.value) {
+      // Revert the color to the original value if needed
+      if (revert && oldColor !== currentEl.value) {
+        currentEl.value = oldColor;
+
+        // Trigger an "input" event to force update the thumbnail next to the input field
+        currentEl.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+
+      if (oldColor !== currentEl.value) {
         currentEl.dispatchEvent(new Event('change', { bubbles: true }));
       }
 
@@ -258,7 +266,7 @@
     var hsva = RGBAtoHSVA(rgba);
 
     updateMarkerA11yLabel(hsva.s, hsva.v);
-    updateColor(rgba);
+    updateColor(rgba, hsva);
 
     // Update the UI
     hueSlider.value = hsva.h;
@@ -298,7 +306,7 @@
     var rgba = HSVAtoRGBA(hsva);
 
     updateMarkerA11yLabel(hsva.s, hsva.v);
-    updateColor(rgba);
+    updateColor(rgba, hsva);
     pickColor();
   }
 
@@ -374,15 +382,19 @@
   /**
    * Update the color picker's input field and preview thumb.
    * @param {Object} rgba Red, green, blue and alpha values.
+   * @param {Object} [hsva] Hue, saturation, value and alpha values.
    */
-  function updateColor(rgba) {
+  function updateColor(rgba, hsva) {if (hsva === void 0) {hsva = {};}
     for (var key in rgba) {
       currentColor[key] = rgba[key];
     }
 
+    for (var _key in hsva) {
+      currentColor[_key] = hsva[_key];
+    }
+
     var hex = RGBAToHex(currentColor);
     var opaqueHex = hex.substring(0, 7);
-    var rgbStr = RGBAToStr(currentColor);
 
     colorMarker.style.color = opaqueHex;
     alphaMarker.parentNode.style.color = opaqueHex;
@@ -404,7 +416,10 @@
           break;
         }
       case 'rgb':
-        colorValue.value = rgbStr;
+        colorValue.value = RGBAToStr(currentColor);
+        break;
+      case 'hsl':
+        colorValue.value = HSLAToStr(HSVAtoHSLA(currentColor));
         break;}
 
   }
@@ -460,6 +475,28 @@
       r: Math.round(red * 255),
       g: Math.round(green * 255),
       b: Math.round(blue * 255),
+      a: hsva.a };
+
+  }
+
+  /**
+   * Convert HSVA to HSLA.
+   * @param {object} hsva Hue, saturation, value and alpha values.
+   * @return {object} Hue, saturation, lightness and alpha values.
+   */
+  function HSVAtoHSLA(hsva) {
+    var value = hsva.v / 100;
+    var lightness = value * (1 - hsva.s / 100 / 2);
+    var saturation;
+
+    if (lightness > 0 && lightness < 1) {
+      saturation = Math.round((value - lightness) / Math.min(lightness, 1 - lightness) * 100);
+    }
+
+    return {
+      h: hsva.h,
+      s: saturation || 0,
+      l: Math.round(lightness * 100),
       a: hsva.a };
 
   }
@@ -576,9 +613,22 @@
    */
   function RGBAToStr(rgba) {
     if (rgba.a === 1) {
-      return "rgb(" + rgba.r + "," + rgba.g + "," + rgba.b + ")";
+      return "rgb(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ")";
     } else {
-      return "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+      return "rgba(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ", " + rgba.a + ")";
+    }
+  }
+
+  /**
+   * Convert HSLA values to a CSS hsl/hsla string.
+   * @param {object} hsla Hue, saturation, lightness and alpha values.
+   * @return {string} CSS color string.
+   */
+  function HSLAToStr(hsla) {
+    if (hsla.a === 1) {
+      return "hsl(" + hsla.h + ", " + hsla.s + "%, " + hsla.l + "%)";
+    } else {
+      return "hsla(" + hsla.h + ", " + hsla.s + "%, " + hsla.l + "%, " + hsla.a + ")";
     }
   }
 
@@ -656,12 +706,12 @@
 
     addListener(clearButton, 'click', function (event) {
       pickColor('');
-      closePicker(true);
+      closePicker();
     });
 
     addListener(colorPreview, 'click', function (event) {
       pickColor();
-      closePicker(true);
+      closePicker();
     });
 
     addListener(picker, 'click', '.clr-swatches button', function (event) {
@@ -679,7 +729,7 @@
 
     addListener(document, 'mousedown', function (event) {
       picker.classList.remove('clr-keyboard-nav');
-      closePicker(true);
+      closePicker();
     });
 
     addListener(document, 'keydown', function (event) {
@@ -791,7 +841,7 @@
     }var _loop = function _loop(
 
     key) {
-      Coloris[key] = function () {for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}
+      Coloris[key] = function () {for (var _len = arguments.length, args = new Array(_len), _key2 = 0; _key2 < _len; _key2++) {args[_key2] = arguments[_key2];}
         DOMReady(methods[key], args);
       };};for (var key in methods) {_loop(key);
     }
