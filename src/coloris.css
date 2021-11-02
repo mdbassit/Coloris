@@ -17,6 +17,10 @@
   display: flex;
 }
 
+.clr-picker[data-alpha="false"] .clr-alpha {
+  display: none;
+}
+
 .clr-gradient {
   position: relative;
   width: 100%;
