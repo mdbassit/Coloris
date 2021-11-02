@@ -77,6 +77,10 @@ Coloris({
   //  * mixed: outputs #RRGGBB when alpha is 1; otherwise rgba(R, G, B, A).
   format: 'hex',
 
+  // Enable or disable alpha support.
+  // When disabled, it will strip the alpha value from the existing color value in all formats.
+  alpha: true,
+
   // Show an optional clear button and set its label
   clearButton: {
     show: true,
