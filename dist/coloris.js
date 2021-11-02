@@ -19,6 +19,7 @@
     margin: 2,
     format: 'hex',
     swatches: [],
+    alpha: true,
     clearButton: {
       show: false,
       label: 'Clear' },
@@ -59,7 +60,7 @@
           }
           break;
         case 'theme':
-          picker.setAttribute('class', "clr-picker clr-" + options.theme.split('-').join(' clr-'));
+          picker.className = "clr-picker clr-" + options.theme.split('-').join(' clr-');
           break;
         case 'margin':
           options.margin *= 1;
@@ -85,6 +86,10 @@
                 getEl('clr-swatches').innerHTML = "<div>" + swatches.join('') + "</div>";
               }})();
           }
+          break;
+        case 'alpha':
+          settings.alpha = !!options.alpha;
+          picker.setAttribute('data-alpha', settings.alpha);
           break;
         case 'clearButton':
           var display = 'none';
@@ -594,7 +599,7 @@
       B = '0' + B;
     }
 
-    if (rgba.a < 1) {
+    if (settings.alpha && rgba.a < 1) {
       var alpha = rgba.a * 255 | 0;
       A = alpha.toString(16);
 
@@ -612,7 +617,7 @@
    * @return {string} CSS color string.
    */
   function RGBAToStr(rgba) {
-    if (rgba.a === 1) {
+    if (!settings.alpha || rgba.a === 1) {
       return "rgb(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ")";
     } else {
       return "rgba(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ", " + rgba.a + ")";
@@ -625,7 +630,7 @@
    * @return {string} CSS color string.
    */
   function HSLAToStr(hsla) {
-    if (hsla.a === 1) {
+    if (!settings.alpha || hsla.a === 1) {
       return "hsl(" + hsla.h + ", " + hsla.s + "%, " + hsla.l + "%)";
     } else {
       return "hsla(" + hsla.h + ", " + hsla.s + "%, " + hsla.l + "%, " + hsla.a + ")";
@@ -639,7 +644,7 @@
     // Render the UI
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
-    picker.setAttribute('class', 'clr-picker');
+    picker.className = 'clr-picker';
     picker.innerHTML =
     "<input id=\"clr-color-value\" class=\"clr-color\" type=\"text\" value=\"\" aria-label=\"" + settings.a11y.input + "\">" + ("<div id=\"clr-color-area\" class=\"clr-gradient\" role=\"application\" aria-label=\"" +
     settings.a11y.instruction + "\">") +
