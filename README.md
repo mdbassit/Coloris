@@ -3,7 +3,7 @@
 
 ![Coloris in light, dark and polaroid themes](https://raw.githubusercontent.com/mdbassit/Coloris/gh-pages/images/coloris-light-dark-polaroid.jpg)
 
-A lightweight and elegant JavaScript color picker written in vanilla ES6.  
+A lightweight and elegant JavaScript color picker written in vanilla ES6.
 Convert any text input field into a color field.
 
 [**View demo**](https://coloris.js.org/examples.html)
@@ -48,7 +48,7 @@ That's it. All done!
 
 ```js
 Coloris({
-  // The default behavious is to append the color picker's dialog to the end of the document's
+  // The default behavior is to append the color picker's dialog to the end of the document's
   // body. but it is possible to append it to a custom parent instead. This is especially useful
   // if the color fields are in a scrollable container and you want color picker' dialog to stay
   // anchored to them. You will need to set the position of the container to relative or absolute.
@@ -58,8 +58,8 @@ Coloris({
   el: '.color-field',
 
   // The bound input fields are wrapped in a div that adds a thumbnail showing the current color
-  // and a button to open the color picker (for accessibility only). If you wish to keep your 
-  // fields unaltered, set this to false, in which case you will lose the color thumbnail and 
+  // and a button to open the color picker (for accessibility only). If you wish to keep your
+  // fields unaltered, set this to false, in which case you will lose the color thumbnail and
   // the accessible button (not recommended).
   wrap: true,
 
@@ -67,10 +67,10 @@ Coloris({
   // More themes might be added in the future.
   theme: 'light',
 
-  // The margin between the input fields and the color picker's dialog.
+  // The margin in pixels between the input fields and the color picker's dialog.
   margin: 2,
 
-  // Set the prefered color string format:
+  // Set the preferred color string format:
   //  * hex: outputs #RRGGBB or #RRGGBBAA (default).
   //  * rgb: outputs rgb(R, G, B) or rgba(R, G, B, A).
   //  * hsl: outputs hsl(H, S, L) or hsla(H, S, L, A).
@@ -107,7 +107,7 @@ Coloris({
 
 ### Events
 
-An "input" event is triggered on the bound input field whenever a new color is selected.  
+An "input" event is triggered on the bound input field whenever a new color is selected.
 A "change" event is triggered when the color picker is closed and if the color has changed since it was opened.
 
 ### Closing the color picker
@@ -146,7 +146,21 @@ Alternatively, you can start a gulp watch task to automatically build when the s
 npm run start
 ```
 
+# TypeScript
+
+This package includes TypeScript declarations. Since this project is a global
+library, you need to either add a triple slash reference or add an entry to the
+types array in the `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "types": ["Coloris"]
+  }
+}
+```
+
 ## License
 
-Copyright (c) 2021 Momo Bassit.  
+Copyright (c) 2021 Momo Bassit.
 **Coloris** is licensed under the [MIT license](https://github.com/mdbassit/Coloris/blob/main/LICENSE).

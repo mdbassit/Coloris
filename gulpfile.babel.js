@@ -10,7 +10,8 @@ const path = {
   src: './src/*',
   dist: './dist',
   js: './src/*.js',
-  css: './src/*.css'
+  css: './src/*.css',
+  dts: './src/*.d.ts'
 };
 
 function minifyJS() {
@@ -44,12 +45,16 @@ function copySourceCSS() {
     return src(path.css).pipe(dest(path.dist));
 }
 
-function watchFiles() {
-  watch(path.js, minifyJS);
-  watch(path.css, parallel(minifyCSS, copySourceCSS));
+function copySourceDts() {
+  return src(path.dts).pipe(dest(path.dist));
 }
 
-export const build = parallel(minifyJS, minifyCSS, copySourceCSS);
+function watchFiles() {
+  watch(path.js, minifyJS);
+  watch(path.css, parallel(minifyCSS, copySourceCSS, copySourceDts));
+}
+
+export const build = parallel(minifyJS, minifyCSS, copySourceCSS, copySourceDts);
 
 export default series(build, watchFiles);
 

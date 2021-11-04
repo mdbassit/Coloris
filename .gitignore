@@ -1,2 +1,8 @@
 .DS_Store
 node_modules/
+
+# NPM tarballs
+*.tgz
+
+# For people using vscode
+.vscode
