@@ -23,6 +23,48 @@ declare namespace Coloris {
     | "hsl"
     | "mixed";
 
+  export interface Accessibility {
+    /**
+     * @default "Open color picker"
+     */
+    open: string;
+
+    /**
+     * @default "Close color picker"
+     */
+    close: string;
+
+    /**
+     * @default "Saturation: {s}. Brightness: {v}."
+     */
+    marker: string;
+
+    /**
+     * @default "Hue slider"
+     */
+    hueSlider: string;
+
+    /**
+     * @default "Opacity slider"
+     */
+    alphaSlider: string;
+
+    /**
+     * @default "Color swatch"
+     */
+    input: string;
+
+    /**
+     * @default "Color swatch"
+     */
+    swatch: string;
+
+    /**
+     * @default "Saturation and brightness selector. Use up, down, left and right arrow keys to select."
+     */
+    instruction: string;
+  }
+
   /**
    * Configuration for the optional clear button on the color picker.
    */
@@ -121,6 +163,11 @@ declare namespace Coloris {
      * @default []
      */
     swatches?: string[];
+
+    /**
+     * Accessibility messages for various aria attribute etc.
+     */
+    a11y?: Accessibility;
   }
 
   /**
