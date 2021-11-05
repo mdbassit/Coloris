@@ -92,7 +92,7 @@
           picker.setAttribute('data-alpha', settings.alpha);
           break;
         case 'clearButton':
-          let display = 'none'
+          let display = 'none';
 
           if (options.clearButton.show) {
             display = 'block';
