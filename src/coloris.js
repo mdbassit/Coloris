@@ -8,7 +8,7 @@
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   let picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
-      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, oldColor; 
+      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor; 
 
   // Default settings
   const settings = {
@@ -150,6 +150,7 @@
 
       currentEl = event.target;
       oldColor = currentEl.value;
+      currentFormat = getColorFormatFromStr(oldColor);
       picker.classList.add('clr-open');
 
       const pickerWidth = picker.offsetWidth;
@@ -203,7 +204,7 @@
         y: picker.offsetTop + colorArea.offsetTop + offset.y
       };
 
-      setColorFromStr(currentEl.value);
+      setColorFromStr(oldColor);
       colorValue.focus({ preventScroll: true });
     });
 
@@ -283,6 +284,21 @@
 
     alphaSlider.value = hsva.a * 100;
     alphaMarker.style.left = `${hsva.a * 100}%`;
+  }
+
+  /**
+   * Guess the color format from a string.
+   * @param {string} str String representing a color.
+   * @return {string} The color format.
+   */
+  function getColorFormatFromStr(str) {
+    const format = str.substring(0, 3).toLowerCase();
+
+    if (format === 'rgb' || format === 'hsl' ) {
+      return format;
+    }
+
+    return 'hex';
   }
 
   /**
@@ -389,7 +405,9 @@
    * @param {Object} rgba Red, green, blue and alpha values.
    * @param {Object} [hsva] Hue, saturation, value and alpha values.
    */
-  function updateColor(rgba, hsva = {}) {
+  function updateColor(rgba = {}, hsva = {}) {
+    let format = settings.format;
+
     for (const key in rgba) {
       currentColor[key] = rgba[key];
     }
@@ -405,7 +423,6 @@
     alphaMarker.parentNode.style.color = opaqueHex;
     alphaMarker.style.color = hex;
     colorPreview.style.color = hex;
-    colorValue.value = hex;
 
     // Force repaint the color and alpha gradients as a workaround for a Google Chrome bug
     colorArea.style.display = 'none';
@@ -413,13 +430,18 @@
     colorArea.style.display = '';
     alphaMarker.nextElementSibling.style.display = 'none';
     alphaMarker.nextElementSibling.offsetHeight;
-    alphaMarker.nextElementSibling.style.display = '';    
+    alphaMarker.nextElementSibling.style.display = '';
 
-    switch (settings.format) {
-      case 'mixed':
-        if (currentColor.a === 1) {
-          break;
-        }
+    if (format === 'mixed') {
+      format = currentColor.a === 1 ? 'hex' : 'rgb';
+    } else if (format === 'auto') {
+      format = currentFormat;
+    }
+
+    switch (format) {
+      case 'hex':
+        colorValue.value = hex;
+        break;
       case 'rgb':
         colorValue.value = RGBAToStr(currentColor);
         break;
@@ -720,7 +742,7 @@
     });
 
     addListener(picker, 'click', '.clr-swatches button', event => {
-      setColorFromStr(event.target.style.color);
+      setColorFromStr(event.target.textContent);
       pickColor();
     });
 
