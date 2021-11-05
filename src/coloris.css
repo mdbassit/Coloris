@@ -173,14 +173,14 @@ input.clr-color {
   width: calc(100% - 80px);
   height: 32px;
   margin: 15px 20px 20px 0;
-  padding: 0 15px;
+  padding: 0 10px;
   border: 1px solid #ddd;
   border-radius: 16px;
   color: #444;
   background-color: #fff;
   font-family: sans-serif;
   font-size: 14px;
-  text-align: left;
+  text-align: center;
   box-shadow: none;
 }
 
