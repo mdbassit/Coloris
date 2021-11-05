@@ -186,7 +186,7 @@ input.clr-color {
 
 input.clr-color:focus {
   outline: none;
-  border: 1px solid #aaa;
+  border: 1px solid #1e90ff;
 }
 
 .clr-clear {
@@ -310,6 +310,10 @@ input.clr-color:focus {
   color: #fff;
   border-color: #777;
   background-color: #555;
+}
+
+.clr-dark input.clr-color:focus {
+  border-color: #1e90ff;
 }
 
 .clr-dark .clr-preview:after {
