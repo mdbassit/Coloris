@@ -404,3 +404,18 @@ input.clr-color:focus {
 .clr-polaroid .clr-preview {
   margin: 10px 0 15px 10px;
 }
+
+/** Large theme **/
+
+.clr-picker.clr-large {
+  width: 275px;
+}
+
+.clr-large .clr-gradient {
+  height: 150px;
+}
+
+.clr-large .clr-swatches button {
+  width: 22px;
+  height: 22px;
+}

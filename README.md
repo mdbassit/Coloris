@@ -63,7 +63,7 @@ Coloris({
   // the accessible button (not recommended).
   wrap: true,
 
-  // Available themes: light, dark, polaroid, polaroid-dark.
+  // Available themes: light, dark, large, large-dark, polaroid, polaroid-dark.
   // More themes might be added in the future.
   theme: 'light',
 
