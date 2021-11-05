@@ -45,7 +45,7 @@ That's it. All done!
 
 ```js
 Coloris({
-  // The default behavious is to append the color picker's dialog to the end of the document's
+  // The default behavior is to append the color picker's dialog to the end of the document's
   // body. but it is possible to append it to a custom parent instead. This is especially useful
   // if the color fields are in a scrollable container and you want color picker' dialog to stay
   // anchored to them. You will need to set the position of the container to relative or absolute.
@@ -55,8 +55,8 @@ Coloris({
   el: '.color-field',
 
   // The bound input fields are wrapped in a div that adds a thumbnail showing the current color
-  // and a button to open the color picker (for accessibility only). If you wish to keep your 
-  // fields unaltered, set this to false, in which case you will lose the color thumbnail and 
+  // and a button to open the color picker (for accessibility only). If you wish to keep your
+  // fields unaltered, set this to false, in which case you will lose the color thumbnail and
   // the accessible button (not recommended).
   wrap: true,
 
@@ -64,10 +64,10 @@ Coloris({
   // More themes might be added in the future.
   theme: 'light',
 
-  // The margin between the input fields and the color picker's dialog.
+  // The margin in pixels between the input fields and the color picker's dialog.
   margin: 2,
 
-  // Set the prefered color string format:
+  // Set the preferred color string format:
   //  * hex: outputs #RRGGBB or #RRGGBBAA (default).
   //  * rgb: outputs rgb(R, G, B) or rgba(R, G, B, A).
   //  * hsl: outputs hsl(H, S, L) or hsla(H, S, L, A).
