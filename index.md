@@ -41,6 +41,10 @@ Then just add the data-coloris attribute to your input fields:
 
 That's it. All done!
 
+### What about NPM and TypeScript?
+
+Thanks to [@melloware](https://github.com/melloware), NPM and TypeScript support is available in a fork of this project. Head over to [@melloware's fork](https://github.com/melloware/coloris-npm) or to their [NPM repo](https://www.npmjs.com/package/@melloware/coloris) for more information.
+
 ### Options
 
 ```js
@@ -60,7 +64,7 @@ Coloris({
   // the accessible button (not recommended).
   wrap: true,
 
-  // Available themes: light, dark, polaroid, polaroid-dark.
+  // Available themes: light, dark, large, large-dark, polaroid, polaroid-dark.
   // More themes might be added in the future.
   theme: 'light',
 
