@@ -79,6 +79,10 @@ Coloris({
   //  * mixed: outputs #RRGGBB when alpha is 1; otherwise rgba(R, G, B, A).
   format: 'hex',
 
+  // Set to true to enable format toggle buttons in the color picker dialog.
+  // This will also force the format (above) to auto.
+  formatToggle: true,
+
   // Enable or disable alpha support.
   // When disabled, it will strip the alpha value from the existing color value in all formats.
   alpha: true,
@@ -102,8 +106,28 @@ Coloris({
     '#07b',
     '#0096c7',
     '#00b4d880',
-    'rgba(0,119,182,0.8)',
+    'rgba(0,119,182,0.8)'
   ]
+});
+```
+
+### Accessibility and internationalization
+
+Several labels are used to describe the various widgets of the color picker, which can be read aloud by a screen reader for people with low vision. If you wish to customize or translate those labels, you need to add an "a11y" option to the global Coloris object:
+
+```js
+Coloris({
+  a11y: {
+    open: 'Open color picker',
+    close: 'Close color picker',
+    marker: 'Saturation: {s}. Brightness: {v}.',
+    hueSlider: 'Hue slider',
+    alphaSlider: 'Opacity slider',
+    input: 'Color value field',
+    format: 'Color format',
+    swatch: 'Color swatch',
+    instruction: 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
+  }
 });
 ```
 
