@@ -18,6 +18,7 @@
     wrap: true,
     margin: 2,
     format: 'hex',
+    formatToggle : false,
     swatches: [],
     alpha: true,
     clearButton: {
@@ -31,6 +32,7 @@
       hueSlider: 'Hue slider',
       alphaSlider: 'Opacity slider',
       input: 'Color value field',
+      format: 'Color format',
       swatch: 'Color swatch',
       instruction: 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
     }
@@ -73,6 +75,12 @@
           break;
         case 'format':
           settings.format = options.format;
+          break;
+        case 'formatToggle':
+          getEl('clr-format').style.display = options.formatToggle ? 'block' : 'none';
+          if (options.formatToggle) {
+            settings.format = 'auto';
+          }
           break;
         case 'swatches':
           if (Array.isArray(options.swatches)) {
@@ -449,6 +457,9 @@
         colorValue.value = HSLAToStr(HSVAtoHSLA(currentColor));
         break;
     }
+
+    // Select the current format in the format switcher
+    document.querySelector(`.clr-format [value="${format}"]`).checked = true;
   }
 
   /**
@@ -681,6 +692,18 @@
       '<div id="clr-alpha-marker"></div>'+
       '<span></span>'+
     '</div>'+
+    '<div id="clr-format" class="clr-format">'+
+      '<fieldset class="clr-segmented">'+
+        `<legend>${settings.a11y.format}</legend>`+
+        '<input id="clr-f1" type="radio" name="clr-format" value="hex">'+
+        '<label for="clr-f1">Hex</label>'+
+        '<input id="clr-f2" type="radio" name="clr-format" value="rgb">'+
+        '<label for="clr-f2">RGB</label>'+
+        '<input id="clr-f3" type="radio" name="clr-format" value="hsl">'+
+        '<label for="clr-f3">HSL</label>'+
+        '<span></span>'+
+      '</fieldset>'+
+    '</div>'+
     '<div id="clr-swatches" class="clr-swatches"></div>'+
     `<button id="clr-clear" class="clr-clear">${settings.clearButton.label}</button>`+
     `<button id="clr-color-preview" class="clr-preview" aria-label="${settings.a11y.close}"></button>`+
@@ -739,6 +762,12 @@
     addListener(colorPreview, 'click', event => {
       pickColor();
       closePicker();
+    });
+
+    addListener(document, 'click', '.clr-format input', event => {
+      currentFormat = event.target.value;
+      updateColor();
+      pickColor();
     });
 
     addListener(picker, 'click', '.clr-swatches button', event => {
