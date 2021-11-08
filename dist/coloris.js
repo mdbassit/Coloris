@@ -8,7 +8,7 @@
   var ctx = document.createElement('canvas').getContext('2d');
   var currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   var picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
-  hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, oldColor;
+  hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor;
 
   // Default settings
   var settings = {
@@ -18,6 +18,7 @@
     wrap: true,
     margin: 2,
     format: 'hex',
+    formatToggle: false,
     swatches: [],
     alpha: true,
     clearButton: {
@@ -31,6 +32,7 @@
       hueSlider: 'Hue slider',
       alphaSlider: 'Opacity slider',
       input: 'Color value field',
+      format: 'Color format',
       swatch: 'Color swatch',
       instruction: 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.' } };
 
@@ -73,6 +75,12 @@
           break;
         case 'format':
           settings.format = options.format;
+          break;
+        case 'formatToggle':
+          getEl('clr-format').style.display = options.formatToggle ? 'block' : 'none';
+          if (options.formatToggle) {
+            settings.format = 'auto';
+          }
           break;
         case 'swatches':
           if (Array.isArray(options.swatches)) {(function () {
@@ -150,6 +158,7 @@
 
       currentEl = event.target;
       oldColor = currentEl.value;
+      currentFormat = getColorFormatFromStr(oldColor);
       picker.classList.add('clr-open');
 
       var pickerWidth = picker.offsetWidth;
@@ -203,7 +212,7 @@
         y: picker.offsetTop + colorArea.offsetTop + offset.y };
 
 
-      setColorFromStr(currentEl.value);
+      setColorFromStr(oldColor);
       colorValue.focus({ preventScroll: true });
     });
 
@@ -283,6 +292,21 @@
 
     alphaSlider.value = hsva.a * 100;
     alphaMarker.style.left = hsva.a * 100 + "%";
+  }
+
+  /**
+   * Guess the color format from a string.
+   * @param {string} str String representing a color.
+   * @return {string} The color format.
+   */
+  function getColorFormatFromStr(str) {
+    var format = str.substring(0, 3).toLowerCase();
+
+    if (format === 'rgb' || format === 'hsl') {
+      return format;
+    }
+
+    return 'hex';
   }
 
   /**
@@ -389,7 +413,9 @@
    * @param {Object} rgba Red, green, blue and alpha values.
    * @param {Object} [hsva] Hue, saturation, value and alpha values.
    */
-  function updateColor(rgba, hsva) {if (hsva === void 0) {hsva = {};}
+  function updateColor(rgba, hsva) {if (rgba === void 0) {rgba = {};}if (hsva === void 0) {hsva = {};}
+    var format = settings.format;
+
     for (var key in rgba) {
       currentColor[key] = rgba[key];
     }
@@ -405,7 +431,6 @@
     alphaMarker.parentNode.style.color = opaqueHex;
     alphaMarker.style.color = hex;
     colorPreview.style.color = hex;
-    colorValue.value = hex;
 
     // Force repaint the color and alpha gradients as a workaround for a Google Chrome bug
     colorArea.style.display = 'none';
@@ -415,11 +440,16 @@
     alphaMarker.nextElementSibling.offsetHeight;
     alphaMarker.nextElementSibling.style.display = '';
 
-    switch (settings.format) {
-      case 'mixed':
-        if (currentColor.a === 1) {
-          break;
-        }
+    if (format === 'mixed') {
+      format = currentColor.a === 1 ? 'hex' : 'rgb';
+    } else if (format === 'auto') {
+      format = currentFormat;
+    }
+
+    switch (format) {
+      case 'hex':
+        colorValue.value = hex;
+        break;
       case 'rgb':
         colorValue.value = RGBAToStr(currentColor);
         break;
@@ -427,6 +457,9 @@
         colorValue.value = HSLAToStr(HSVAtoHSLA(currentColor));
         break;}
 
+
+    // Select the current format in the format switcher
+    document.querySelector(".clr-format [value=\"" + format + "\"]").checked = true;
   }
 
   /**
@@ -659,6 +692,18 @@
     '<div id="clr-alpha-marker"></div>' +
     '<span></span>' +
     '</div>' +
+    '<div id="clr-format" class="clr-format">' +
+    '<fieldset class="clr-segmented">' + ("<legend>" +
+    settings.a11y.format + "</legend>") +
+    '<input id="clr-f1" type="radio" name="clr-format" value="hex">' +
+    '<label for="clr-f1">Hex</label>' +
+    '<input id="clr-f2" type="radio" name="clr-format" value="rgb">' +
+    '<label for="clr-f2">RGB</label>' +
+    '<input id="clr-f3" type="radio" name="clr-format" value="hsl">' +
+    '<label for="clr-f3">HSL</label>' +
+    '<span></span>' +
+    '</fieldset>' +
+    '</div>' +
     '<div id="clr-swatches" class="clr-swatches"></div>' + ("<button id=\"clr-clear\" class=\"clr-clear\">" +
     settings.clearButton.label + "</button>") + ("<button id=\"clr-color-preview\" class=\"clr-preview\" aria-label=\"" +
     settings.a11y.close + "\"></button>") + ("<span id=\"clr-open-label\" hidden>" +
@@ -719,8 +764,14 @@
       closePicker();
     });
 
+    addListener(document, 'click', '.clr-format input', function (event) {
+      currentFormat = event.target.value;
+      updateColor();
+      pickColor();
+    });
+
     addListener(picker, 'click', '.clr-swatches button', function (event) {
-      setColorFromStr(event.target.style.color);
+      setColorFromStr(event.target.textContent);
       pickColor();
     });
 
