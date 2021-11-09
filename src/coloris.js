@@ -8,7 +8,7 @@
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   let picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
-      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor; 
+      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor;
 
   // Default settings
   const settings = {
@@ -108,7 +108,7 @@
 
           if (options.clearButton.label) {
             clearButton.innerHTML = options.clearButton.label;
-          }          
+          }
 
           clearButton.style.display = display;
           break;
@@ -281,7 +281,7 @@
 
     updateMarkerA11yLabel(hsva.s, hsva.v);
     updateColor(rgba, hsva);
-    
+
     // Update the UI
     hueSlider.value = hsva.h;
     picker.style.color = `hsl(${hsva.h}, 100%, 50%)`;
@@ -315,7 +315,7 @@
    */
   function pickColor(color) {
     if (currentEl) {
-      currentEl.value = color !== undefined ? color : colorValue.value;
+      currentEl.value = color || colorValue.value;
       currentEl.dispatchEvent(new Event('input', { bubbles: true }));
     }
   }
@@ -354,7 +354,7 @@
     colorMarker.setAttribute('aria-label', label);
   }
 
-  // 
+  //
   /**
    * Get the pageX and pageY positions of the pointer.
    * @param {object} event The MouseEvent or TouchEvent object.
@@ -502,7 +502,6 @@
 
     chroma = (chroma + m);
     x = (x + m);
-    m = m;
 
     const index = Math.floor(hueBy60) % 6;
     const red = [chroma, x, m, m, x, chroma][index];
@@ -514,7 +513,7 @@
       g: Math.round(green * 255),
       b: Math.round(blue * 255),
       a: hsva.a
-    }
+    };
   }
 
   /**
@@ -526,7 +525,7 @@
     const value = hsva.v / 100;
     const lightness = value * (1 - (hsva.s / 100) / 2);
     let saturation;
-    
+
     if (lightness > 0 && lightness < 1) {
       saturation = Math.round((value - lightness) / Math.min(lightness, 1 - lightness) * 100);
     }
@@ -536,7 +535,7 @@
       s: saturation || 0,
       l: Math.round(lightness * 100),
       a: hsva.a
-    }
+    };
   }
 
   /**
@@ -569,7 +568,7 @@
       s: Math.round(saturation * 100),
       v: Math.round(value * 100),
       a: rgba.a
-    }
+    };
   }
 
   /**
@@ -584,7 +583,7 @@
     // Default to black for invalid color strings
     ctx.fillStyle = '#000';
 
-    // Use canvas to convert the string to a valid color string 
+    // Use canvas to convert the string to a valid color string
     ctx.fillStyle = str;
     match = regex.exec(ctx.fillStyle);
 
@@ -672,7 +671,7 @@
 
   /**
    * Init the color picker.
-   */ 
+   */
   function init() {
     // Render the UI
     picker = document.createElement('div');
@@ -738,7 +737,7 @@
     });
 
     addListener(colorArea, 'touchstart', event => {
-      document.addEventListener('touchmove', moveMarker, { passive: false })
+      document.addEventListener('touchmove', moveMarker, { passive: false });
     });
 
     addListener(colorMarker, 'mousedown', event => {
@@ -746,7 +745,7 @@
     });
 
     addListener(colorMarker, 'touchstart', event => {
-      document.addEventListener('touchmove', moveMarker, { passive: false })
+      document.addEventListener('touchmove', moveMarker, { passive: false });
     });
 
     addListener(colorValue, 'change', event => {
@@ -823,7 +822,7 @@
    * Shortcut for getElementById to optimize the minified JS.
    * @param {string} id The element id.
    * @return {object} The DOM element with the provided id.
-   */ 
+   */
   function getEl(id) {
     return document.getElementById(id);
   }
@@ -834,7 +833,7 @@
    * @param {string} type Event type.
    * @param {(string|function)} selector Event target if delegation is used, event handler if not.
    * @param {function} [fn] Event handler if delegation is used.
-   */ 
+   */
   function addListener(context, type, selector, fn) {
     const matches = Element.prototype.matches || Element.prototype.msMatchesSelector;
 
@@ -858,10 +857,10 @@
    * Call a function only when the DOM is ready.
    * @param {function} fn The function to call.
    * @param {array} args Arguments to pass to the function.
-   */ 
+   */
   function DOMReady(fn, args) {
     args = args !== undefined ? args : [];
-     
+
     if (document.readyState !== 'loading') {
       fn(...args);
     } else {
