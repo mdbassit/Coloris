@@ -3,7 +3,7 @@
 
 ![Coloris in light, dark and polaroid themes](https://raw.githubusercontent.com/mdbassit/Coloris/gh-pages/images/coloris-light-dark-polaroid.jpg)
 
-A lightweight and elegant JavaScript color picker written in vanilla ES6.  
+A lightweight and elegant JavaScript color picker written in vanilla ES6.
 Convert any text input field into a color field.
 
 [**View demo**](https://coloris.js.org/examples.html)
@@ -72,6 +72,9 @@ Coloris({
   // More themes might be added in the future.
   theme: 'light',
 
+  // Automatically selects the dark variant of a theme when the user prefers a dark color scheme.
+  autoDark: true,
+
   // The margin in pixels between the input fields and the color picker's dialog.
   margin: 2,
 
@@ -137,7 +140,7 @@ Coloris({
 
 ### Events
 
-An "input" event is triggered on the bound input field whenever a new color is selected.  
+An "input" event is triggered on the bound input field whenever a new color is selected.
 A "change" event is triggered when the color picker is closed and if the color has changed since it was opened.
 
 ### Closing the color picker
@@ -178,5 +181,5 @@ npm run start
 
 ## License
 
-Copyright (c) 2021 Momo Bassit.  
+Copyright (c) 2021 Momo Bassit.
 **Coloris** is licensed under the [MIT license](https://github.com/mdbassit/Coloris/blob/main/LICENSE).

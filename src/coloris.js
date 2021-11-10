@@ -62,6 +62,9 @@
           }
           break;
         case 'theme':
+          if (options.autoDark !== false && !options.theme.includes('dark') && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            options.theme += '-dark';
+          }
           picker.className = `clr-picker clr-${options.theme.split('-').join(' clr-')}`;
           break;
         case 'margin':
