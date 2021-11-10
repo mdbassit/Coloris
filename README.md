@@ -56,6 +56,7 @@ Coloris({
   // body. but it is possible to append it to a custom parent instead. This is especially useful
   // if the color fields are in a scrollable container and you want color picker' dialog to stay
   // anchored to them. You will need to set the position of the container to relative or absolute.
+  // Note: This should be a scrollable container with enough space to display the picker.
   parent: '.container',
 
   // A custom selector to bind the color picker to. This must point to input fields.
