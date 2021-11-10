@@ -149,7 +149,8 @@
     // Show the color picker on click on the input fields that match the selector
     addListener(document, 'click', selector, event => {
       const parent = settings.parent;
-      const coords = event.target.getBoundingClientRect();
+      // When input is of type hidden the bounding client rect is always 0
+      const coords = event.target.type === 'hidden' ? event.target.parent.getBoundingClientRect() : event.target.getBoundingClientRect();
       const scrollY = window.scrollY;
       let reposition = { left: false, top: false };
       let offset = { x: 0, y: 0 };
