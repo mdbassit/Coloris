@@ -154,7 +154,7 @@
       let reposition = { left: false, top: false };
       let offset = { x: 0, y: 0 };
       let left = coords.x;
-      let top =  scrollY + coords.y + coords.height + settings.margin;
+      let top = scrollY + coords.y + coords.height + settings.margin;
 
       currentEl = event.target;
       oldColor = currentEl.value;
@@ -881,7 +881,7 @@
       set: configure,
       wrap: wrapFields,
       close: closePicker
-    }
+    };
 
     function Coloris(options) {
       DOMReady(() => {
