@@ -13,7 +13,7 @@ Convert any text input field into a color field.
 * Zero dependencies
 * Very easy to use
 * Customizable
-* Dark theme
+* Themes and dark mode
 * Opacity support
 * Color swatches
 * Multiple color formats
@@ -68,12 +68,14 @@ Coloris({
   // the accessible button (not recommended).
   wrap: true,
 
-  // Available themes: light, dark, large, large-dark, polaroid, polaroid-dark.
+  // Available themes: classic, large, polaroid.
   // More themes might be added in the future.
-  theme: 'light',
+  theme: 'classic',
 
-  // Automatically selects the dark variant of a theme when the user prefers a dark color scheme.
-  autoDark: true,
+  // Dark (theme) mode:
+  // * true: enabled.
+  // * auto: enabled when the user prefers a dark color scheme.
+  dark: auto,
 
   // The margin in pixels between the input fields and the color picker's dialog.
   margin: 2,
