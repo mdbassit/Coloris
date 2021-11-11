@@ -74,18 +74,18 @@ Coloris({
 
   // Dark (theme) mode:
   // * true: enabled.
-  // * auto: enabled when the user prefers a dark color scheme.
-  dark: auto,
+  // * 'auto': enabled when the user prefers a dark color scheme.
+  dark: 'auto',
 
   // The margin in pixels between the input fields and the color picker's dialog.
   margin: 2,
 
   // Set the preferred color string format:
-  //  * hex: outputs #RRGGBB or #RRGGBBAA (default).
-  //  * rgb: outputs rgb(R, G, B) or rgba(R, G, B, A).
-  //  * hsl: outputs hsl(H, S, L) or hsla(H, S, L, A).
-  //  * auto: guesses the format from the active input field. Defaults to hex if it fails.
-  //  * mixed: outputs #RRGGBB when alpha is 1; otherwise rgba(R, G, B, A).
+  //  * 'hex': outputs #RRGGBB or #RRGGBBAA (default).
+  //  * 'rgb': outputs rgb(R, G, B) or rgba(R, G, B, A).
+  //  * 'hsl': outputs hsl(H, S, L) or hsla(H, S, L, A).
+  //  * 'auto': guesses the format from the active input field. Defaults to hex if it fails.
+  //  * 'mixed': outputs #RRGGBB when alpha is 1; otherwise rgba(R, G, B, A).
   format: 'hex',
 
   // Set to true to enable format toggle buttons in the color picker dialog.
