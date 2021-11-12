@@ -15,6 +15,7 @@
     el: '[data-coloris]',
     parent: null,
     theme: 'default',
+    themeMode: 'light',
     wrap: true,
     margin: 2,
     format: 'hex',
@@ -47,8 +48,6 @@
       return;
     }
 
-    let classNames = ['picker'];
-
     for (const key in options) {
       switch (key) {
         case 'el':
@@ -63,15 +62,17 @@
             settings.parent.appendChild(picker);
           }
           break;
-        case 'theme':
-          if (options.theme !== 'default') {
-            classNames.push(options.theme);
-          }
-          break;
         case 'themeMode':
-          if (options.themeMode === 'dark' || options.themeMode === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            classNames.push('dark');
+          settings.themeMode = options.themeMode;
+          if (options.themeMode === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            settings.themeMode = 'dark';
           }
+          // The lack of a break statement is intentional
+        case 'theme':
+          if (options.theme) {
+            settings.theme = options.theme;
+          }
+          picker.className = `clr-picker clr-${settings.theme} clr-${settings.themeMode}`;
           break;
         case 'margin':
           options.margin *= 1;
@@ -148,8 +149,6 @@
           }
       }
     }
-
-    picker.className = 'clr-' + classNames.join(' clr-');
   }
 
   /**
