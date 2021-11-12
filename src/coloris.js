@@ -14,6 +14,7 @@
   const settings = {
     el: '[data-coloris]',
     parent: null,
+    theme: 'default',
     wrap: true,
     margin: 2,
     format: 'hex',
@@ -47,6 +48,7 @@
     }
 
     let classNames = ['picker'];
+
     for (const key in options) {
       switch (key) {
         case 'el':
@@ -62,12 +64,12 @@
           }
           break;
         case 'theme':
-          if (['large', 'polaroid'].includes(options.theme)) {
+          if (options.theme !== 'default') {
             classNames.push(options.theme);
           }
           break;
-        case 'dark':
-          if (options.dark === true || options.dark === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        case 'themeMode':
+          if (options.themeMode === 'dark' || options.themeMode === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             classNames.push('dark');
           }
           break;
@@ -146,6 +148,7 @@
           }
       }
     }
+
     picker.className = 'clr-' + classNames.join(' clr-');
   }
 
@@ -162,7 +165,7 @@
       let reposition = { left: false, top: false };
       let offset = { x: 0, y: 0 };
       let left = coords.x;
-      let top = scrollY + coords.y + coords.height + settings.margin;
+      let top =  scrollY + coords.y + coords.height + settings.margin;
 
       currentEl = event.target;
       oldColor = currentEl.value;
@@ -684,6 +687,7 @@
     // Render the UI
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
+    picker.className = 'clr-picker';
     picker.innerHTML =
     `<input id="clr-color-value" class="clr-color" type="text" value="" aria-label="${settings.a11y.input}">`+
     `<div id="clr-color-area" class="clr-gradient" role="application" aria-label="${settings.a11y.instruction}">`+
