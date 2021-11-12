@@ -10,7 +10,7 @@ Convert any text input field into a color field.
 * Zero dependencies
 * Very easy to use
 * Customizable
-* Dark theme
+* Themes and dark mode
 * Opacity support
 * Color swatches
 * Multiple color formats
@@ -53,6 +53,7 @@ Coloris({
   // body. but it is possible to append it to a custom parent instead. This is especially useful
   // if the color fields are in a scrollable container and you want color picker' dialog to stay
   // anchored to them. You will need to set the position of the container to relative or absolute.
+  // Note: This should be a scrollable container with enough space to display the picker.
   parent: '.container',
 
   // A custom selector to bind the color picker to. This must point to input fields.
@@ -64,19 +65,25 @@ Coloris({
   // the accessible button (not recommended).
   wrap: true,
 
-  // Available themes: light, dark, large, large-dark, polaroid, polaroid-dark.
+  // Available themes: default, large, polaroid.
   // More themes might be added in the future.
-  theme: 'light',
+  theme: 'default',
+
+  // Set the theme to light or dark mode:
+  // * light: light mode.
+  // * dark: dark mode.
+  // * auto: automatically enables dark mode when the user prefers a dark color scheme.
+  themeMode: 'auto',
 
   // The margin in pixels between the input fields and the color picker's dialog.
   margin: 2,
 
   // Set the preferred color string format:
-  //  * hex: outputs #RRGGBB or #RRGGBBAA (default).
-  //  * rgb: outputs rgb(R, G, B) or rgba(R, G, B, A).
-  //  * hsl: outputs hsl(H, S, L) or hsla(H, S, L, A).
-  //  * auto: guesses the format from the active input field. Defaults to hex if it fails.
-  //  * mixed: outputs #RRGGBB when alpha is 1; otherwise rgba(R, G, B, A).
+  // * hex: outputs #RRGGBB or #RRGGBBAA (default).
+  // * rgb: outputs rgb(R, G, B) or rgba(R, G, B, A).
+  // * hsl: outputs hsl(H, S, L) or hsla(H, S, L, A).
+  // * auto: guesses the format from the active input field. Defaults to hex if it fails.
+  // * mixed: outputs #RRGGBB when alpha is 1; otherwise rgba(R, G, B, A).
   format: 'hex',
 
   // Set to true to enable format toggle buttons in the color picker dialog.
