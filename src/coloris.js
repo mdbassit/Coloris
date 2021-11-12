@@ -14,7 +14,7 @@
   const settings = {
     el: '[data-coloris]',
     parent: null,
-    theme: 'light',
+    theme: 'default',
     wrap: true,
     margin: 2,
     format: 'hex',
@@ -47,6 +47,8 @@
       return;
     }
 
+    let classNames = ['picker'];
+
     for (const key in options) {
       switch (key) {
         case 'el':
@@ -62,7 +64,14 @@
           }
           break;
         case 'theme':
-          picker.className = `clr-picker clr-${options.theme.split('-').join(' clr-')}`;
+          if (options.theme !== 'default') {
+            classNames.push(options.theme);
+          }
+          break;
+        case 'themeMode':
+          if (options.themeMode === 'dark' || options.themeMode === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            classNames.push('dark');
+          }
           break;
         case 'margin':
           options.margin *= 1;
@@ -139,6 +148,8 @@
           }
       }
     }
+
+    picker.className = 'clr-' + classNames.join(' clr-');
   }
 
   /**
