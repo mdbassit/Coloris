@@ -72,7 +72,7 @@ Coloris({
   // More themes might be added in the future.
   theme: 'default',
 
-  // Mode of the theme:
+  // Set the theme to light or dark mode:
   // * light: light mode.
   // * dark: dark mode.
   // * auto: automatically enables dark mode when the user prefers a dark color scheme.
@@ -82,11 +82,11 @@ Coloris({
   margin: 2,
 
   // Set the preferred color string format:
-  //  * hex: outputs #RRGGBB or #RRGGBBAA (default).
-  //  * rgb: outputs rgb(R, G, B) or rgba(R, G, B, A).
-  //  * hsl: outputs hsl(H, S, L) or hsla(H, S, L, A).
-  //  * auto: guesses the format from the active input field. Defaults to hex if it fails.
-  //  * mixed: outputs #RRGGBB when alpha is 1; otherwise rgba(R, G, B, A).
+  // * hex: outputs #RRGGBB or #RRGGBBAA (default).
+  // * rgb: outputs rgb(R, G, B) or rgba(R, G, B, A).
+  // * hsl: outputs hsl(H, S, L) or hsla(H, S, L, A).
+  // * auto: guesses the format from the active input field. Defaults to hex if it fails.
+  // * mixed: outputs #RRGGBB when alpha is 1; otherwise rgba(R, G, B, A).
   format: 'hex',
 
   // Set to true to enable format toggle buttons in the color picker dialog.
