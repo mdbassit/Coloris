@@ -14,7 +14,8 @@
   var settings = {
     el: '[data-coloris]',
     parent: null,
-    theme: 'light',
+    theme: 'default',
+    themeMode: 'light',
     wrap: true,
     margin: 2,
     format: 'hex',
@@ -61,8 +62,17 @@
             settings.parent.appendChild(picker);
           }
           break;
+        case 'themeMode':
+          settings.themeMode = options.themeMode;
+          if (options.themeMode === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            settings.themeMode = 'dark';
+          }
+        // The lack of a break statement is intentional
         case 'theme':
-          picker.className = "clr-picker clr-" + options.theme.split('-').join(' clr-');
+          if (options.theme) {
+            settings.theme = options.theme;
+          }
+          picker.className = "clr-picker clr-" + settings.theme + " clr-" + settings.themeMode;
           break;
         case 'margin':
           options.margin *= 1;
@@ -315,7 +325,7 @@
    */
   function pickColor(color) {
     if (currentEl) {
-      currentEl.value = color !== undefined ? color : colorValue.value;
+      currentEl.value = color || colorValue.value;
       currentEl.dispatchEvent(new Event('input', { bubbles: true }));
     }
   }
@@ -354,7 +364,7 @@
     colorMarker.setAttribute('aria-label', label);
   }
 
-  // 
+  //
   /**
    * Get the pageX and pageY positions of the pointer.
    * @param {object} event The MouseEvent or TouchEvent object.
@@ -502,7 +512,6 @@
 
     chroma = chroma + m;
     x = x + m;
-    m = m;
 
     var index = Math.floor(hueBy60) % 6;
     var red = [chroma, x, m, m, x, chroma][index];
@@ -584,7 +593,7 @@
     // Default to black for invalid color strings
     ctx.fillStyle = '#000';
 
-    // Use canvas to convert the string to a valid color string 
+    // Use canvas to convert the string to a valid color string
     ctx.fillStyle = str;
     match = regex.exec(ctx.fillStyle);
 
