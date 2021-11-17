@@ -70,10 +70,10 @@ Coloris({
   theme: 'default',
 
   // Set the theme to light or dark mode:
-  // * light: light mode.
+  // * light: light mode (default).
   // * dark: dark mode.
   // * auto: automatically enables dark mode when the user prefers a dark color scheme.
-  themeMode: 'auto',
+  themeMode: 'light',
 
   // The margin in pixels between the input fields and the color picker's dialog.
   margin: 2,
