@@ -866,7 +866,7 @@
   /**
    * Call a function only when the DOM is ready.
    * @param {function} fn The function to call.
-   * @param {array} args Arguments to pass to the function.
+   * @param {array} [args] Arguments to pass to the function.
    */
   function DOMReady(fn, args) {
     args = args !== undefined ? args : [];
