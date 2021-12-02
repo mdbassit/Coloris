@@ -22,6 +22,7 @@
     formatToggle : false,
     swatches: [],
     alpha: true,
+    focusInput: true,
     clearButton: {
       show: false,
       label: 'Clear'
@@ -225,7 +226,10 @@
       };
 
       setColorFromStr(oldColor);
-      colorValue.focus({ preventScroll: true });
+
+      if (settings.focusInput) {
+        colorValue.focus({ preventScroll: true });
+      }
     });
 
     // Update the color preview of the input fields that match the selector
@@ -278,7 +282,11 @@
       }
 
       picker.classList.remove('clr-open');
-      currentEl.focus({ preventScroll: true });
+
+      if (settings.focusInput) {
+        currentEl.focus({ preventScroll: true });
+      }
+      
       currentEl = null;
     }
   }
