@@ -97,6 +97,9 @@ Coloris({
   // When disabled, it will strip the alpha value from the existing color value in all formats.
   alpha: true,
 
+  // Focus the color value input when the color picker dialog is opened.
+  focusInput: true,
+
   // Show an optional clear button and set its label
   clearButton: {
     show: true,
