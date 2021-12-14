@@ -94,6 +94,9 @@ Coloris({
   // When disabled, it will strip the alpha value from the existing color value in all formats.
   alpha: true,
 
+  // Focus the color value input when the color picker dialog is opened.
+  focusInput: true,
+
   // Show an optional clear button and set its label
   clearButton: {
     show: true,
@@ -140,8 +143,8 @@ Coloris({
 
 ### Events
 
-An "input" event is triggered on the bound input field whenever a new color is selected.  
-A "change" event is triggered when the color picker is closed and if the color has changed since it was opened.
+An `input` event is triggered on the bound input field whenever a new color is selected.  
+A `change` event is triggered when the color picker is closed and if the color has changed since it was opened.
 
 ### Closing the color picker
 
