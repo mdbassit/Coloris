@@ -66,6 +66,8 @@ Coloris({
   // and a button to open the color picker (for accessibility only). If you wish to keep your
   // fields unaltered, set this to false, in which case you will lose the color thumbnail and
   // the accessible button (not recommended).
+  // Note: This only works if you specify a custom selector to bind the picker (option above),
+  // it doesn't work on the default [data-coloris] attribute selector.
   wrap: true,
 
   // Available themes: default, large, polaroid.
