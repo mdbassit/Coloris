@@ -382,8 +382,7 @@ input.clr-color:focus {
 .clr-dark .clr-alpha,
 .clr-dark .clr-alpha div,
 .clr-dark .clr-swatches button,
-.clr-dark .clr-preview:before,
-.clr-dark.clr-field button {
+.clr-dark .clr-preview:before {
   background-image: repeating-linear-gradient(45deg, #666 25%, transparent 25%, transparent 75%, #888 75%, #888), repeating-linear-gradient(45deg, #888 25%, #444 25%, #444 75%, #888 75%, #888);
 }
 
