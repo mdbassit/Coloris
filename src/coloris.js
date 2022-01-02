@@ -335,7 +335,7 @@
    */
   function pickColor(color) {
     if (currentEl) {
-      currentEl.value = color || colorValue.value;
+      currentEl.value = color !== undefined ? color : colorValue.value;
       currentEl.dispatchEvent(new Event('input', { bubbles: true }));
     }
   }
