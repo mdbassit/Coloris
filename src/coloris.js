@@ -84,9 +84,6 @@
             wrapFields(options.el);
           }
           break;
-        case 'format':
-          settings.format = options.format;
-          break;
         case 'formatToggle':
           getEl('clr-format').style.display = options.formatToggle ? 'block' : 'none';
           if (options.formatToggle) {
