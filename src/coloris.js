@@ -23,6 +23,7 @@
     swatches: [],
     alpha: true,
     focusInput: true,
+    autoClose: false,
     clearButton: {
       show: false,
       label: 'Clear'
@@ -789,6 +790,10 @@
     addListener(picker, 'click', '.clr-swatches button', event => {
       setColorFromStr(event.target.textContent);
       pickColor();
+
+      if (settings.autoClose) {
+        closePicker();
+      }
     });
 
     addListener(document, 'mouseup', event => {
