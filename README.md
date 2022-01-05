@@ -93,7 +93,7 @@ Coloris({
 
   // Set to true to enable format toggle buttons in the color picker dialog.
   // This will also force the format (above) to auto.
-  formatToggle: true,
+  formatToggle: false,
 
   // Enable or disable alpha support.
   // When disabled, it will strip the alpha value from the existing color value in all formats.
