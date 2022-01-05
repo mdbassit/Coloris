@@ -17,10 +17,6 @@
   display: flex;
 }
 
-.clr-picker[data-alpha="false"] .clr-alpha {
-  display: none;
-}
-
 .clr-gradient {
   position: relative;
   width: 100%;
@@ -349,6 +345,22 @@ input.clr-color:focus {
 .clr-keyboard-nav .clr-segmented input:focus + label {
   outline: none;
   box-shadow: 0 0 0 2px #1e90ff, 0 0 2px 2px #fff;
+}
+
+.clr-picker[data-alpha="false"] .clr-alpha {
+  display: none;
+}
+
+.clr-picker[data-minimal="true"] {
+  padding-top: 16px;
+}
+
+.clr-picker[data-minimal="true"] .clr-gradient,
+.clr-picker[data-minimal="true"] .clr-hue,
+.clr-picker[data-minimal="true"] .clr-alpha,
+.clr-picker[data-minimal="true"] .clr-color,
+.clr-picker[data-minimal="true"] .clr-preview {
+  display: none;
 }
 
 /** Dark theme **/

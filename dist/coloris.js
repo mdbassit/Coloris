@@ -21,8 +21,10 @@
     format: 'hex',
     formatToggle: false,
     swatches: [],
+    swatchesOnly: false,
     alpha: true,
     focusInput: true,
+    autoClose: false,
     clearButton: {
       show: false,
       label: 'Clear' },
@@ -84,9 +86,6 @@
             wrapFields(options.el);
           }
           break;
-        case 'format':
-          settings.format = options.format;
-          break;
         case 'formatToggle':
           getEl('clr-format').style.display = options.formatToggle ? 'block' : 'none';
           if (options.formatToggle) {
@@ -104,6 +103,14 @@
               if (swatches.length) {
                 getEl('clr-swatches').innerHTML = "<div>" + swatches.join('') + "</div>";
               }})();
+          }
+          break;
+        case 'swatchesOnly':
+          settings.swatchesOnly = !!options.swatchesOnly;
+          picker.setAttribute('data-minimal', settings.swatchesOnly);
+
+          if (settings.swatchesOnly) {
+            settings.autoClose = true;
           }
           break;
         case 'alpha':
@@ -792,6 +799,10 @@
     addListener(picker, 'click', '.clr-swatches button', function (event) {
       setColorFromStr(event.target.textContent);
       pickColor();
+
+      if (settings.autoClose) {
+        closePicker();
+      }
     });
 
     addListener(document, 'mouseup', function (event) {
