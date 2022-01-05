@@ -21,6 +21,7 @@
     format: 'hex',
     formatToggle : false,
     swatches: [],
+    swatchesOnly: false,
     alpha: true,
     focusInput: true,
     autoClose: false,
@@ -102,6 +103,14 @@
             if (swatches.length) {
               getEl('clr-swatches').innerHTML = `<div>${swatches.join('')}</div>`;
             }
+          }
+          break;
+        case 'swatchesOnly':
+          settings.swatchesOnly = !!options.swatchesOnly;
+          picker.setAttribute('data-minimal', settings.swatchesOnly);
+
+          if (settings.swatchesOnly) {
+            settings.autoClose = true;
           }
           break;
         case 'alpha':

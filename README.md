@@ -99,6 +99,9 @@ Coloris({
   // When disabled, it will strip the alpha value from the existing color value in all formats.
   alpha: true,
 
+  // Set to true to hide all the color picker widgets (spectrum, hue, ...) except the swatches.
+  swatchesOnly: false,
+
   // Focus the color value input when the color picker dialog is opened.
   focusInput: true,
 
