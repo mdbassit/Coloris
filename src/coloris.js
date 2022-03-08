@@ -622,6 +622,9 @@
         a: match[6] * 1
       };
 
+      // Workaround to mitigate a Chromium bug where the alpha value is rounded incorrectly
+      rgba.a = +rgba.a.toFixed(2);
+
     } else {
       match = ctx.fillStyle.replace('#', '').match(/.{2}/g).map(h => parseInt(h, 16));
       rgba = {
