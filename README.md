@@ -48,7 +48,28 @@ That's it. All done!
 
 Thanks to [@melloware](https://github.com/melloware), NPM and TypeScript support is available in a fork of this project. Head over to [@melloware's fork](https://github.com/melloware/coloris-npm) or to their [NPM repo](https://www.npmjs.com/package/@melloware/coloris) for more information.
 
-### Options
+### Customizing the color picker
+
+The color picker can be configured by calling `Coloris()` and passing an options object to it. For example, to activate **dark** mode and disable **alpha** support:
+
+```js
+Coloris({
+  themeMode: 'dark',
+  alpha: false
+});
+````
+
+The new options are applied at runtime and can be updated at any time and as often as needed. For instance, to re-enable alpha support when clicking on a button:
+
+```js
+document.querySelector('#mybutton').addEventListener('click', e => {
+  Coloris({
+    alpha: true
+  });
+});
+````
+
+Here is a list of all the available options:
 
 ```js
 Coloris({
@@ -158,7 +179,7 @@ A `change` event is triggered when the color picker is closed and if the color h
 
 The color picker dialog can be closed by clicking anywhere on the page or by pressing the ESC on the keyboard. The later will also revert the color to its original value.
 
-If you would like to close the dialog programmatically, you can do so by calling the close() method:
+If you would like to close the dialog programmatically, you can do so by calling the `close() method:
 ```js
 // Close the dialog
 Coloris.close();
