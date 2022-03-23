@@ -56,11 +56,13 @@ Coloris({
 });
 ````
 
-The new options are applied at runtime and can be updated at any time and as often as needed. For instance, to re-enable alpha support:
+The new options are applied at runtime and can be updated at any time and as often as needed. For instance, to re-enable alpha support when clicking on a button:
 
 ```js
-Coloris({
-  alpha: true
+document.querySelector('#mybutton').addEventListener('click', e => {
+  Coloris({
+    alpha: true
+  });
 });
 ````
 
