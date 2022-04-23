@@ -169,14 +169,20 @@ Coloris({
 
 ### Events
 
-An `input` event is triggered on the bound input field whenever a new color is selected.  
-A `change` event is triggered when the color picker is closed and if the color has changed since it was opened.
+All events are triggered on the last active input field that is bound to the color picker.
+
+| Event    | Description                                                   |
+| -------- | ------------------------------------------------------------- |
+| `open`   | The color picker is opened                                    |
+| `close`  | The color picker is closed                                    |
+| `input`  | A new color is selected                                       |
+| `change` | The color picker is closed and the selected color has changed |
 
 ### Closing the color picker
 
 The color picker dialog can be closed by clicking anywhere on the page or by pressing the ESC on the keyboard. The later will also revert the color to its original value.
 
-If you would like to close the dialog programmatically, you can do so by calling the `close() method:
+If you would like to close the dialog programmatically, you can do so by calling the `close()` method:
 ```js
 // Close the dialog
 Coloris.close();
