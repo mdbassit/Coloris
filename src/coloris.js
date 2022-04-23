@@ -235,6 +235,9 @@
       if (settings.focusInput) {
         colorValue.focus({ preventScroll: true });
       }
+
+      // Trigger an "open" event
+      currentEl.dispatchEvent(new Event('open', { bubbles: true }));
     });
 
     // Update the color preview of the input fields that match the selector
@@ -286,7 +289,11 @@
         currentEl.dispatchEvent(new Event('change', { bubbles: true }));
       }
 
+      // Hide the picker dialog
       picker.classList.remove('clr-open');
+
+      // Trigger a "close" event
+      currentEl.dispatchEvent(new Event('close', { bubbles: true }));
 
       if (settings.focusInput) {
         currentEl.focus({ preventScroll: true });

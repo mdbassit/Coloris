@@ -172,8 +172,14 @@ Coloris({
 
 ### Events
 
-An `input` event is triggered on the bound input field whenever a new color is selected.  
-A `change` event is triggered when the color picker is closed and if the color has changed since it was opened.
+All events are triggered on the last active input field that is bound to the color picker.
+
+| Event    | Description                                                   |
+| -------- | ------------------------------------------------------------- |
+| `open`   | The color picker is opened                                    |
+| `close`  | The color picker is closed                                    |
+| `input`  | A new color is selected                                       |
+| `change` | The color picker is closed and the selected color has changed |
 
 ### Closing the color picker
 
