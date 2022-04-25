@@ -956,7 +956,8 @@
     const methods = {
       set: configure,
       wrap: wrapFields,
-      close: closePicker
+      close: closePicker,
+      updatePosition: updatePickerPosition
     };
 
     function Coloris(options) {
