@@ -77,7 +77,14 @@
           if (options.theme) {
             settings.theme = options.theme;
           }
+
+          // Set the theme and color scheme
           picker.className = `clr-picker clr-${settings.theme} clr-${settings.themeMode}`;
+
+          // Update the color picker's position if inline mode is in use
+          if (settings.inline) {
+            updatePickerPosition();
+          }
           break;
         case 'margin':
           options.margin *= 1;
