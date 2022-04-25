@@ -372,10 +372,14 @@
    * @param {number} [color] Color value to override the active color.
    */
   function pickColor(color) {
+    color = color !== undefined ? color : colorValue.value;
+
     if (currentEl) {
-      currentEl.value = color !== undefined ? color : colorValue.value;
+      currentEl.value = color;
       currentEl.dispatchEvent(new Event('input', { bubbles: true }));
     }
+
+    document.dispatchEvent(new CustomEvent('coloris:pick', { detail: { color } }));
   }
 
   /**
