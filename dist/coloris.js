@@ -25,6 +25,8 @@
     alpha: true,
     focusInput: true,
     autoClose: false,
+    inline: false,
+    defaultColor: '#000000',
     clearButton: {
       show: false,
       label: 'Clear' },
@@ -75,7 +77,14 @@
           if (options.theme) {
             settings.theme = options.theme;
           }
+
+          // Set the theme and color scheme
           picker.className = "clr-picker clr-" + settings.theme + " clr-" + settings.themeMode;
+
+          // Update the color picker's position if inline mode is in use
+          if (settings.inline) {
+            updatePickerPosition();
+          }
           break;
         case 'margin':
           options.margin *= 1;
@@ -114,6 +123,16 @@
         case 'alpha':
           settings.alpha = !!options.alpha;
           picker.setAttribute('data-alpha', settings.alpha);
+          break;
+        case 'inline':
+          settings.inline = !!options.inline;
+          picker.setAttribute('data-inline', settings.inline);
+
+          if (settings.inline) {
+            var defaultColor = options.defaultColor || settings.defaultColor;
+            updatePickerPosition();
+            setColorFromStr(defaultColor);
+          }
           break;
         case 'clearButton':
           var display = 'none';
@@ -166,21 +185,53 @@
   function bindFields(selector) {
     // Show the color picker on click on the input fields that match the selector
     addListener(document, 'click', selector, function (event) {
-      var parent = settings.parent;
-      var coords = event.target.getBoundingClientRect();
-      var scrollY = window.scrollY;
-      var reposition = { left: false, top: false };
-      var offset = { x: 0, y: 0 };
-      var left = coords.x;
-      var top = scrollY + coords.y + coords.height + settings.margin;
+      // Skip if inline mode is in use
+      if (settings.inline) {
+        return;
+      }
 
       currentEl = event.target;
       oldColor = currentEl.value;
       currentFormat = getColorFormatFromStr(oldColor);
       picker.classList.add('clr-open');
 
-      var pickerWidth = picker.offsetWidth;
-      var pickerHeight = picker.offsetHeight;
+      updatePickerPosition();
+      setColorFromStr(oldColor);
+
+      if (settings.focusInput) {
+        colorValue.focus({ preventScroll: true });
+      }
+
+      // Trigger an "open" event
+      currentEl.dispatchEvent(new Event('open', { bubbles: true }));
+    });
+
+    // Update the color preview of the input fields that match the selector
+    addListener(document, 'input', selector, function (event) {
+      var parent = event.target.parentNode;
+
+      // Only update the preview if the field has been previously wrapped
+      if (parent.classList.contains('clr-field')) {
+        parent.style.color = event.target.value;
+      }
+    });
+  }
+
+  /**
+   * Update the color picker's position and the color gradient's offset
+   */
+  function updatePickerPosition() {
+    var parent = settings.parent;
+    var scrollY = window.scrollY;
+    var pickerWidth = picker.offsetWidth;
+    var pickerHeight = picker.offsetHeight;
+    var reposition = { left: false, top: false };
+    var offset = { x: 0, y: 0 };
+
+    if (!settings.inline) {
+      var coords = currentEl.getBoundingClientRect();
+      var left = coords.x;
+      var top = scrollY + coords.y + coords.height + settings.margin;
 
       // If the color picker is inside a custom container
       // set the position relative to it
@@ -223,32 +274,14 @@
       picker.classList.toggle('clr-top', reposition.top);
       picker.style.left = left + "px";
       picker.style.top = top + "px";
-      colorAreaDims = {
-        width: colorArea.offsetWidth,
-        height: colorArea.offsetHeight,
-        x: picker.offsetLeft + colorArea.offsetLeft + offset.x,
-        y: picker.offsetTop + colorArea.offsetTop + offset.y };
+    }
 
+    colorAreaDims = {
+      width: colorArea.offsetWidth,
+      height: colorArea.offsetHeight,
+      x: picker.offsetLeft + colorArea.offsetLeft + offset.x,
+      y: picker.offsetTop + colorArea.offsetTop + offset.y };
 
-      setColorFromStr(oldColor);
-
-      if (settings.focusInput) {
-        colorValue.focus({ preventScroll: true });
-      }
-
-      // Trigger an "open" event
-      currentEl.dispatchEvent(new Event('open', { bubbles: true }));
-    });
-
-    // Update the color preview of the input fields that match the selector
-    addListener(document, 'input', selector, function (event) {
-      var parent = event.target.parentNode;
-
-      // Only update the preview if the field has been previously wrapped
-      if (parent.classList.contains('clr-field')) {
-        parent.style.color = event.target.value;
-      }
-    });
   }
 
   /**
@@ -276,7 +309,7 @@
    * @param {boolean} [revert] If true, revert the color to the original value.
    */
   function closePicker(revert) {
-    if (currentEl) {
+    if (currentEl && !settings.inline) {
       // Revert the color to the original value if needed
       if (revert && oldColor !== currentEl.value) {
         currentEl.value = oldColor;
@@ -346,10 +379,14 @@
    * @param {number} [color] Color value to override the active color.
    */
   function pickColor(color) {
+    color = color !== undefined ? color : colorValue.value;
+
     if (currentEl) {
-      currentEl.value = color !== undefined ? color : colorValue.value;
+      currentEl.value = color;
       currentEl.dispatchEvent(new Event('input', { bubbles: true }));
     }
+
+    document.dispatchEvent(new CustomEvent('coloris:pick', { detail: { color: color } }));
   }
 
   /**
@@ -919,7 +956,8 @@
     var methods = {
       set: configure,
       wrap: wrapFields,
-      close: closePicker };
+      close: closePicker,
+      updatePosition: updatePickerPosition };
 
 
     function Coloris(options) {
