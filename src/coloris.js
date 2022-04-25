@@ -25,6 +25,8 @@
     alpha: true,
     focusInput: true,
     autoClose: false,
+    inline: false,
+    defaultColor: '#000000',
     clearButton: {
       show: false,
       label: 'Clear'
@@ -115,6 +117,16 @@
           settings.alpha = !!options.alpha;
           picker.setAttribute('data-alpha', settings.alpha);
           break;
+        case 'inline':
+          settings.inline = !!options.inline;
+          picker.setAttribute('data-inline', settings.inline);
+
+          if (settings.inline) {
+            const defaultColor = options.defaultColor || settings.defaultColor
+            updatePickerPosition();
+            setColorFromStr(defaultColor);
+          }
+          break;
         case 'clearButton':
           let display = 'none';
 
@@ -166,6 +178,11 @@
   function bindFields(selector) {
     // Show the color picker on click on the input fields that match the selector
     addListener(document, 'click', selector, event => {
+      // Skip if inline mode is in use
+      if (settings.inline) {
+        return;
+      }
+
       currentEl = event.target;
       oldColor = currentEl.value;
       currentFormat = getColorFormatFromStr(oldColor);
@@ -285,7 +302,7 @@
    * @param {boolean} [revert] If true, revert the color to the original value.
    */
   function closePicker(revert) {
-    if (currentEl) {
+    if (currentEl && !settings.inline) {
       // Revert the color to the original value if needed
       if (revert && oldColor !== currentEl.value) {
         currentEl.value = oldColor;

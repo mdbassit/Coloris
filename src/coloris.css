@@ -13,8 +13,13 @@
   user-select: none;
 }
 
-.clr-picker.clr-open {
+.clr-picker.clr-open,
+.clr-picker[data-inline="true"] {
   display: flex;
+}
+
+.clr-picker[data-inline="true"] {
+  position: relative;
 }
 
 .clr-gradient {
