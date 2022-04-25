@@ -143,7 +143,18 @@ Coloris({
     '#0096c7',
     '#00b4d880',
     'rgba(0,119,182,0.8)'
-  ]
+  ],
+
+  // Set to true to use the color picker as an inline widget. In this mode the color picker is
+  // always visible and positioned statically within its container, which is by default the body
+  // of the document. Use the "parent" option to set a custom container.
+  // Note: In this mode, the best way to get the picked color, is listening to the "coloris:pick"
+  // event and reading the value from the event detail (See example in the Events section). The
+  // other way is to read the value of the input field with the id "clr-color-value".
+  inline: false,
+
+  // In inline mode, this is the default color that is set when the picker is initialized.
+  defaultColor: '#000000'
 });
 ```
 
@@ -177,6 +188,14 @@ All events are triggered on the last active input field that is bound to the col
 | `close`  | The color picker is closed                                    |
 | `input`  | A new color is selected                                       |
 | `change` | The color picker is closed and the selected color has changed |
+
+In addition to the events above, a `coloris:pick` event is triggered on the `document` whenever a new color is picked. Example:
+
+```js
+document.addEventListener('coloris:pick', event => {
+  console.log('New color', event.detail.color);
+});
+```
 
 ### Closing the color picker
 
