@@ -166,21 +166,48 @@
   function bindFields(selector) {
     // Show the color picker on click on the input fields that match the selector
     addListener(document, 'click', selector, event => {
-      const parent = settings.parent;
-      const coords = event.target.getBoundingClientRect();
-      const scrollY = window.scrollY;
-      let reposition = { left: false, top: false };
-      let offset = { x: 0, y: 0 };
-      let left = coords.x;
-      let top = scrollY + coords.y + coords.height + settings.margin;
-
       currentEl = event.target;
       oldColor = currentEl.value;
       currentFormat = getColorFormatFromStr(oldColor);
       picker.classList.add('clr-open');
+      
+      updatePickerPosition();
+      setColorFromStr(oldColor);
 
-      const pickerWidth = picker.offsetWidth;
-      const pickerHeight = picker.offsetHeight;
+      if (settings.focusInput) {
+        colorValue.focus({ preventScroll: true });
+      }
+
+      // Trigger an "open" event
+      currentEl.dispatchEvent(new Event('open', { bubbles: true }));
+    });
+
+    // Update the color preview of the input fields that match the selector
+    addListener(document, 'input', selector, event => {
+      const parent = event.target.parentNode;
+
+      // Only update the preview if the field has been previously wrapped
+      if (parent.classList.contains('clr-field')) {
+        parent.style.color = event.target.value;
+      }
+    });
+  }
+
+  /**
+   * Update the color picker's position and the color gradient's offset
+   */
+  function updatePickerPosition() {
+    const parent = settings.parent;
+    const scrollY = window.scrollY;
+    const pickerWidth = picker.offsetWidth;
+    const pickerHeight = picker.offsetHeight;
+    const reposition = { left: false, top: false };
+    let offset = { x: 0, y: 0 };
+
+    if (!settings.inline) {
+      const coords = currentEl.getBoundingClientRect();
+      let left = coords.x;
+      let top = scrollY + coords.y + coords.height + settings.margin;
 
       // If the color picker is inside a custom container
       // set the position relative to it
@@ -223,32 +250,14 @@
       picker.classList.toggle('clr-top', reposition.top);
       picker.style.left = `${left}px`;
       picker.style.top = `${top}px`;
-      colorAreaDims = {
-        width: colorArea.offsetWidth,
-        height: colorArea.offsetHeight,
-        x: picker.offsetLeft + colorArea.offsetLeft + offset.x,
-        y: picker.offsetTop + colorArea.offsetTop + offset.y
-      };
-
-      setColorFromStr(oldColor);
-
-      if (settings.focusInput) {
-        colorValue.focus({ preventScroll: true });
-      }
-
-      // Trigger an "open" event
-      currentEl.dispatchEvent(new Event('open', { bubbles: true }));
-    });
-
-    // Update the color preview of the input fields that match the selector
-    addListener(document, 'input', selector, event => {
-      const parent = event.target.parentNode;
-
-      // Only update the preview if the field has been previously wrapped
-      if (parent.classList.contains('clr-field')) {
-        parent.style.color = event.target.value;
-      }
-    });
+    }
+    
+    colorAreaDims = {
+      width: colorArea.offsetWidth,
+      height: colorArea.offsetHeight,
+      x: picker.offsetLeft + colorArea.offsetLeft + offset.x,
+      y: picker.offsetTop + colorArea.offsetTop + offset.y
+    };
   }
 
   /**
