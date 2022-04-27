@@ -226,7 +226,17 @@
     const pickerWidth = picker.offsetWidth;
     const pickerHeight = picker.offsetHeight;
     const reposition = { left: false, top: false };
+    let parentStyle, parentMarginTop, parentBorderTop;
     let offset = { x: 0, y: 0 };
+
+    if (parent) {
+      parentStyle = window.getComputedStyle(parent);
+      parentMarginTop = parseFloat(parentStyle.marginTop);
+      parentBorderTop = parseFloat(parentStyle.borderTopWidth);
+
+      offset = parent.getBoundingClientRect();
+      offset.y += parentBorderTop + scrollY;
+    }
 
     if (!settings.inline) {
       const coords = currentEl.getBoundingClientRect();
@@ -236,12 +246,6 @@
       // If the color picker is inside a custom container
       // set the position relative to it
       if (parent) {
-        const style = window.getComputedStyle(parent);
-        const marginTop = parseFloat(style.marginTop);
-        const borderTop = parseFloat(style.borderTopWidth);
-
-        offset = parent.getBoundingClientRect();
-        offset.y += borderTop + scrollY;
         left -= offset.x;
         top -= offset.y;
 
@@ -250,7 +254,7 @@
           reposition.left = true;
         }
 
-        if (top + pickerHeight >  parent.clientHeight - marginTop) {
+        if (top + pickerHeight >  parent.clientHeight - parentMarginTop) {
           top -= coords.height + pickerHeight + settings.margin * 2;
           reposition.top = true;
         }
