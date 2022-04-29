@@ -67,6 +67,15 @@
       border-radius: 5px;
     }
 
+    #inline-picker-iframe {
+      border: none;
+      height: 300px;
+      width: 400px;
+      overflow: hidden;
+    }
+
+
+
     </style>
   </head>
   <body>
@@ -94,9 +103,9 @@
         <input type="text" class="coloris" value="#00a5cc">
       </div>
 
-      <div id="anchor" class="example square" style="position: relative; top: 300px; padding-bottom: 30px;">
-        <p>Inline Colorpicker with anchor.</p>
-      </div>
+      <iframe id="inline-picker-iframe" style="position: relative; top: 300px; padding-bottom: 30px;" src="about:blank">
+
+      </iframe>
     </div>
     <script type="text/javascript" src="coloris.min.js"></script>
     <script type="text/javascript">
@@ -118,12 +127,30 @@
       ]
     });
 
-    Coloris({
-      el: null,
-      parent: '#anchor',
-      inline: true
-    });
-
+    // in order to show the inline picker with the other examples we need to use a iframe as only one instance of Coloris can be created per document
+  var doc = document.getElementById('inline-picker-iframe').contentWindow.document;
+   doc.open();
+   const inlineDoc = `
+    <html>
+    <head>
+      <link rel="stylesheet" type="text/css" href="coloris.min.css">
+      </head>
+    <body style="overflow: hidden; height: 100%">
+      <div id="anchor" class="example square">
+        <p style="color: #444;font-family: 'Lato', sans-serif;">Inline Colorpicker with anchor.</p>
+      </div>
+      <script type="text/javascript" src="coloris.min.js"><\/script>
+      <script>
+        Coloris({
+          el: null,
+          parent: '#anchor',
+          inline: true
+        });
+      <\/script>
+    <\/body>
+    <\/html>`; 
+   doc.write(inlineDoc);
+   doc.close();
     </script>
   </body>
 </html>
