@@ -93,6 +93,10 @@
         <p>The dialog will appear on top of this field for lack of space under it.</p>
         <input type="text" class="coloris" value="#00a5cc">
       </div>
+
+      <div id="anchor" class="example square" style="position: relative; top: 300px; padding-bottom: 30px;">
+        <p>Inline Colorpicker with anchor.</p>
+      </div>
     </div>
     <script type="text/javascript" src="coloris.min.js"></script>
     <script type="text/javascript">
@@ -112,6 +116,12 @@
         '#00b4d8',
         '#48cae4'
       ]
+    });
+
+    Coloris({
+      el: null,
+      parent: '#anchor',
+      inline: true
     });
 
     </script>
