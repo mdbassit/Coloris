@@ -274,14 +274,23 @@
       picker.classList.toggle('clr-top', reposition.top);
       picker.style.left = `${left}px`;
       picker.style.top = `${top}px`;
+      
+      colorAreaDims = {
+        width: colorArea.offsetWidth,
+        height: colorArea.offsetHeight,
+        x: picker.offsetLeft + colorArea.offsetLeft + offset.x,
+        y: picker.offsetTop + colorArea.offsetTop + offset.y
+      };
+    } else {
+      const colorAreaRect = colorArea.getBoundingClientRect();
+
+      colorAreaDims = {
+        width: colorAreaRect.width,
+        height: colorAreaRect.height,
+        x: colorAreaRect.x + scrollX,
+        y: colorAreaRect.y + scrollY
+      };
     }
-    
-    colorAreaDims = {
-      width: colorArea.offsetWidth,
-      height: colorArea.offsetHeight,
-      x: picker.offsetLeft + colorArea.offsetLeft + offset.x,
-      y: picker.offsetTop + colorArea.offsetTop + offset.y
-    };
   }
 
   /**
