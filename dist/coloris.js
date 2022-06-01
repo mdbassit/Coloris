@@ -23,6 +23,7 @@
     swatches: [],
     swatchesOnly: false,
     alpha: true,
+    forceAlpha: false,
     focusInput: true,
     autoClose: false,
     inline: false,
@@ -106,7 +107,7 @@
               var swatches = [];
 
               options.swatches.forEach(function (swatch, i) {
-                swatches.push("<button id=\"clr-swatch-" + i + "\" aria-labelledby=\"clr-swatch-label clr-swatch-" + i + "\" style=\"color: " + swatch + ";\">" + swatch + "</button>");
+                swatches.push("<button type=\"button\" id=\"clr-swatch-" + i + "\" aria-labelledby=\"clr-swatch-label clr-swatch-" + i + "\" style=\"color: " + swatch + ";\">" + swatch + "</button>");
               });
 
               getEl('clr-swatches').innerHTML = swatches.length ? "<div>" + swatches.join('') + "</div>" : '';})();
@@ -130,6 +131,8 @@
 
           if (settings.inline) {
             var defaultColor = options.defaultColor || settings.defaultColor;
+
+            currentFormat = getColorFormatFromStr(defaultColor);
             updatePickerPosition();
             setColorFromStr(defaultColor);
           }
@@ -299,7 +302,7 @@
       if (!parentNode.classList.contains('clr-field')) {
         var wrapper = document.createElement('div');
 
-        wrapper.innerHTML = "<button aria-labelledby=\"clr-open-label\"></button>";
+        wrapper.innerHTML = "<button type=\"button\" aria-labelledby=\"clr-open-label\"></button>";
         parentNode.insertBefore(wrapper, field);
         wrapper.setAttribute('class', 'clr-field');
         wrapper.style.color = field.value;
@@ -707,7 +710,7 @@
       B = '0' + B;
     }
 
-    if (settings.alpha && rgba.a < 1) {
+    if (settings.alpha && (rgba.a < 1 || settings.forceAlpha)) {
       var alpha = rgba.a * 255 | 0;
       A = alpha.toString(16);
 
@@ -725,7 +728,7 @@
    * @return {string} CSS color string.
    */
   function RGBAToStr(rgba) {
-    if (!settings.alpha || rgba.a === 1) {
+    if (!settings.alpha || rgba.a === 1 && !settings.forceAlpha) {
       return "rgb(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ")";
     } else {
       return "rgba(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ", " + rgba.a + ")";
@@ -738,7 +741,7 @@
    * @return {string} CSS color string.
    */
   function HSLAToStr(hsla) {
-    if (!settings.alpha || hsla.a === 1) {
+    if (!settings.alpha || hsla.a === 1 && !settings.forceAlpha) {
       return "hsl(" + hsla.h + ", " + hsla.s + "%, " + hsla.l + "%)";
     } else {
       return "hsla(" + hsla.h + ", " + hsla.s + "%, " + hsla.l + "%, " + hsla.a + ")";
@@ -779,8 +782,8 @@
     '<span></span>' +
     '</fieldset>' +
     '</div>' +
-    '<div id="clr-swatches" class="clr-swatches"></div>' + ("<button id=\"clr-clear\" class=\"clr-clear\">" +
-    settings.clearButton.label + "</button>") + ("<button id=\"clr-color-preview\" class=\"clr-preview\" aria-label=\"" +
+    '<div id="clr-swatches" class="clr-swatches"></div>' + ("<button type=\"button\" id=\"clr-clear\" class=\"clr-clear\">" +
+    settings.clearButton.label + "</button>") + ("<button type=\"button\" id=\"clr-color-preview\" class=\"clr-preview\" aria-label=\"" +
     settings.a11y.close + "\"></button>") + ("<span id=\"clr-open-label\" hidden>" +
     settings.a11y.open + "</span>") + ("<span id=\"clr-swatch-label\" hidden>" +
     settings.a11y.swatch + "</span>");
