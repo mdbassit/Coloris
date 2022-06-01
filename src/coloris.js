@@ -32,6 +32,7 @@
       show: false,
       label: 'Clear'
     },
+	selectInput: false,
     a11y: {
       open: 'Open color picker',
       close: 'Close color picker',
@@ -204,6 +205,10 @@
       if (settings.focusInput) {
         colorValue.focus({ preventScroll: true });
       }
+	  
+	  if (settings.selectInput) {
+		colorValue.select();
+	  }
 
       // Trigger an "open" event
       currentEl.dispatchEvent(new Event('open', { bubbles: true }));
