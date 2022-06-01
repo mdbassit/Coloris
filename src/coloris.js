@@ -129,7 +129,9 @@
           picker.setAttribute('data-inline', settings.inline);
 
           if (settings.inline) {
-            const defaultColor = options.defaultColor || settings.defaultColor
+            const defaultColor = options.defaultColor || settings.defaultColor;
+            
+            currentFormat = getColorFormatFromStr(defaultColor);
             updatePickerPosition();
             setColorFromStr(defaultColor);
           }
