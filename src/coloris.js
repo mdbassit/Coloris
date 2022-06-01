@@ -23,6 +23,7 @@
     swatches: [],
     swatchesOnly: false,
     alpha: true,
+    forceAlpha: false,
     focusInput: true,
     autoClose: false,
     inline: false,
@@ -709,7 +710,7 @@
       B = '0' + B;
     }
 
-    if (settings.alpha && rgba.a < 1) {
+    if (settings.alpha && (rgba.a < 1 || settings.forceAlpha)) {
       const alpha = rgba.a * 255 | 0;
       A = alpha.toString(16);
 
@@ -727,7 +728,7 @@
    * @return {string} CSS color string.
    */
   function RGBAToStr(rgba) {
-    if (!settings.alpha || rgba.a === 1) {
+    if (!settings.alpha || (rgba.a === 1 && !settings.forceAlpha)) {
       return `rgb(${rgba.r}, ${rgba.g}, ${rgba.b})`;
     } else {
       return `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
@@ -740,7 +741,7 @@
    * @return {string} CSS color string.
    */
   function HSLAToStr(hsla) {
-    if (!settings.alpha || hsla.a === 1) {
+    if (!settings.alpha || (hsla.a === 1 && !settings.forceAlpha)) {
       return `hsl(${hsla.h}, ${hsla.s}%, ${hsla.l}%)`;
     } else {
       return `hsla(${hsla.h}, ${hsla.s}%, ${hsla.l}%, ${hsla.a})`;
