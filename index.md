@@ -117,6 +117,9 @@ Coloris({
   // When disabled, it will strip the alpha value from the existing color value in all formats.
   alpha: true,
 
+  // Set to true to always include the alpha value in the color value even if the opacity is 100%.
+  forceAlpha: false,
+
   // Set to true to hide all the color picker widgets (spectrum, hue, ...) except the swatches.
   swatchesOnly: false,
 
