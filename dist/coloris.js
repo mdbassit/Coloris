@@ -25,6 +25,7 @@
     alpha: true,
     forceAlpha: false,
     focusInput: true,
+    selectInput: false,
     autoClose: false,
     inline: false,
     defaultColor: '#000000',
@@ -201,8 +202,12 @@
       updatePickerPosition();
       setColorFromStr(oldColor);
 
-      if (settings.focusInput) {
+      if (settings.focusInput || settings.selectInput) {
         colorValue.focus({ preventScroll: true });
+      }
+
+      if (settings.selectInput) {
+        colorValue.select();
       }
 
       // Trigger an "open" event
