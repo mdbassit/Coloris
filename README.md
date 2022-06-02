@@ -129,6 +129,9 @@ Coloris({
   // Focus the color value input when the color picker dialog is opened.
   focusInput: true,
 
+  // Select and focus the color value input when the color picker dialog is opened.
+  selectInput: false,
+
   // Show an optional clear button and set its label
   clearButton: {
     show: true,
