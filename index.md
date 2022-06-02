@@ -1,3 +1,4 @@
+
 ![Coloris in light, dark and polaroid themes](https://raw.githubusercontent.com/mdbassit/Coloris/gh-pages/images/coloris-light-dark-polaroid.jpg)
 
 A lightweight and elegant JavaScript color picker written in vanilla ES6.  
@@ -125,6 +126,9 @@ Coloris({
 
   // Focus the color value input when the color picker dialog is opened.
   focusInput: true,
+
+  // Select and focus the color value input when the color picker dialog is opened.
+  selectInput: false,
 
   // Show an optional clear button and set its label
   clearButton: {
