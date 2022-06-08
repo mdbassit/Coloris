@@ -195,7 +195,7 @@
       }
 
       currentEl = event.target;
-      oldColor = currentEl.value;
+      oldColor = currentEl.getAttribute("value");
       currentFormat = getColorFormatFromStr(oldColor);
       picker.classList.add('clr-open');
       
