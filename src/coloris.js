@@ -310,7 +310,7 @@
         wrapper.innerHTML = `<button type="button" aria-labelledby="clr-open-label"></button>`;
         parentNode.insertBefore(wrapper, field);
         wrapper.setAttribute('class', 'clr-field');
-        wrapper.style.color = field.value;
+        wrapper.style.color = field.getAttribute("value");
         wrapper.appendChild(field);
       }
     });
