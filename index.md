@@ -1,4 +1,3 @@
-
 ![Coloris in light, dark and polaroid themes](https://raw.githubusercontent.com/mdbassit/Coloris/gh-pages/images/coloris-light-dark-polaroid.jpg)
 
 A lightweight and elegant JavaScript color picker written in vanilla ES6.  
@@ -202,6 +201,14 @@ In addition to the events above, a `coloris:pick` event is triggered on the `doc
 document.addEventListener('coloris:pick', event => {
   console.log('New color', event.detail.color);
 });
+```
+
+### Manually updating the thumbnail
+
+The color thumbnail is updated when an `input` event is triggered on the adjacent input field. If you programmatically update the value of the input field, you may need to trigger the event manually using the following code:
+
+```js
+document.querySelector('#color-field').dispatchEvent(new Event('input', { bubbles: true }));
 ```
 
 ### Closing the color picker
