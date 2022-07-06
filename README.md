@@ -206,6 +206,14 @@ document.addEventListener('coloris:pick', event => {
 });
 ```
 
+### Manually updating the thumbnail
+
+The color thumbnail is updated when an `input` event is triggered on the adjacent input field. If you programmatically update the value of the input field, you may need to trigger the event manually using the following code:
+
+```js
+document.querySelector('#color-field').dispatchEvent(new Event('input', { bubbles: true }));
+```
+
 ### Closing the color picker
 
 The color picker dialog can be closed by clicking anywhere on the page or by pressing the ESC on the keyboard. The later will also revert the color to its original value.
