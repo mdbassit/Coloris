@@ -43,6 +43,8 @@
     }
   };
 
+  window.settings = settings;
+
   /**
    * Configure the color picker.
    * @param {object} options Configuration options.
@@ -190,6 +192,8 @@
         return;
       }
 
+      attachVirtualInstance(event.target);
+
       currentEl = event.target;
       oldColor = currentEl.value;
       currentFormat = getColorFormatFromStr(oldColor);
@@ -332,6 +336,8 @@
 
       // Hide the picker dialog
       picker.classList.remove('clr-open');
+
+      resetVirtualInstance();
 
       // Trigger a "close" event
       currentEl.dispatchEvent(new Event('close', { bubbles: true }));
