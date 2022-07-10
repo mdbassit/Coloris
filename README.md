@@ -133,10 +133,10 @@ Coloris({
   selectInput: false,
 
   // Show an optional clear button and set its label
-  clearButton: {
-    show: true,
-    label: 'Clear'
-  },
+  clearButton: true,
+
+  // Set the label of the clear button
+  clearLabel: 'Clear',
 
   // An array of the desired color swatches to display. If omitted or the array is empty,
   // the color swatches will be disabled.
