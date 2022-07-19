@@ -79,15 +79,15 @@
       </div>
       <div class="example square">
         <p>Rounded square thumbnail</p>
-        <input type="text" class="coloris" value="rgb(255, 0, 0)">
+        <input type="text" class="coloris instance1" value="rgb(255, 0, 0)">
       </div>
       <div class="example circle">
         <p>Circular thumbnail</p>
-        <input type="text" class="coloris" value="#cc458faa">
+        <input type="text" class="coloris instance2" value="#cc458faa">
       </div>
       <div class="example full">
         <p>Full size thumbnail</p>
-        <input type="text" class="coloris" value="#ffcc00">
+        <input type="text" class="coloris instance3" value="#ffcc00">
       </div>
       <div class="example square" style="position: relative; top: 300px; padding-bottom: 30px;">
         <p>The dialog will appear on top of this field for lack of space under it.</p>
@@ -96,6 +96,8 @@
     </div>
     <script type="text/javascript" src="coloris.min.js"></script>
     <script type="text/javascript">
+
+    /** Default configuration **/
 
     Coloris({
       el: '.coloris',
@@ -112,6 +114,28 @@
         '#00b4d8',
         '#48cae4'
       ]
+    });
+
+    /** Instances **/
+
+    Coloris.setInstance('.instance1', {
+      themeMode: 'dark',
+      formatToggle: true,
+      swatches: [
+        '#067bc2',
+        '#84bcda',
+        '#80e377',
+        '#ecc30b',
+        '#f37748',
+        '#d56062'
+      ]
+    });
+
+    Coloris.setInstance('.instance2', { theme: 'polaroid' });
+
+    Coloris.setInstance('.instance3', {
+      theme: 'polaroid',
+      swatchesOnly: true
     });
 
     </script>
