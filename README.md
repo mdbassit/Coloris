@@ -187,6 +187,66 @@ Coloris({
 });
 ```
 
+### Simulating multiple instances
+
+Although there is only one physical instance of the color picker in the document, it is possible to simulate multiple instances, each with its own appearance and behavior, by updating the configuration at runtime. Here is an example of how to do it by manually setting configuration options in response to click events:
+
+```js
+// Regular color fields use the default light theme
+document.querySelectorAll('.color-fields').forEach(input => {
+  input.addEventListener('click', e => {
+    Coloris({
+      theme: 'default',
+      themeMode: 'light',
+    });
+  });
+});
+
+// But the special color fields use the polaroid dark theme
+document.querySelectorAll('.special-color-fields').forEach(input => {
+  input.addEventListener('click', e => {
+    Coloris({
+      theme: 'polaroid',
+      themeMode: 'dark',
+    });
+  });
+});
+```
+
+This works well and is quite versatile, but it can get a little hard to keep track of each change every "instance" makes and revert them to the default values.
+
+So as of version `0.15.0`, there is a new way to automatically manage virtual instances. This works by assigning configuration overrides to a CSS selector representing one or more color fields. Here is an example:
+
+```js
+// Color fields that have the class "instance1" have a format toggle,
+// no alpha slider, a dark theme and custom swatches
+Coloris.setInstance('.instance1', {
+  theme: 'polaroid',
+  themeMode: 'dark',
+  alpha: false,
+  formatToggle: true,
+  swatches: [
+    '#264653',
+    '#2a9d8f',
+    '#e9c46a'
+  ]
+});
+
+// Fields matching the class "instance2" show color swatches only
+Coloris.setInstance('.instance2', {
+  swatchesOnly: true,
+  swatches: [
+    '#264653',
+    '#2a9d8f',
+    '#e9c46a'
+  ]
+});
+```
+
+Any options that haven't been explicitly set by an instance will inherit the global values. So any common options should be set globally using the method described in the "Customizing the color picker" section above.
+
+**N.B:** There is only one **true** instance of the color picker, so it is not possible to show multiple instances at same time.
+
 ### Events
 
 All events are triggered on the last active input field that is bound to the color picker.
