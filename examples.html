@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Coloris examples</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@v0.15.0/dist/coloris.min.css">
     <style type="text/css">
     @import url(https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap);
 
@@ -94,8 +94,10 @@
         <input type="text" class="coloris" value="#00a5cc">
       </div>
     </div>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@v0.15.0/dist/coloris.min.js"></script>
     <script type="text/javascript">
+
+    /** Default configuration **/
 
     Coloris({
       el: '.coloris',
@@ -110,8 +112,30 @@
         '#0077b6',
         '#0096c7',
         '#00b4d8',
-        '#48cae4',
+        '#48cae4'
       ]
+    });
+
+    /** Instances **/
+
+    Coloris.setInstance('.instance1', {
+      themeMode: 'dark',
+      formatToggle: true,
+      swatches: [
+        '#067bc2',
+        '#84bcda',
+        '#80e377',
+        '#ecc30b',
+        '#f37748',
+        '#d56062'
+      ]
+    });
+
+    Coloris.setInstance('.instance2', { theme: 'polaroid' });
+
+    Coloris.setInstance('.instance3', {
+      theme: 'polaroid',
+      swatchesOnly: true
     });
 
     </script>
