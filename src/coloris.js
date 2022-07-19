@@ -43,6 +43,12 @@
     }
   };
 
+  // Virtual instances cache
+  const instances = {};
+  let currentInstanceId = '';
+  let defaultInstance = {};
+  let hasInstance = false;
+
   /**
    * Configure the color picker.
    * @param {object} options Configuration options.
@@ -189,6 +195,78 @@
   }
 
   /**
+   * Add or update a virtual instance.
+   * @param {String} selector The CSS selector of the elements to which the instance is attached.
+   * @param {Object} options Per-instance options to apply.
+   */
+  function setVirtualInstance(selector, options) {
+    if (typeof selector === 'string' && typeof options === 'object') {
+      instances[selector] = options;
+      hasInstance = true;
+    }
+  }
+
+  /**
+   * Remove a virtual instance.
+   * @param {String} selector The CSS selector of the elements to which the instance is attached.
+   */
+  function removeVirtualInstance(selector) {
+    delete instances[selector];
+
+    if (Object.keys(instances).length === 0) {
+      hasInstance = false;
+
+      if (selector === currentInstanceId) {
+        resetVirtualInstance();
+      }
+    }
+  }
+
+  /**
+   * Attach a virtual instance to an element if it matches a selector.
+   * @param {Object} element Target element that will receive a virtual instance if applicable.
+   */
+  function attachVirtualInstance(element) {
+    if (hasInstance) {
+      // These options can only be set globally, not per instance
+      const unsupportedOptions = ['el', 'wrap', 'inline', 'defaultColor', 'a11y'];
+
+      for (let selector in instances) {
+        const options = instances[selector];
+
+        // If the element matches an instance's CSS selector
+        if (element.matches(selector)) {
+          currentInstanceId = selector;
+          defaultInstance = {};
+
+          // Delete unsupported options
+          unsupportedOptions.forEach(option => delete options[option]);
+
+          // Back up the default options so we can restore them later
+          for (let option in options) {
+            defaultInstance[option] = Array.isArray(settings[option]) ? settings[option].slice() : settings[option];
+          }
+
+          // Set the instance's options
+          configure(options);
+          break;
+        }
+      }
+    }
+  }
+
+  /**
+   * Revert any per-instance options that were previously applied.
+   */
+  function resetVirtualInstance() {
+    if (Object.keys(defaultInstance).length > 0) {
+      configure(defaultInstance);
+      currentInstanceId = '';
+      defaultInstance = {};
+    }
+  }
+
+  /**
    * Bind the color picker to input fields that match the selector.
    * @param {string} selector One or more selectors pointing to input fields.
    */
@@ -199,6 +277,9 @@
       if (settings.inline) {
         return;
       }
+
+      // Apply any per-instance options first
+      attachVirtualInstance(event.target);
 
       currentEl = event.target;
       oldColor = currentEl.value;
@@ -342,6 +423,11 @@
 
       // Hide the picker dialog
       picker.classList.remove('clr-open');
+
+      // Reset any previously set per-instance options
+      if (hasInstance) {
+        resetVirtualInstance();
+      }
 
       // Trigger a "close" event
       currentEl.dispatchEvent(new Event('close', { bubbles: true }));
@@ -891,6 +977,12 @@
     });
 
     addListener(document, 'click', '.clr-field button', event => {
+      // Reset any previously set per-instance options
+      if (hasInstance) {
+        resetVirtualInstance();
+      }
+
+      // Open the color picker
       event.target.nextElementSibling.dispatchEvent(new Event('click', { bubbles: true }));
     });
 
@@ -976,6 +1068,8 @@
       set: configure,
       wrap: wrapFields,
       close: closePicker,
+      setInstance: setVirtualInstance,
+      removeInstance: removeVirtualInstance,
       updatePosition: updatePickerPosition
     };
 
