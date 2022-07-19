@@ -57,7 +57,7 @@ Coloris({
   themeMode: 'dark',
   alpha: false
 });
-````
+```
 
 The new options are applied at runtime and can be updated at any time and as often as needed. For instance, to re-enable alpha support when clicking on a button:
 
@@ -67,7 +67,7 @@ document.querySelector('#mybutton').addEventListener('click', e => {
     alpha: true
   });
 });
-````
+```
 
 Here is a list of all the available options:
 
@@ -132,11 +132,11 @@ Coloris({
   // Select and focus the color value input when the color picker dialog is opened.
   selectInput: false,
 
-  // Show an optional clear button and set its label
-  clearButton: {
-    show: true,
-    label: 'Clear'
-  },
+  // Show an optional clear button
+  clearButton: true,
+
+  // Set the label of the clear button
+  clearLabel: 'Clear',
 
   // An array of the desired color swatches to display. If omitted or the array is empty,
   // the color swatches will be disabled.

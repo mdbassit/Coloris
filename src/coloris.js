@@ -7,13 +7,13 @@
 ((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
-  let picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
+  let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
       hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor;
 
   // Default settings
   const settings = {
     el: '[data-coloris]',
-    parent: null,
+    parent: 'body',
     theme: 'default',
     themeMode: 'light',
     wrap: true,
@@ -28,10 +28,8 @@
     selectInput: false,
     inline: false,
     defaultColor: '#000000',
-    clearButton: {
-      show: false,
-      label: 'Clear'
-    },
+    clearButton: false,
+    clearLabel: 'Clear',
     a11y: {
       open: 'Open color picker',
       close: 'Close color picker',
@@ -63,9 +61,15 @@
           }
           break;
         case 'parent':
-          settings.parent = document.querySelector(options.parent);
-          if (settings.parent) {
-            settings.parent.appendChild(picker);
+          container = document.querySelector(options.parent);
+          if (container) {
+            container.appendChild(picker);
+            settings.parent = options.parent;
+
+            // document.body is special
+            if (container === document.body) {
+              container = null;
+            }
           }
           break;
         case 'themeMode':
@@ -97,8 +101,9 @@
           }
           break;
         case 'formatToggle':
-          getEl('clr-format').style.display = options.formatToggle ? 'block' : 'none';
-          if (options.formatToggle) {
+          settings.formatToggle = !!options.formatToggle;
+          getEl('clr-format').style.display = settings.formatToggle ? 'block' : 'none';
+          if (settings.formatToggle) {
             settings.format = 'auto';
           }
           break;
@@ -111,6 +116,7 @@
             });
 
             getEl('clr-swatches').innerHTML = swatches.length ? `<div>${swatches.join('')}</div>` : '';
+            settings.swatches = options.swatches.slice();
           }
           break;
         case 'swatchesOnly':
@@ -134,17 +140,22 @@
           }
           break;
         case 'clearButton':
-          let display = 'none';
+          // Backward compatibility
+          if (typeof options.clearButton === 'object') {
+            if (options.clearButton.label) {
+              settings.clearLabel = options.clearButton.label;
+              clearButton.innerHTML = settings.clearLabel;
+            }
 
-          if (options.clearButton.show) {
-            display = 'block';
+            options.clearButton = options.clearButton.show;
           }
 
-          if (options.clearButton.label) {
-            clearButton.innerHTML = options.clearButton.label;
-          }
-
-          clearButton.style.display = display;
+          settings.clearButton = !!options.clearButton;
+          clearButton.style.display = settings.clearButton ? 'block' : 'none';
+          break;
+        case 'clearLabel':
+          settings.clearLabel = options.clearLabel;
+          clearButton.innerHTML = settings.clearLabel;
           break;
         case 'a11y':
           const labels = options.a11y;
@@ -224,7 +235,7 @@
    * Update the color picker's position and the color gradient's offset
    */
   function updatePickerPosition() {
-    const parent = settings.parent;
+    const parent = container;
     const scrollY = window.scrollY;
     const pickerWidth = picker.offsetWidth;
     const pickerHeight = picker.offsetHeight;
@@ -452,8 +463,8 @@
     let x = pointer.pageX - colorAreaDims.x;
     let y = pointer.pageY - colorAreaDims.y;
 
-    if (settings.parent) {
-      y += settings.parent.scrollTop;
+    if (container) {
+      y += container.scrollTop;
     }
 
     x = (x < 0) ? 0 : (x > colorAreaDims.width) ? colorAreaDims.width : x;
@@ -753,6 +764,7 @@
    */
   function init() {
     // Render the UI
+    container = null;
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
     picker.className = 'clr-picker';
@@ -783,7 +795,7 @@
       '</fieldset>'+
     '</div>'+
     '<div id="clr-swatches" class="clr-swatches"></div>'+
-    `<button type="button" id="clr-clear" class="clr-clear">${settings.clearButton.label}</button>`+
+    `<button type="button" id="clr-clear" class="clr-clear">${settings.clearLabel}</button>`+
     `<button type="button" id="clr-color-preview" class="clr-preview" aria-label="${settings.a11y.close}"></button>`+
     `<span id="clr-open-label" hidden>${settings.a11y.open}</span>`+
     `<span id="clr-swatch-label" hidden>${settings.a11y.swatch}</span>`;
