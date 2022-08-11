@@ -350,8 +350,10 @@
         }
 
         if (top + pickerHeight > parent.clientHeight - parentMarginTop) {
-          top -= coords.height + pickerHeight + settings.margin * 2;
-          reposition.top = true;
+          if (pickerHeight + settings.margin <= coords.top - (offset.y - scrollY)) {
+            top -= coords.height + pickerHeight + settings.margin * 2;
+            reposition.top = true;
+          }
         }
 
         top += parent.scrollTop;
@@ -364,8 +366,10 @@
         }
 
         if (top + pickerHeight - scrollY > document.documentElement.clientHeight) {
-          top = scrollY + coords.y - pickerHeight - settings.margin;
-          reposition.top = true;
+          if (pickerHeight + settings.margin <= coords.top) {
+            top = scrollY + coords.y - pickerHeight - settings.margin;
+            reposition.top = true;
+          }
         }
       }
 

@@ -507,3 +507,25 @@ input.clr-color:focus {
   width: 22px;
   height: 22px;
 }
+
+/** Pill (horizontal) theme **/
+
+.clr-picker.clr-pill {
+  width: 380px;
+  padding-left: 180px;
+  box-sizing: border-box;
+}
+
+.clr-pill .clr-gradient {
+  position: absolute;
+  width: 180px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  margin-bottom: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.clr-pill .clr-hue {
+  margin-top: 20px;
+}
