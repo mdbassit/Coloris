@@ -91,7 +91,7 @@ Coloris({
   // it doesn't work on the default [data-coloris] attribute selector.
   wrap: true,
 
-  // Available themes: default, large, polaroid.
+  // Available themes: default, large, polaroid, pill (horizontal).
   // More themes might be added in the future.
   theme: 'default',
 
