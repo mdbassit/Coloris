@@ -413,17 +413,27 @@
    */
   function closePicker(revert) {
     if (currentEl && !settings.inline) {
+      var prevEl = currentEl;
+
       // Revert the color to the original value if needed
-      if (revert && oldColor !== currentEl.value) {
-        currentEl.value = oldColor;
+      if (revert) {
+        // This will prevent the "change" event on the colorValue input to execute its handler
+        currentEl = null;
 
-        // Trigger an "input" event to force update the thumbnail next to the input field
-        currentEl.dispatchEvent(new Event('input', { bubbles: true }));
+        if (oldColor !== prevEl.value) {
+          prevEl.value = oldColor;
+
+          // Trigger an "input" event to force update the thumbnail next to the input field
+          prevEl.dispatchEvent(new Event('input', { bubbles: true }));
+        }
       }
 
-      if (oldColor !== currentEl.value) {
-        currentEl.dispatchEvent(new Event('change', { bubbles: true }));
-      }
+      // Trigger a "change" event if needed
+      setTimeout(function () {// Add this to the end of the event loop
+        if (oldColor !== prevEl.value) {
+          prevEl.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
 
       // Hide the picker dialog
       picker.classList.remove('clr-open');
@@ -434,12 +444,13 @@
       }
 
       // Trigger a "close" event
-      currentEl.dispatchEvent(new Event('close', { bubbles: true }));
+      prevEl.dispatchEvent(new Event('close', { bubbles: true }));
 
       if (settings.focusInput) {
-        currentEl.focus({ preventScroll: true });
+        prevEl.focus({ preventScroll: true });
       }
 
+      // This essentially marks the picker as closed
       currentEl = null;
     }
   }
@@ -930,8 +941,10 @@
     });
 
     addListener(colorValue, 'change', function (event) {
-      setColorFromStr(colorValue.value);
-      pickColor();
+      if (currentEl) {
+        setColorFromStr(colorValue.value);
+        pickColor();
+      }
     });
 
     addListener(clearButton, 'click', function (event) {
