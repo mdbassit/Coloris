@@ -413,6 +413,8 @@
    */
   function closePicker(revert) {
     if (currentEl && !settings.inline) {
+      const prevEl = currentEl;
+
       // Revert the color to the original value if needed
       if (revert && oldColor !== currentEl.value) {
         currentEl.value = oldColor;
@@ -421,9 +423,12 @@
         currentEl.dispatchEvent(new Event('input', { bubbles: true }));
       }
 
-      if (oldColor !== currentEl.value) {
-        currentEl.dispatchEvent(new Event('change', { bubbles: true }));
-      }
+      // Trigger a "change" event if needed
+      setTimeout(() => { // Add this to the end of the event loop
+        if (oldColor !== prevEl.value) {
+          prevEl.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
 
       // Hide the picker dialog
       picker.classList.remove('clr-open');
