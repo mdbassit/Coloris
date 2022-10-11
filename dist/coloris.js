@@ -941,7 +941,7 @@
     });
 
     addListener(colorValue, 'change', function (event) {
-      if (currentEl) {
+      if (currentEl || settings.inline) {
         setColorFromStr(colorValue.value);
         pickColor();
       }
