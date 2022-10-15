@@ -165,7 +165,11 @@
 
 .clr-segmented label {
   flex-grow: 1;
+  margin: 0;
   padding: 4px 0;
+  font-size: inherit;
+  font-weight: normal;
+  line-height: initial;
   text-align: center;
   cursor: pointer;
 }
@@ -201,6 +205,7 @@
   width: 20px;
   height: 20px;
   margin: 0 4px 6px 4px;
+  padding: 0;
   border: 0;
   border-radius: 50%;
   color: inherit;
@@ -265,6 +270,7 @@ input.clr-color:focus {
   width: 32px;
   height: 32px;
   margin: 15px 0 20px 20px;
+  padding: 0;
   border: 0;
   border-radius: 50%;
   overflow: hidden;
@@ -302,6 +308,10 @@ input.clr-color:focus {
   color: transparent;
 }
 
+.clr-field input {
+  margin: 0;
+}
+
 .clr-field button {
   position: absolute;
   width: 30px;
@@ -309,6 +319,8 @@ input.clr-color:focus {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+  margin: 0;
+  padding: 0;
   border: 0;
   color: inherit;
   text-indent: -1000px;
