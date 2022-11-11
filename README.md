@@ -166,6 +166,14 @@ Coloris({
   defaultColor: '#000000'
 });
 ```
+You might notice that there are no options for thumbnail style. This is done with normal css. For example to get the color to cover the whole thumbnail, use the following css:
+```css
+.clr-field button {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+```
 
 ### Accessibility and internationalization
 
