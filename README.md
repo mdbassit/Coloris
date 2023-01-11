@@ -312,6 +312,12 @@ Alternatively, you can start a gulp watch task to automatically build when the s
 npm run start
 ```
 
+## Contributing
+
+If you find a bug or would like to implement a missing feature, please create an issue first before submitting a pull request (PR).
+
+When submitting a PR, please do not include the changes to the `dist` directory in your commits.
+
 ## License
 
 Copyright (c) 2021 Momo Bassit.  
