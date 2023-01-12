@@ -568,16 +568,7 @@
       y += container.scrollTop;
     }
 
-    x = (x < 0) ? 0 : (x > colorAreaDims.width) ? colorAreaDims.width : x;
-    y = (y < 0) ? 0 : (y > colorAreaDims.height) ? colorAreaDims.height : y;
-
-    colorMarker.style.left = `${x}px`;
-    colorMarker.style.top = `${y}px`;
-
-    setColorAtPosition(x, y);
-
-    // Make sure the marker is focused
-    colorMarker.focus();
+    setMarkerPosition(x, y);
 
     // Prevent scrolling while dragging the marker
     event.preventDefault();
@@ -587,19 +578,34 @@
   /**
    * Move the color marker when the arrow keys are pressed.
    * @param {number} offsetX The horizontal amount to move.
-   * * @param {number} offsetY The vertical amount to move.
+   * @param {number} offsetY The vertical amount to move.
    */
   function moveMarkerOnKeydown(offsetX, offsetY) {
     let x = colorMarker.style.left.replace('px', '') * 1 + offsetX;
     let y = colorMarker.style.top.replace('px', '') * 1 + offsetY;
 
+    setMarkerPosition(x, y);
+  }
+
+  /**
+   * Set the color marker's position.
+   * @param {number} x Left position.
+   * @param {number} y Top position.
+   */
+  function setMarkerPosition(x, y) {
+    // Make sure the marker doesn't go out of bounds
     x = (x < 0) ? 0 : (x > colorAreaDims.width) ? colorAreaDims.width : x;
     y = (y < 0) ? 0 : (y > colorAreaDims.height) ? colorAreaDims.height : y;
 
+    // Set the position
     colorMarker.style.left = `${x}px`;
     colorMarker.style.top = `${y}px`;
 
+    // Update the color
     setColorAtPosition(x, y);
+
+    // Make sure the marker is focused
+    colorMarker.focus();
   }
 
   /**
