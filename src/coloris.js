@@ -587,8 +587,11 @@
    * * @param {number} offsetY The vertical amount to move.
    */
   function moveMarkerOnKeydown(offsetX, offsetY) {
-    const x = colorMarker.style.left.replace('px', '') * 1 + offsetX;
-    const y =  colorMarker.style.top.replace('px', '') * 1 + offsetY;
+    let x = colorMarker.style.left.replace('px', '') * 1 + offsetX;
+    let y = colorMarker.style.top.replace('px', '') * 1 + offsetY;
+
+    x = (x < 0) ? 0 : (x > colorAreaDims.width) ? colorAreaDims.width : x;
+    y = (y < 0) ? 0 : (y > colorAreaDims.height) ? colorAreaDims.height : y;
 
     colorMarker.style.left = `${x}px`;
     colorMarker.style.top = `${y}px`;
