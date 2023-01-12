@@ -576,6 +576,9 @@
 
     setColorAtPosition(x, y);
 
+    // Make sure the marker is focused
+    colorMarker.focus();
+
     // Prevent scrolling while dragging the marker
     event.preventDefault();
     event.stopPropagation();
@@ -989,9 +992,13 @@
     });
 
     addListener(document, 'keydown', event => {
+      const navKeys = ['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+
       if (event.key === 'Escape') {
         closePicker(true);
-      } else if (event.key === 'Tab') {
+
+      // Display focus rings when using the keyboard
+      } else if (navKeys.includes(event.key)) {
         picker.classList.add('clr-keyboard-nav');
       }
     });
@@ -1014,7 +1021,7 @@
         ArrowRight: [1, 0]
       };
 
-      if (Object.keys(movements).indexOf(event.key) !== -1) {
+      if (Object.keys(movements).includes(event.key)) {
         moveMarkerOnKeydown(...movements[event.key]);
         event.preventDefault();
       }
