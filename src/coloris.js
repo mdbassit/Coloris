@@ -579,9 +579,6 @@
     // Prevent scrolling while dragging the marker
     event.preventDefault();
     event.stopPropagation();
-
-    // After moving the marker, it should remain focused
-    colorMarker.focus();
   }
 
   /**
@@ -591,7 +588,7 @@
    */
   function moveMarkerOnKeydown(offsetX, offsetY) {
     let x = colorMarker.style.left.replace('px', '') * 1 + offsetX;
-    let y =  colorMarker.style.top.replace('px', '') * 1 + offsetY;
+    let y = colorMarker.style.top.replace('px', '') * 1 + offsetY;
 
     x = (x < 0) ? 0 : (x > colorAreaDims.width) ? colorAreaDims.width : x;
     y = (y < 0) ? 0 : (y > colorAreaDims.height) ? colorAreaDims.height : y;
