@@ -8,7 +8,7 @@
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
-      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor;
+      closeButton, hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor;
 
   // Default settings
   const settings = {
@@ -30,6 +30,8 @@
     defaultColor: '#000000',
     clearButton: false,
     clearLabel: 'Clear',
+    closeButton: false,
+    closeLabel: 'Close',
     a11y: {
       open: 'Open color picker',
       close: 'Close color picker',
@@ -163,6 +165,20 @@
           settings.clearLabel = options.clearLabel;
           clearButton.innerHTML = settings.clearLabel;
           break;
+        case 'closeButton':
+          settings.closeButton = !!options.closeButton;
+
+          if (settings.closeButton) {
+            picker.insertBefore(closeButton, colorPreview);
+          } else {
+            colorPreview.appendChild(closeButton);
+          }
+
+          break;
+        case 'closeLabel':
+          settings.closeLabel = options.closeLabel;
+          closeButton.innerHTML = settings.closeLabel;
+          break;
         case 'a11y':
           const labels = options.a11y;
           let update = false;
@@ -182,7 +198,7 @@
 
             openLabel.innerHTML = settings.a11y.open;
             swatchLabel.innerHTML = settings.a11y.swatch;
-            colorPreview.setAttribute('aria-label', settings.a11y.close);
+            closeButton.setAttribute('aria-label', settings.a11y.close);
             hueSlider.setAttribute('aria-label', settings.a11y.hueSlider);
             alphaSlider.setAttribute('aria-label', settings.a11y.alphaSlider);
             colorValue.setAttribute('aria-label', settings.a11y.input);
@@ -909,7 +925,9 @@
     '</div>'+
     '<div id="clr-swatches" class="clr-swatches"></div>'+
     `<button type="button" id="clr-clear" class="clr-clear">${settings.clearLabel}</button>`+
-    `<button type="button" id="clr-color-preview" class="clr-preview" aria-label="${settings.a11y.close}"></button>`+
+    '<div id="clr-color-preview" class="clr-preview">'+
+      `<button type="button" id="clr-close" class="clr-close" aria-label="${settings.a11y.close}">${settings.closeLabel}</button>`+
+    '</div>'+
     `<span id="clr-open-label" hidden>${settings.a11y.open}</span>`+
     `<span id="clr-swatch-label" hidden>${settings.a11y.swatch}</span>`;
 
@@ -920,6 +938,7 @@
     colorArea = getEl('clr-color-area');
     colorMarker = getEl('clr-color-marker');
     clearButton = getEl('clr-clear');
+    closeButton = getEl('clr-close');
     colorPreview = getEl('clr-color-preview');
     colorValue = getEl('clr-color-value');
     hueSlider = getEl('clr-hue-slider');
@@ -964,7 +983,7 @@
       closePicker();
     });
 
-    addListener(colorPreview, 'click', event => {
+    addListener(closeButton, 'click', event => {
       pickColor();
       closePicker();
     });

@@ -249,9 +249,10 @@ input.clr-color:focus {
   border: 1px solid #1e90ff;
 }
 
+.clr-close,
 .clr-clear {
   display: none;
-  order: 2;
+  order: 3;
   height: 24px;
   margin: 0 20px 20px auto;
   padding: 0 20px;
@@ -265,16 +266,19 @@ input.clr-color:focus {
   cursor: pointer;
 }
 
+.clr-close {
+  display: block;
+  order: 2;
+  margin: 0 auto 20px 20px;
+}
+
 .clr-preview {
   position: relative;
   width: 32px;
   height: 32px;
   margin: 15px 0 20px 20px;
-  padding: 0;
-  border: 0;
   border-radius: 50%;
   overflow: hidden;
-  cursor: pointer;
 }
 
 .clr-preview:before,
@@ -293,6 +297,19 @@ input.clr-color:focus {
   border: 0;
   background-color: currentColor;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.1);
+}
+
+.clr-preview button {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  text-indent: -9999px;
+  cursor: pointer;
 }
 
 .clr-marker,
@@ -499,6 +516,10 @@ input.clr-color:focus {
 
 .clr-polaroid .clr-clear {
   margin: 0 10px 15px auto;
+}
+
+.clr-polaroid .clr-close {
+  margin: 0 auto 15px 10px;
 }
 
 .clr-polaroid .clr-preview {

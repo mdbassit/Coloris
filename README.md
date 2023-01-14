@@ -138,6 +138,12 @@ Coloris({
   // Set the label of the clear button
   clearLabel: 'Clear',
 
+  // Show an optional close button
+  closeButton: true,
+
+  // Set the label of the close button
+  closeLabel: 'Close',
+
   // An array of the desired color swatches to display. If omitted or the array is empty,
   // the color swatches will be disabled.
   swatches: [
