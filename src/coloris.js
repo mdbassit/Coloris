@@ -35,6 +35,7 @@
     a11y: {
       open: 'Open color picker',
       close: 'Close color picker',
+      clear: 'Clear the selected color',
       marker: 'Saturation: {s}. Brightness: {v}.',
       hueSlider: 'Hue slider',
       alphaSlider: 'Opacity slider',
@@ -199,6 +200,7 @@
             openLabel.innerHTML = settings.a11y.open;
             swatchLabel.innerHTML = settings.a11y.swatch;
             closeButton.setAttribute('aria-label', settings.a11y.close);
+            clearButton.setAttribute('aria-label', settings.a11y.clear);
             hueSlider.setAttribute('aria-label', settings.a11y.hueSlider);
             alphaSlider.setAttribute('aria-label', settings.a11y.alphaSlider);
             colorValue.setAttribute('aria-label', settings.a11y.input);
@@ -924,7 +926,7 @@
       '</fieldset>'+
     '</div>'+
     '<div id="clr-swatches" class="clr-swatches"></div>'+
-    `<button type="button" id="clr-clear" class="clr-clear">${settings.clearLabel}</button>`+
+    `<button type="button" id="clr-clear" class="clr-clear" aria-label="${settings.a11y.clear}">${settings.clearLabel}</button>`+
     '<div id="clr-color-preview" class="clr-preview">'+
       `<button type="button" id="clr-close" class="clr-close" aria-label="${settings.a11y.close}">${settings.closeLabel}</button>`+
     '</div>'+

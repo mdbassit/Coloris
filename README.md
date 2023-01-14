@@ -182,6 +182,7 @@ Coloris({
   a11y: {
     open: 'Open color picker',
     close: 'Close color picker',
+    clear: 'Clear the selected color',
     marker: 'Saturation: {s}. Brightness: {v}.',
     hueSlider: 'Hue slider',
     alphaSlider: 'Opacity slider',
