@@ -135,6 +135,12 @@ Coloris({
   // Set the label of the clear button
   clearLabel: 'Clear',
 
+  // Show an optional close button
+  closeButton: true,
+
+  // Set the label of the close button
+  closeLabel: 'Close',
+
   // An array of the desired color swatches to display. If omitted or the array is empty,
   // the color swatches will be disabled.
   swatches: [
@@ -173,6 +179,7 @@ Coloris({
   a11y: {
     open: 'Open color picker',
     close: 'Close color picker',
+    clear: 'Clear the selected color',
     marker: 'Saturation: {s}. Brightness: {v}.',
     hueSlider: 'Hue slider',
     alphaSlider: 'Opacity slider',
