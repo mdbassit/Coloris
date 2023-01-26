@@ -72,12 +72,13 @@ Here is a list of all the available options:
 Coloris({
   // The default behavior is to append the color picker's dialog to the end of the document's
   // body. but it is possible to append it to a custom parent instead. This is especially useful
-  // if the color fields are in a scrollable container and you want color picker' dialog to stay
-  // anchored to them. You will need to set the position of the container to relative or absolute.
+  // if the color fields are in a scrollable container and you want the color picker's dialog
+  // to remain anchored to them. You will need to set the CSS position of the desired container
+  // to relative or absolute.
   // Note: This should be a scrollable container with enough space to display the picker.
   parent: '.container',
 
-  // A custom selector to bind the color picker to. This must point to input fields.
+  // A custom selector to bind the color picker to. This must point to HTML input fields.
   el: '.color-field',
 
   // The bound input fields are wrapped in a div that adds a thumbnail showing the current color
@@ -110,11 +111,11 @@ Coloris({
   format: 'hex',
 
   // Set to true to enable format toggle buttons in the color picker dialog.
-  // This will also force the format (above) to auto.
+  // This will also force the format option (above) to auto.
   formatToggle: false,
 
   // Enable or disable alpha support.
-  // When disabled, it will strip the alpha value from the existing color value in all formats.
+  // When disabled, it will strip the alpha value from the existing color string in all formats.
   alpha: true,
 
   // Set to true to always include the alpha value in the color value even if the opacity is 100%.
