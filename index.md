@@ -72,9 +72,9 @@ Here is a list of all the available options:
 Coloris({
   // The default behavior is to append the color picker's dialog to the end of the document's
   // body. but it is possible to append it to a custom parent instead. This is especially useful
-  // if the color fields are in a scrollable container and you want the color picker's dialog
+  // when the color fields are in a scrollable container and you want the color picker's dialog
   // to remain anchored to them. You will need to set the CSS position of the desired container
-  // to relative or absolute.
+  // to "relative" or "absolute".
   // Note: This should be a scrollable container with enough space to display the picker.
   parent: '.container',
 
