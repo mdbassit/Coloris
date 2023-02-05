@@ -900,27 +900,27 @@
     picker.setAttribute('id', 'clr-picker');
     picker.className = 'clr-picker';
     picker.innerHTML =
-    `<input id="clr-color-value" class="clr-color" type="text" value="" spellcheck="false" aria-label="${settings.a11y.input}">`+
+    `<input id="clr-color-value" name="clr-color-value" class="clr-color" type="text" value="" spellcheck="false" aria-label="${settings.a11y.input}"/>`+
     `<div id="clr-color-area" class="clr-gradient" role="application" aria-label="${settings.a11y.instruction}">`+
       '<div id="clr-color-marker" class="clr-marker" tabindex="0"></div>'+
     '</div>'+
     '<div class="clr-hue">'+
-      `<input id="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="${settings.a11y.hueSlider}">`+
+      `<input id="clr-hue-slider" name="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="${settings.a11y.hueSlider}"/>`+
       '<div id="clr-hue-marker"></div>'+
     '</div>'+
     '<div class="clr-alpha">'+
-      `<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${settings.a11y.alphaSlider}">`+
+      `<input id="clr-alpha-slider" name="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${settings.a11y.alphaSlider}"/>`+
       '<div id="clr-alpha-marker"></div>'+
       '<span></span>'+
     '</div>'+
     '<div id="clr-format" class="clr-format">'+
       '<fieldset class="clr-segmented">'+
         `<legend>${settings.a11y.format}</legend>`+
-        '<input id="clr-f1" type="radio" name="clr-format" value="hex">'+
+        '<input id="clr-f1" type="radio" name="clr-format" value="hex" />'+
         '<label for="clr-f1">Hex</label>'+
-        '<input id="clr-f2" type="radio" name="clr-format" value="rgb">'+
+        '<input id="clr-f2" type="radio" name="clr-format" value="rgb" />'+
         '<label for="clr-f2">RGB</label>'+
-        '<input id="clr-f3" type="radio" name="clr-format" value="hsl">'+
+        '<input id="clr-f3" type="radio" name="clr-format" value="hsl" />'+
         '<label for="clr-f3">HSL</label>'+
         '<span></span>'+
       '</fieldset>'+
