@@ -134,13 +134,13 @@ Coloris({
   selectInput: false,
 
   // Show an optional clear button
-  clearButton: true,
+  clearButton: false,
 
   // Set the label of the clear button
   clearLabel: 'Clear',
 
   // Show an optional close button
-  closeButton: true,
+  closeButton: false,
 
   // Set the label of the close button
   closeLabel: 'Close',
