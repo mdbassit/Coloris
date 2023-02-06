@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2023 Momo Bassit.
+ * Copyright (c) 2021 Momo Bassit.
  * Licensed under the MIT License (MIT)
  * https://github.com/mdbassit/Coloris
  */
