@@ -92,6 +92,9 @@ Coloris({
   // it doesn't work on the default [data-coloris] attribute selector.
   wrap: true,
 
+  // Set to true to activate basic right-to-left support.
+  rtl: false,
+
   // Available themes: default, large, polaroid, pill (horizontal).
   // More themes might be added in the future.
   theme: 'default',

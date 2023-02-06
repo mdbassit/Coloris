@@ -16,6 +16,7 @@
     parent: 'body',
     theme: 'default',
     themeMode: 'light',
+    rtl: false,
     wrap: true,
     margin: 2,
     format: 'hex',
@@ -99,6 +100,10 @@
           if (settings.inline) {
             updatePickerPosition();
           }
+          break;
+        case 'rtl':
+          settings.rtl = !!options.rtl;
+          document.querySelectorAll('.clr-field').forEach(field => field.classList.toggle('clr-rtl', settings.rtl));
           break;
         case 'margin':
           options.margin *= 1;
@@ -415,10 +420,15 @@
 
       if (!parentNode.classList.contains('clr-field')) {
         const wrapper = document.createElement('div');
+        let classes = 'clr-field';
+
+        if (settings.rtl) {
+          classes += ' clr-rtl';
+        }
 
         wrapper.innerHTML = `<button type="button" aria-labelledby="clr-open-label"></button>`;
         parentNode.insertBefore(wrapper, field);
-        wrapper.setAttribute('class', 'clr-field');
+        wrapper.setAttribute('class', classes);
         wrapper.style.color = field.value;
         wrapper.appendChild(field);
       }
