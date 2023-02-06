@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2021 Momo Bassit.
+ * Copyright (c) 2023 Momo Bassit.
  * Licensed under the MIT License (MIT)
  * https://github.com/mdbassit/Coloris
  */
@@ -223,9 +223,18 @@
    * @param {Object} options Per-instance options to apply.
    */
   function setVirtualInstance(selector, options) {
-    if (typeof selector === 'string' && typeof options === 'object') {
-      instances[selector] = options;
+    if (typeof selector === 'string' && typeof options === 'object') { 
       hasInstance = true;
+      
+      // Set the instance's options
+      if (options.rtl) {
+          document.querySelector(selector).closest('.clr-field').classList.toggle('clr-rtl', options.rtl);
+      }
+      
+      // Delete unsupported options. These options can only be set globally, not per instance
+      const unsupportedOptions = ['el', 'wrap', 'inline', 'defaultColor', 'a11y', 'rtl'];
+      unsupportedOptions.forEach(option => delete options[option]);
+      instances[selector] = options;
     }
   }
 
@@ -251,8 +260,7 @@
    */
   function attachVirtualInstance(element) {
     if (hasInstance) {
-      // These options can only be set globally, not per instance
-      const unsupportedOptions = ['el', 'wrap', 'inline', 'defaultColor', 'a11y'];
+
 
       for (let selector in instances) {
         const options = instances[selector];
@@ -261,9 +269,6 @@
         if (element.matches(selector)) {
           currentInstanceId = selector;
           defaultInstance = {};
-
-          // Delete unsupported options
-          unsupportedOptions.forEach(option => delete options[option]);
 
           // Back up the default options so we can restore them later
           for (let option in options) {
