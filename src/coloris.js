@@ -226,13 +226,15 @@
     if (typeof selector === 'string' && typeof options === 'object') { 
       hasInstance = true;
       
-      // Set the instance's options
+      // RTL for instance must be set here and not delay until the picker is open
       if (options.rtl) {
           document.querySelector(selector).closest('.clr-field').classList.toggle('clr-rtl', options.rtl);
       }
       
-      // Delete unsupported options. These options can only be set globally, not per instance
+      // These options can only be set globally, not per instance (rtl has already been set above)
       const unsupportedOptions = ['el', 'wrap', 'inline', 'defaultColor', 'a11y', 'rtl'];
+      
+      // Delete unsupported options  
       unsupportedOptions.forEach(option => delete options[option]);
       instances[selector] = options;
     }
