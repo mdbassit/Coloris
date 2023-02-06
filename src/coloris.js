@@ -910,16 +910,16 @@
     picker.setAttribute('id', 'clr-picker');
     picker.className = 'clr-picker';
     picker.innerHTML =
-    `<input id="clr-color-value" class="clr-color" type="text" value="" spellcheck="false" aria-label="${settings.a11y.input}">`+
+    `<input id="clr-color-value" name="clr-color-value" class="clr-color" type="text" value="" spellcheck="false" aria-label="${settings.a11y.input}">`+
     `<div id="clr-color-area" class="clr-gradient" role="application" aria-label="${settings.a11y.instruction}">`+
       '<div id="clr-color-marker" class="clr-marker" tabindex="0"></div>'+
     '</div>'+
     '<div class="clr-hue">'+
-      `<input id="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="${settings.a11y.hueSlider}">`+
+      `<input id="clr-hue-slider" name="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="${settings.a11y.hueSlider}">`+
       '<div id="clr-hue-marker"></div>'+
     '</div>'+
     '<div class="clr-alpha">'+
-      `<input id="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${settings.a11y.alphaSlider}">`+
+      `<input id="clr-alpha-slider" name="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${settings.a11y.alphaSlider}">`+
       '<div id="clr-alpha-marker"></div>'+
       '<span></span>'+
     '</div>'+
