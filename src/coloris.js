@@ -252,7 +252,7 @@
   function attachVirtualInstance(element) {
     if (hasInstance) {
       // These options can only be set globally, not per instance
-      const unsupportedOptions = ['el', 'wrap', 'inline', 'defaultColor', 'a11y'];
+      const unsupportedOptions = ['el', 'wrap', 'rtl', 'inline', 'defaultColor', 'a11y'];
 
       for (let selector in instances) {
         const options = instances[selector];
@@ -422,7 +422,7 @@
         const wrapper = document.createElement('div');
         let classes = 'clr-field';
 
-        if (settings.rtl) {
+        if (settings.rtl || field.classList.contains('clr-rtl')) {
           classes += ' clr-rtl';
         }
 
