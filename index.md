@@ -89,6 +89,9 @@ Coloris({
   // it doesn't work on the default [data-coloris] attribute selector.
   wrap: true,
 
+  // Set to true to activate basic right-to-left support.
+  rtl: false,
+
   // Available themes: default, large, polaroid, pill (horizontal).
   // More themes might be added in the future.
   theme: 'default',
@@ -131,13 +134,13 @@ Coloris({
   selectInput: false,
 
   // Show an optional clear button
-  clearButton: true,
+  clearButton: false,
 
   // Set the label of the clear button
   clearLabel: 'Clear',
 
   // Show an optional close button
-  closeButton: true,
+  closeButton: false,
 
   // Set the label of the close button
   closeLabel: 'Close',
@@ -250,7 +253,7 @@ Coloris.setInstance('.instance2', {
 
 Any options that haven't been explicitly set by an instance will inherit the global values. So any common options should be set globally using the method described in the "Customizing the color picker" section above.
 
-Please note that the options `el`, `wrap`, `inline`, `defaultColor` and `a11y` can only be set globally and not per instance.
+Please note that the options `el`, `wrap`, `rtl`, `inline`, `defaultColor` and `a11y` can only be set globally and not per instance.
 
 **N.B:** There is only one **true** instance of the color picker, so it is not possible to show multiple instances at same time.
 
