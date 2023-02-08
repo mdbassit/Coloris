@@ -400,13 +400,15 @@
       picker.classList.toggle('clr-top', reposition.top);
       picker.style.left = `${left}px`;
       picker.style.top = `${top}px`;
+      offset.x += picker.offsetLeft;
+      offset.y += picker.offsetTop;
     }
     
     colorAreaDims = {
       width: colorArea.offsetWidth,
       height: colorArea.offsetHeight,
-      x: picker.offsetLeft + colorArea.offsetLeft + offset.x,
-      y: picker.offsetTop + colorArea.offsetTop + offset.y
+      x: colorArea.offsetLeft + offset.x,
+      y: colorArea.offsetTop + offset.y
     };
   }
 
