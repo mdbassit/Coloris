@@ -211,6 +211,7 @@
             colorValue.setAttribute('aria-label', settings.a11y.input);
             colorArea.setAttribute('aria-label', settings.a11y.instruction);
           }
+          break;
         default:
           settings[key] = options[key];
       }
