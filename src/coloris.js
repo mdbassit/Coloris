@@ -33,6 +33,7 @@
     clearLabel: 'Clear',
     closeButton: false,
     closeLabel: 'Close',
+    onChange: () => undefined,
     a11y: {
       open: 'Open color picker',
       close: 'Close color picker',
@@ -534,6 +535,10 @@
     if (currentEl) {
       currentEl.value = color;
       currentEl.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
+    if (settings.onChange) {
+      settings.onChange.call(window, color);
     }
 
     document.dispatchEvent(new CustomEvent('coloris:pick', { detail: { color } }));
