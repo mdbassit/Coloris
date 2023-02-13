@@ -7,6 +7,7 @@
   border-radius: 10px;
   background-color: #fff;
   justify-content: flex-end;
+  direction: ltr;
   box-shadow: 0 0 5px rgba(0,0,0,.05), 0 5px 20px rgba(0,0,0,.1);
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -326,6 +327,11 @@ input.clr-color:focus {
 
 .clr-field input {
   margin: 0;
+  direction: ltr;
+}
+
+.clr-field.clr-rtl input {
+  text-align: right;
 }
 
 .clr-field button {
@@ -343,6 +349,11 @@ input.clr-color:focus {
   white-space: nowrap;
   overflow: hidden;
   pointer-events: none;
+}
+
+.clr-field.clr-rtl button {
+  right: auto;
+  left: 0;
 }
 
 .clr-field button:after {
