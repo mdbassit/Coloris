@@ -28,7 +28,7 @@ Download the [latest version](https://github.com/mdbassit/Coloris/releases/lates
 <script src="coloris.min.js"></script>
 ```
 
-Or include from a CDN:
+Or include from a CDN (not recommended in production):
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
 <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
