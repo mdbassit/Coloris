@@ -312,6 +312,26 @@ input.clr-color:focus {
   cursor: pointer;
 }
 
+.clr-preview .clr-random {
+  display: none;
+  z-index: 2;
+  color: inherit;
+}
+
+.clr-random svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  color: inherit;
+}
+
+.clr-random path + path {
+  mix-blend-mode: difference;
+}
+
 .clr-marker,
 .clr-hue div,
 .clr-alpha div,
