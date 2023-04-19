@@ -7,8 +7,8 @@
 ((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
-  let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
-      closeButton, hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor;
+  let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton, closeButton,
+      hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor, keyboardNav;
 
   // Default settings
   const settings = {
@@ -320,6 +320,11 @@
       
       if (settings.selectInput) {
         colorValue.select();
+      }
+
+      // Always focus the first element when using keyboard navigation
+      if (keyboardNav) {
+        getFocusableElements().shift().focus();
       }
 
       // Trigger an "open" event
@@ -1032,6 +1037,7 @@
     });
 
     addListener(document, 'mousedown', event => {
+      keyboardNav = false;
       picker.classList.remove('clr-keyboard-nav');
       closePicker();
     });
@@ -1044,6 +1050,7 @@
 
       // Display focus rings when using the keyboard
       } else if (navKeys.includes(event.key)) {
+        keyboardNav = true;
         picker.classList.add('clr-keyboard-nav');
       }
     });
@@ -1078,6 +1085,17 @@
   }
 
   /**
+   * Return a list of focusable elements within the color picker.
+   * @return {array} The list of focusable DOM elemnts.
+   */
+  function getFocusableElements() {
+    const controls = Array.from(picker.querySelectorAll('input, button'));
+    const focusables = controls.filter(node => !!node.offsetWidth);
+
+    return focusables;
+  }
+
+  /**
    * Shortcut for getElementById to optimize the minified JS.
    * @param {string} id The element id.
    * @return {object} The DOM element with the provided id.
@@ -1105,7 +1123,7 @@
       });
 
     // If the selector is not a string then it's a function
-    // in which case we need regular event listener
+    // in which case we need a regular event listener
     } else {
       fn = selector;
       context.addEventListener(type, fn);
