@@ -1043,15 +1043,33 @@
     });
 
     addListener(document, 'keydown', event => {
+      const key = event.key;
+      const target = event.target;
+      const shiftKey = event.shiftKey;
       const navKeys = ['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
-      if (event.key === 'Escape') {
+      if (key === 'Escape') {
         closePicker(true);
 
       // Display focus rings when using the keyboard
-      } else if (navKeys.includes(event.key)) {
+      } else if (navKeys.includes(key)) {
         keyboardNav = true;
         picker.classList.add('clr-keyboard-nav');
+      }
+
+      // Trap the focus within the color picker while it's open
+      if (key === 'Tab' && target.matches('.clr-picker *')) {
+        const focusables = getFocusableElements();
+        const firstFocusable = focusables.shift();
+        const lastFocusable = focusables.pop();
+
+        if (shiftKey && target === firstFocusable) {
+          lastFocusable.focus();
+          event.preventDefault();
+        } else if (!shiftKey && target === lastFocusable) {
+          firstFocusable.focus();
+          event.preventDefault();
+        }
       }
     });
 
