@@ -323,7 +323,7 @@
       }
 
       // Always focus the first element when using keyboard navigation
-      if (keyboardNav) {
+      if (keyboardNav || settings.swatchesOnly) {
         getFocusableElements().shift().focus();
       }
 
