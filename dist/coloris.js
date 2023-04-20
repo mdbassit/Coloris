@@ -7,8 +7,8 @@
 (function (window, document, Math) {
   var ctx = document.createElement('canvas').getContext('2d');
   var currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
-  var container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
-  closeButton, hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor;
+  var container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton, closeButton,
+  hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor, keyboardNav;
 
   // Default settings
   var settings = {
@@ -320,6 +320,11 @@
 
       if (settings.selectInput) {
         colorValue.select();
+      }
+
+      // Always focus the first element when using keyboard navigation
+      if (keyboardNav || settings.swatchesOnly) {
+        getFocusableElements().shift().focus();
       }
 
       // Trigger an "open" event
@@ -1032,19 +1037,39 @@
     });
 
     addListener(document, 'mousedown', function (event) {
+      keyboardNav = false;
       picker.classList.remove('clr-keyboard-nav');
       closePicker();
     });
 
     addListener(document, 'keydown', function (event) {
+      var key = event.key;
+      var target = event.target;
+      var shiftKey = event.shiftKey;
       var navKeys = ['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
-      if (event.key === 'Escape') {
+      if (key === 'Escape') {
         closePicker(true);
 
         // Display focus rings when using the keyboard
-      } else if (navKeys.includes(event.key)) {
+      } else if (navKeys.includes(key)) {
+        keyboardNav = true;
         picker.classList.add('clr-keyboard-nav');
+      }
+
+      // Trap the focus within the color picker while it's open
+      if (key === 'Tab' && target.matches('.clr-picker *')) {
+        var focusables = getFocusableElements();
+        var firstFocusable = focusables.shift();
+        var lastFocusable = focusables.pop();
+
+        if (shiftKey && target === firstFocusable) {
+          lastFocusable.focus();
+          event.preventDefault();
+        } else if (!shiftKey && target === lastFocusable) {
+          firstFocusable.focus();
+          event.preventDefault();
+        }
       }
     });
 
@@ -1078,6 +1103,17 @@
   }
 
   /**
+   * Return a list of focusable elements within the color picker.
+   * @return {array} The list of focusable DOM elemnts.
+   */
+  function getFocusableElements() {
+    var controls = Array.from(picker.querySelectorAll('input, button'));
+    var focusables = controls.filter(function (node) {return !!node.offsetWidth;});
+
+    return focusables;
+  }
+
+  /**
    * Shortcut for getElementById to optimize the minified JS.
    * @param {string} id The element id.
    * @return {object} The DOM element with the provided id.
@@ -1105,7 +1141,7 @@
       });
 
       // If the selector is not a string then it's a function
-      // in which case we need regular event listener
+      // in which case we need a regular event listener
     } else {
       fn = selector;
       context.addEventListener(type, fn);
