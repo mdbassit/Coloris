@@ -176,9 +176,10 @@ Coloris({
   defaultColor: '#000000',
 
   // A function that is called whenever a new color is picked. This defaults to an empty function,
-  // but can be set to a custom one. The selected color is passed to the function as an argument.
+  // but can be set to a custom one. The selected color and the current input field are passed to
+  // the function as arguments.
   // Use in instances (described below) to perform a custom action for each instance. 
-  onChange: (color) => undefined
+  onChange: (color, input) => undefined
 });
 ```
 

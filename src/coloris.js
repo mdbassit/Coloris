@@ -4,7 +4,7 @@
  * https://github.com/mdbassit/Coloris
  */
 
-((window, document, Math) => {
+((window, document, Math, undefined) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton, closeButton,
@@ -79,7 +79,7 @@
 
             // document.body is special
             if (container === document.body) {
-              container = null;
+              container = undefined;
             }
           }
           break;
@@ -455,7 +455,7 @@
       // Revert the color to the original value if needed
       if (revert) {
         // This will prevent the "change" event on the colorValue input to execute its handler
-        currentEl = null;
+        currentEl = undefined;
 
         if (oldColor !== prevEl.value) {
           prevEl.value = oldColor;
@@ -488,7 +488,7 @@
       }
 
       // This essentially marks the picker as closed
-      currentEl = null;
+      currentEl = undefined;
     }
   }
 
@@ -543,10 +543,10 @@
     }
 
     if (settings.onChange) {
-      settings.onChange.call(window, color);
+      settings.onChange.call(window, color, currentEl);
     }
 
-    document.dispatchEvent(new CustomEvent('coloris:pick', { detail: { color } }));
+    document.dispatchEvent(new CustomEvent('coloris:pick', { detail: { color, currentEl } }));
   }
 
   /**
@@ -918,7 +918,7 @@
    */
   function init() {
     // Render the UI
-    container = null;
+    container = undefined;
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
     picker.className = 'clr-picker';
