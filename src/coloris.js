@@ -226,7 +226,7 @@
    */
   function setVirtualInstance(selector, options) {
     if ((typeof selector === 'string' || selector instanceof Element) && typeof options === 'object') {
-      instances[selector] = options;
+      instances.set(selector, options);
       hasInstance = true;
     }
   }
