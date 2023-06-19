@@ -49,7 +49,7 @@
   };
 
   // Virtual instances cache
-  const instances = {};
+  const instances = new Map();
   let currentInstanceId = '';
   let defaultInstance = {};
   let hasInstance = false;
@@ -225,7 +225,7 @@
    * @param {Object} options Per-instance options to apply.
    */
   function setVirtualInstance(selector, options) {
-    if (typeof selector === 'string' && typeof options === 'object') {
+    if ((typeof selector === 'string' || selector instanceof Element) && typeof options === 'object') {
       instances[selector] = options;
       hasInstance = true;
     }
@@ -236,9 +236,9 @@
    * @param {String} selector The CSS selector of the elements to which the instance is attached.
    */
   function removeVirtualInstance(selector) {
-    delete instances[selector];
-
-    if (Object.keys(instances).length === 0) {
+    instances.delete(selector)
+    
+    if (instances.size === 0) {
       hasInstance = false;
 
       if (selector === currentInstanceId) {
@@ -252,32 +252,26 @@
    * @param {Object} element Target element that will receive a virtual instance if applicable.
    */
   function attachVirtualInstance(element) {
-    if (hasInstance) {
-      // These options can only be set globally, not per instance
-      const unsupportedOptions = ['el', 'wrap', 'rtl', 'inline', 'defaultColor', 'a11y'];
+    if (!hasInstance) return
+    // These options can only be set globally, not per instance
+    const unsupportedOptions = ['el', 'wrap', 'rtl', 'inline', 'defaultColor', 'a11y'];
+    const configured = false
+    instances.forEach((options, key) => {
+      if (!configured && ((typeof key === 'string' && !element.matches(key)) || element !== key)) return
+      currentInstanceId = selector;
+      defaultInstance = {};
 
-      for (let selector in instances) {
-        const options = instances[selector];
+      // Delete unsupported options
+      unsupportedOptions.forEach(option => delete options[option]);
 
-        // If the element matches an instance's CSS selector
-        if (element.matches(selector)) {
-          currentInstanceId = selector;
-          defaultInstance = {};
-
-          // Delete unsupported options
-          unsupportedOptions.forEach(option => delete options[option]);
-
-          // Back up the default options so we can restore them later
-          for (let option in options) {
-            defaultInstance[option] = Array.isArray(settings[option]) ? settings[option].slice() : settings[option];
-          }
-
-          // Set the instance's options
-          configure(options);
-          break;
-        }
+      // Back up the default options so we can restore them later
+      for (let option in options) {
+        defaultInstance[option] = Array.isArray(settings[option]) ? settings[option].slice() : settings[option];
       }
-    }
+
+      // Set the instance's options
+      configure(options);
+    })
   }
 
   /**
@@ -1142,6 +1136,10 @@
 
     // If the selector is not a string then it's a function
     // in which case we need a regular event listener
+    } else if (selector instanceof Element) {
+      selector.addEventListener(type, event => {
+        fn.call(event.target, event)
+      })
     } else {
       fn = selector;
       context.addEventListener(type, fn);
