@@ -997,9 +997,11 @@
     });
 
     addListener(colorValue, 'change', event => {
+      const value = colorValue.value;
+
       if (currentEl || settings.inline) {
-        setColorFromStr(colorValue.value);
-        pickColor();
+        const color = value === '' ? value : setColorFromStr(value);
+        pickColor(color);
       }
     });
 
