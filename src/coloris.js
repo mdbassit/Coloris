@@ -316,6 +316,7 @@
 
       if (settings.focusInput || settings.selectInput) {
         colorValue.focus({ preventScroll: true });
+        colorValue.setSelectionRange(currentEl.selectionStart, currentEl.selectionEnd);
       }
       
       if (settings.selectInput) {
