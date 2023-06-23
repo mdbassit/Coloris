@@ -1016,7 +1016,7 @@
       closePicker();
     });
 
-    addListener(document, 'click', '.clr-format input', event => {
+    addListener(getEl('clr-format'), 'click', '.clr-format input', event => {
       currentFormat = event.target.value;
       updateColor();
       pickColor();
