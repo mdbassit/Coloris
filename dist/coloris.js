@@ -316,6 +316,7 @@
 
       if (settings.focusInput || settings.selectInput) {
         colorValue.focus({ preventScroll: true });
+        colorValue.setSelectionRange(currentEl.selectionStart, currentEl.selectionEnd);
       }
 
       if (settings.selectInput) {
@@ -997,9 +998,11 @@
     });
 
     addListener(colorValue, 'change', function (event) {
+      var value = colorValue.value;
+
       if (currentEl || settings.inline) {
-        setColorFromStr(colorValue.value);
-        pickColor();
+        var color = value === '' ? value : setColorFromStr(value);
+        pickColor(color);
       }
     });
 
@@ -1013,7 +1016,7 @@
       closePicker();
     });
 
-    addListener(document, 'click', '.clr-format input', function (event) {
+    addListener(getEl('clr-format'), 'click', '.clr-format input', function (event) {
       currentFormat = event.target.value;
       updateColor();
       pickColor();
