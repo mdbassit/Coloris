@@ -127,7 +127,14 @@
             const swatches = [];
 
             options.swatches.forEach((swatch, i) => {
-              swatches.push(`<button type="button" id="clr-swatch-${i}" aria-labelledby="clr-swatch-label clr-swatch-${i}" style="color: ${swatch};">${swatch}</button>`);
+              let colorStr = swatch;
+              let colorNameStr = swatch;
+              if((swatch.color!=undefined)&&(swatch.color!=null))
+              {
+                colorStr = swatch.color;
+                colorNameStr = ((swatch.name!=undefined)&&(swatch.name!=null)) ? swatch.name : colorStr;
+              }
+              swatches.push(`<button type="button" id="clr-swatch-${i}" aria-labelledby="clr-swatch-label clr-swatch-${i}" style="color: ${colorStr};" data_color="${colorStr}" ><div class="tooltip" style="border-color: ${colorStr}" >${colorNameStr}</div></button>`);
             });
 
             getEl('clr-swatches').innerHTML = swatches.length ? `<div>${swatches.join('')}</div>` : '';
@@ -1023,7 +1030,7 @@
     });
 
     addListener(picker, 'click', '.clr-swatches button', event => {
-      setColorFromStr(event.target.textContent);
+      setColorFromStr(event.target.getAttribute("data_color"));
       pickColor();
 
       if (settings.swatchesOnly) {
