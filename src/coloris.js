@@ -7,7 +7,7 @@
 ((window, document, Math, undefined) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
-  let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton, closeButton,
+  let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton, closeButton, addSwatchButton,
       hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor, keyboardNav;
 
   // Default settings
@@ -33,7 +33,11 @@
     clearLabel: 'Clear',
     closeButton: false,
     closeLabel: 'Close',
+    addSwatchButton: false,
+    addSwatchLabel: 'Add',
+    
     onChange: () => undefined,
+    onSwatchesChange: () => undefined,
     a11y: {
       open: 'Open color picker',
       close: 'Close color picker',
@@ -134,7 +138,7 @@
                 colorStr = swatch.color;
                 colorNameStr = ((swatch.name!=undefined)&&(swatch.name!=null)) ? swatch.name : colorStr;
               }
-              swatches.push(`<button type="button" id="clr-swatch-${i}" aria-labelledby="clr-swatch-label clr-swatch-${i}" style="color: ${colorStr};" data_color="${colorStr}" ><div class="tooltip" style="border-color: ${colorStr}" >${colorNameStr}</div></button>`);
+              swatches.push(`<button type="button" id="clr-swatch-${i}" aria-labelledby="clr-swatch-label clr-swatch-${i}" style="color: ${colorStr};" data_color="${colorStr}" data_name="${colorNameStr}" ><div class="tooltip" style="border-color: ${colorStr}" >${colorNameStr}</div></button>`);
             });
 
             getEl('clr-swatches').innerHTML = swatches.length ? `<div>${swatches.join('')}</div>` : '';
@@ -193,6 +197,24 @@
           settings.closeLabel = options.closeLabel;
           closeButton.innerHTML = settings.closeLabel;
           break;
+
+        case 'addSwatchButton':
+          // Backward compatibility
+          if (typeof options.addSwatchButton === 'object') {
+            if (options.addSwatchButton.label) {
+              settings.addSwatchLabel = options.addSwatchButton.label;
+              addSwatchButton.innerHTML = settings.addSwatchLabel;
+            }
+            options.addSwatchButton = options.addSwatchButton.show;
+          }
+          settings.addSwatchButton = !!options.addSwatchButton;
+          addSwatchButton.parentElement.style.display = settings.addSwatchButton ? 'flex' : 'none';
+          break;
+        case 'addSwatchLabel':
+          settings.addSwatchLabel = options.addSwatchLabel;
+          addSwatchButton.innerHTML = settings.addSwatchLabel;
+          break;
+
         case 'a11y':
           const labels = options.a11y;
           let update = false;
@@ -214,6 +236,7 @@
             swatchLabel.innerHTML = settings.a11y.swatch;
             closeButton.setAttribute('aria-label', settings.a11y.close);
             clearButton.setAttribute('aria-label', settings.a11y.clear);
+            addSwatchButton.setAttribute('aria-label', settings.a11y.addSwatch);
             hueSlider.setAttribute('aria-label', settings.a11y.hueSlider);
             alphaSlider.setAttribute('aria-label', settings.a11y.alphaSlider);
             colorValue.setAttribute('aria-label', settings.a11y.input);
@@ -930,39 +953,44 @@
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
     picker.className = 'clr-picker';
-    picker.innerHTML =
-    `<input id="clr-color-value" name="clr-color-value" class="clr-color" type="text" value="" spellcheck="false" aria-label="${settings.a11y.input}">`+
-    `<div id="clr-color-area" class="clr-gradient" role="application" aria-label="${settings.a11y.instruction}">`+
-      '<div id="clr-color-marker" class="clr-marker" tabindex="0"></div>'+
-    '</div>'+
-    '<div class="clr-hue">'+
-      `<input id="clr-hue-slider" name="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="${settings.a11y.hueSlider}">`+
-      '<div id="clr-hue-marker"></div>'+
-    '</div>'+
-    '<div class="clr-alpha">'+
-      `<input id="clr-alpha-slider" name="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${settings.a11y.alphaSlider}">`+
-      '<div id="clr-alpha-marker"></div>'+
-      '<span></span>'+
-    '</div>'+
-    '<div id="clr-format" class="clr-format">'+
-      '<fieldset class="clr-segmented">'+
-        `<legend>${settings.a11y.format}</legend>`+
-        '<input id="clr-f1" type="radio" name="clr-format" value="hex">'+
-        '<label for="clr-f1">Hex</label>'+
-        '<input id="clr-f2" type="radio" name="clr-format" value="rgb">'+
-        '<label for="clr-f2">RGB</label>'+
-        '<input id="clr-f3" type="radio" name="clr-format" value="hsl">'+
-        '<label for="clr-f3">HSL</label>'+
-        '<span></span>'+
-      '</fieldset>'+
-    '</div>'+
-    '<div id="clr-swatches" class="clr-swatches"></div>'+
-    `<button type="button" id="clr-clear" class="clr-clear" aria-label="${settings.a11y.clear}">${settings.clearLabel}</button>`+
-    '<div id="clr-color-preview" class="clr-preview">'+
-      `<button type="button" id="clr-close" class="clr-close" aria-label="${settings.a11y.close}">${settings.closeLabel}</button>`+
-    '</div>'+
-    `<span id="clr-open-label" hidden>${settings.a11y.open}</span>`+
-    `<span id="clr-swatch-label" hidden>${settings.a11y.swatch}</span>`;
+    picker.innerHTML =`
+    <input id="clr-color-value" name="clr-color-value" class="clr-color" type="text" value="" spellcheck="false" aria-label="${settings.a11y.input}">
+    <div id="clr-color-area" class="clr-gradient" role="application" aria-label="${settings.a11y.instruction}">
+      <div id="clr-color-marker" class="clr-marker" tabindex="0"></div>
+    </div>
+    <div class="clr-hue">
+      <input id="clr-hue-slider" name="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="${settings.a11y.hueSlider}">
+      <div id="clr-hue-marker"></div>
+    </div>
+    <div class="clr-alpha">
+      <input id="clr-alpha-slider" name="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${settings.a11y.alphaSlider}">
+      <div id="clr-alpha-marker"></div>
+      <span></span>
+    </div>
+    <div id="clr-format" class="clr-format">
+      <fieldset class="clr-segmented">
+        <legend>${settings.a11y.format}</legend>
+        <input id="clr-f1" type="radio" name="clr-format" value="hex">
+        <label for="clr-f1">Hex</label>
+        <input id="clr-f2" type="radio" name="clr-format" value="rgb">
+        <label for="clr-f2">RGB</label>
+        <input id="clr-f3" type="radio" name="clr-format" value="hsl">
+        <label for="clr-f3">HSL</label>
+        <span></span>
+      </fieldset>
+    </div>
+    <div id="clr-swatches" class="clr-swatches"></div>
+    <div class="clr-addswatch" >
+      <input type="text" id="clr-addswatch_ip" class="clr-addswatch_ip" placeholder="color's name" value="" />
+      <button type="button" id="clr-addswatch_bt" class="clr-addswatch_bt" aria-label="${settings.a11y.addswatch}">${settings.addSwatchLabel}</button>
+    </div>
+    <button type="button" id="clr-clear" class="clr-clear" aria-label="${settings.a11y.clear}">${settings.clearLabel}</button>
+    <div id="clr-color-preview" class="clr-preview">
+      <button type="button" id="clr-close" class="clr-close" aria-label="${settings.a11y.close}">${settings.closeLabel}</button>
+    </div>
+    <span id="clr-open-label" hidden>${settings.a11y.open}</span>
+    <span id="clr-swatch-label" hidden>${settings.a11y.swatch}</span>
+    `;
 
     // Append the color picker to the DOM
     document.body.appendChild(picker);
@@ -972,6 +1000,7 @@
     colorMarker = getEl('clr-color-marker');
     clearButton = getEl('clr-clear');
     closeButton = getEl('clr-close');
+    addSwatchButton = getEl('clr-addswatch_bt');
     colorPreview = getEl('clr-color-preview');
     colorValue = getEl('clr-color-value');
     hueSlider = getEl('clr-hue-slider');
@@ -1031,12 +1060,50 @@
 
     addListener(picker, 'click', '.clr-swatches button', event => {
       setColorFromStr(event.target.getAttribute("data_color"));
+      
+      let ip = getEl('clr-addswatch_ip');
+      ip.value = event.target.getAttribute("data_name")
+
       pickColor();
 
       if (settings.swatchesOnly) {
         closePicker();
       }
     });
+
+
+    addListener(addSwatchButton, 'click', event => {
+      let color = colorValue.value;
+
+      let ip = getEl('clr-addswatch_ip');
+      let name = ip.value;
+
+      //add swatch
+      let divElem = getEl('clr-swatches');
+      let lastChild = divElem.children[0].lastElementChild;
+      let index = Number(lastChild.id.split("-")[2]) + 1;
+
+      let str = `<button type="button" id="clr-swatch-${index}" aria-labelledby="clr-swatch-label clr-swatch-${index}" style="color: ${color};" data_color="${color}" data_name="${name}" ><div class="tooltip" style="border-color: ${color}" >${name}</div></button>`;
+      divElem.children[0].innerHTML += str;
+
+      
+      if((settings.onSwatchesChange!=undefined)&&(settings.onSwatchesChange!=null))
+        settings.onSwatchesChange( rebuildSwatches() );
+    });
+
+    addListener(picker, 'contextmenu', '.clr-swatches button', event => {
+      
+      if (settings.swatchesOnly==false)         //could remove only if you can add again after.
+      {
+        event.preventDefault();
+        event.target.remove();
+
+        if((settings.onSwatchesChange!=undefined)&&(settings.onSwatchesChange!=null))
+          settings.onSwatchesChange( rebuildSwatches() );
+      }
+    });
+
+    
 
     addListener(document, 'mouseup', event => {
       document.removeEventListener('mousemove', moveMarker);
@@ -1110,6 +1177,22 @@
     addListener(colorArea, 'click', moveMarker);
     addListener(hueSlider, 'input', setHue);
     addListener(alphaSlider, 'input', setAlpha);
+  }
+
+  
+  function rebuildSwatches()
+  {
+    let list = [];
+
+    let divElem = getEl('clr-swatches');
+    let swatchDivs = divElem.children[0].children;
+    for(let i=0;i<swatchDivs.length;i++)
+    {
+      let element = swatchDivs[i];
+      list.push({color: element.getAttribute("data_color"), name: element.getAttribute("data_name") });
+    }
+
+    return list;
   }
 
   /**

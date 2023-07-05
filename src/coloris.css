@@ -250,6 +250,7 @@
 
 
 
+
 input.clr-color {
   order: 1;
   width: calc(100% - 80px);
@@ -272,7 +273,8 @@ input.clr-color:focus {
 }
 
 .clr-close,
-.clr-clear {
+.clr-clear,
+.clr-addswatch_bt {
   display: none;
   order: 2;
   height: 24px;
@@ -292,6 +294,64 @@ input.clr-color:focus {
   display: block;
   margin: 0 20px 20px auto;
 }
+
+
+
+
+.clr-addswatch {
+  display: flex;
+  order: 2;
+  width: calc(100% - 32px);
+  margin: 0 16px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 9px;
+}
+.clr-addswatch_bt
+{
+  display: block;
+  margin: 0 8px 0px;
+}
+
+input.clr-addswatch_ip 
+{
+  order: 1;
+  width: calc(100% - 60px);
+  height: 32px;
+  margin: 3px 0px 4px auto;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  color: #444;
+  background-color: #fff;
+  font-family: sans-serif;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: none;
+}
+
+input.clr-color:focus {
+  outline: none;
+  border: 1px solid #1e90ff;
+}
+
+.clr-dark input.clr-addswatch_ip {
+  color: #fff;
+  border-color: #777;
+  background-color: #555;
+}
+.clr-dark input.clr-addswatch_ip:focus {
+  border-color: #1e90ff;
+}
+.clr-polaroid input.clr-addswatch_ip {
+  width: calc(100% - 60px);
+  margin: 10px 10px 15px auto;
+}
+
+
 
 .clr-preview {
   position: relative;
@@ -339,7 +399,8 @@ input.clr-color:focus {
 .clr-marker,
 .clr-hue div,
 .clr-alpha div,
-.clr-color {
+.clr-color,
+.clr-addswatch_ip {
   box-sizing: border-box;
 }
 
@@ -427,6 +488,7 @@ input.clr-color:focus {
 .clr-picker[data-minimal="true"] .clr-hue,
 .clr-picker[data-minimal="true"] .clr-alpha,
 .clr-picker[data-minimal="true"] .clr-color,
+.clr-picker[data-minimal="true"] .clr-addswatch,
 .clr-picker[data-minimal="true"] .clr-preview {
   display: none;
 }
@@ -552,9 +614,15 @@ input.clr-color:focus {
   margin: 0 10px 15px 10px;
 }
 
+.clr-polaroid .clr-addswatch_bt {
+  margin: 0 10px 15px 10px;
+}
+
 .clr-polaroid .clr-close {
   margin: 0 10px 15px auto;
 }
+
+
 
 .clr-polaroid .clr-preview {
   margin: 10px 0 15px 10px;
