@@ -1182,7 +1182,8 @@
       close: closePicker,
       setInstance: setVirtualInstance,
       removeInstance: removeVirtualInstance,
-      updatePosition: updatePickerPosition
+      updatePosition: updatePickerPosition,
+      ready: DOMReady
     };
 
     function Coloris(options) {
