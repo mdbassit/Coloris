@@ -125,13 +125,30 @@
           break;
         case 'swatches':
           if (Array.isArray(options.swatches)) {
-            const swatches = [];
+            const swatchesContainer = getEl('clr-swatches');
+            const swatches = document.createElement('div');
 
+            // Clear current swatches
+            swatchesContainer.textContent = '';
+
+            // Build new swatches
             options.swatches.forEach((swatch, i) => {
-              swatches.push(`<button type="button" id="clr-swatch-${i}" aria-labelledby="clr-swatch-label clr-swatch-${i}" style="color: ${swatch};">${swatch}</button>`);
+              const button = document.createElement('button');
+
+              button.setAttribute('type', `button`);
+              button.setAttribute('id', `clr-swatch-${i}`);
+              button.setAttribute('aria-labelledby', `clr-swatch-label clr-swatch-${i}`);
+              button.style.color = swatch;
+              button.textContent = swatch;
+
+              swatches.appendChild(button);
             });
 
-            getEl('clr-swatches').innerHTML = swatches.length ? `<div>${swatches.join('')}</div>` : '';
+            // Append new swatches if any
+            if (options.swatches.length) {
+              swatchesContainer.appendChild(swatches);
+            }
+
             settings.swatches = options.swatches.slice();
           }
           break;
