@@ -1000,6 +1000,10 @@
       addListener(document, 'mousemove', moveMarker);
     });
 
+    addListener(colorArea, 'contextmenu', event => {
+      event.preventDefault();
+    });
+
     addListener(colorArea, 'touchstart', event => {
       document.addEventListener('touchmove', moveMarker, { passive: false });
     });
