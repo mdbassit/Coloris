@@ -318,14 +318,7 @@
     addListener(document, 'click', selector, openPicker);
 
     // Update the color preview of the input fields that match the selector
-    addListener(document, 'input', selector, event => {
-      const parent = event.target.parentNode;
-
-      // Only update the preview if the field has been previously wrapped
-      if (parent.classList.contains('clr-field')) {
-        parent.style.color = event.target.value;
-      }
-    });
+    addListener(document, 'input', selector, updateColorPreview);
   }
 
   /**
@@ -467,6 +460,19 @@
         wrapper.appendChild(field);
       }
     });
+  }
+
+  /**
+   * Update the color preview of an input field
+   * @param {object} event The "input" event that triggers the color change.
+   */
+  function updateColorPreview(event) {
+    const parent = event.target.parentNode;
+
+    // Only update the preview if the field has been previously wrapped
+    if (parent.classList.contains('clr-field')) {
+      parent.style.color = event.target.value;
+    }
   }
 
   /**
