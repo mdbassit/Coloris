@@ -105,7 +105,7 @@
           break;
         case 'rtl':
           settings.rtl = !!options.rtl;
-          document.querySelectorAll('.clr-field').forEach(field => field.classList.toggle('clr-rtl', settings.rtl));
+          Array.from(document.getElementsByClassName('clr-field')).forEach(field => field.classList.toggle('clr-rtl', settings.rtl));
           break;
         case 'margin':
           options.margin *= 1;
