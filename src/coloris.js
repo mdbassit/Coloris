@@ -315,40 +315,7 @@
    */
   function bindFields(selector) {
     // Show the color picker on click on the input fields that match the selector
-    addListener(document, 'click', selector, event => {
-      // Skip if inline mode is in use
-      if (settings.inline) {
-        return;
-      }
-
-      // Apply any per-instance options first
-      attachVirtualInstance(event.target);
-
-      currentEl = event.target;
-      oldColor = currentEl.value;
-      currentFormat = getColorFormatFromStr(oldColor);
-      picker.classList.add('clr-open');
-      
-      updatePickerPosition();
-      setColorFromStr(oldColor);
-
-      if (settings.focusInput || settings.selectInput) {
-        colorValue.focus({ preventScroll: true });
-        colorValue.setSelectionRange(currentEl.selectionStart, currentEl.selectionEnd);
-      }
-      
-      if (settings.selectInput) {
-        colorValue.select();
-      }
-
-      // Always focus the first element when using keyboard navigation
-      if (keyboardNav || settings.swatchesOnly) {
-        getFocusableElements().shift().focus();
-      }
-
-      // Trigger an "open" event
-      currentEl.dispatchEvent(new Event('open', { bubbles: true }));
-    });
+    addListener(document, 'click', selector, openPicker);
 
     // Update the color preview of the input fields that match the selector
     addListener(document, 'input', selector, event => {
@@ -359,6 +326,45 @@
         parent.style.color = event.target.value;
       }
     });
+  }
+
+  /**
+   * Open the color picker.
+   * @param {object} event The event that opens the color picker.
+   */
+  function openPicker(event) {
+    // Skip if inline mode is in use
+    if (settings.inline) {
+      return;
+    }
+
+    // Apply any per-instance options first
+    attachVirtualInstance(event.target);
+
+    currentEl = event.target;
+    oldColor = currentEl.value;
+    currentFormat = getColorFormatFromStr(oldColor);
+    picker.classList.add('clr-open');
+    
+    updatePickerPosition();
+    setColorFromStr(oldColor);
+
+    if (settings.focusInput || settings.selectInput) {
+      colorValue.focus({ preventScroll: true });
+      colorValue.setSelectionRange(currentEl.selectionStart, currentEl.selectionEnd);
+    }
+    
+    if (settings.selectInput) {
+      colorValue.select();
+    }
+
+    // Always focus the first element when using keyboard navigation
+    if (keyboardNav || settings.swatchesOnly) {
+      getFocusableElements().shift().focus();
+    }
+
+    // Trigger an "open" event
+    currentEl.dispatchEvent(new Event('open', { bubbles: true }));
   }
 
   /**
