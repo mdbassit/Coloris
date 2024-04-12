@@ -311,14 +311,22 @@
 
   /**
    * Bind the color picker to input fields that match the selector.
-   * @param {string} selector One or more selectors pointing to input fields.
+   * @param {(string|HTMLElement|HTMLElement[])} selector A CSS selector string, a DOM element or a list of DOM elements.
    */
   function bindFields(selector) {
-    // Show the color picker on click on the input fields that match the selector
-    addListener(document, 'click', selector, openPicker);
+    if (selector instanceof HTMLElement) {
+      selector = [selector];
+    } 
 
-    // Update the color preview of the input fields that match the selector
-    addListener(document, 'input', selector, updateColorPreview);
+    if (Array.isArray(selector)) {
+      selector.forEach(field => {
+        addListener(field, 'click', openPicker);
+        addListener(field, 'input', updateColorPreview);
+      });
+    } else  {   
+      addListener(document, 'click', selector, openPicker);
+      addListener(document, 'input', selector, updateColorPreview);
+    }
   }
 
   /**
@@ -439,27 +447,39 @@
 
   /**
    * Wrap the linked input fields in a div that adds a color preview.
-   * @param {string} selector One or more selectors pointing to input fields.
+   * @param {(string|HTMLElement|HTMLElement[])} selector A CSS selector string, a DOM element or a list of DOM elements.
    */
   function wrapFields(selector) {
-    document.querySelectorAll(selector).forEach(field => {
-      const parentNode = field.parentNode;
+    if (selector instanceof HTMLElement) {
+      wrapColorField(selector);
+    } else if (Array.isArray(selector)) {
+      selector.forEach(wrapColorField);
+    } else  {
+      document.querySelectorAll(selector).forEach(wrapColorField);
+    }
+  }
 
-      if (!parentNode.classList.contains('clr-field')) {
-        const wrapper = document.createElement('div');
-        let classes = 'clr-field';
+  /**
+   * Wrap an input field in a div that adds a color preview.
+   * @param {object} field The input field.
+   */
+  function wrapColorField(field) {
+    const parentNode = field.parentNode;
 
-        if (settings.rtl || field.classList.contains('clr-rtl')) {
-          classes += ' clr-rtl';
-        }
+    if (!parentNode.classList.contains('clr-field')) {
+      const wrapper = document.createElement('div');
+      let classes = 'clr-field';
 
-        wrapper.innerHTML = `<button type="button" aria-labelledby="clr-open-label"></button>`;
-        parentNode.insertBefore(wrapper, field);
-        wrapper.setAttribute('class', classes);
-        wrapper.style.color = field.value;
-        wrapper.appendChild(field);
+      if (settings.rtl || field.classList.contains('clr-rtl')) {
+        classes += ' clr-rtl';
       }
-    });
+
+      wrapper.innerHTML = '<button type="button" aria-labelledby="clr-open-label"></button>';
+      parentNode.insertBefore(wrapper, field);
+      wrapper.className = classes;
+      wrapper.style.color = field.value;
+      wrapper.appendChild(field);
+    }
   }
 
   /**

@@ -78,10 +78,12 @@ Coloris({
   // when the color fields are in a scrollable container and you want the color picker's dialog
   // to remain anchored to them. You will need to set the CSS position of the desired container
   // to "relative" or "absolute".
+  // The value of this option can be either a CSS selector or an HTMLElement/Element/Node.
   // Note: This should be a scrollable container with enough space to display the picker.
   parent: '.container',
 
   // A custom selector to bind the color picker to. This must point to HTML input fields.
+  // This can also accept an HTMLElement or an array of HTMLElements instead of a CSS selector.
   el: '.color-field',
 
   // The bound input fields are wrapped in a div that adds a thumbnail showing the current color
