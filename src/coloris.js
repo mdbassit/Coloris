@@ -73,7 +73,7 @@
           }
           break;
         case 'parent':
-          container = document.querySelector(options.parent);
+          container = options.parent instanceof HTMLElement ? options.parent : document.querySelector(options.parent);
           if (container) {
             container.appendChild(picker);
             settings.parent = options.parent;
