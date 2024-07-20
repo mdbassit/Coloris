@@ -433,9 +433,10 @@
       picker.classList.toggle('clr-top', reposition.top);
       picker.style.left = `${left}px`;
       picker.style.top = `${top}px`;
-      offset.x += picker.offsetLeft;
-      offset.y += picker.offsetTop;
     }
+
+    offset.x += picker.offsetLeft;
+    offset.y += picker.offsetTop;
     
     colorAreaDims = {
       width: colorArea.offsetWidth,
