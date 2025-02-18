@@ -1,10 +1,14 @@
 {
-  "name": "Coloris",
+  "name": "coloris",
   "version": "0.24.0",
   "description": "A lightweight and elegant color picker.",
   "author": "Momo Bassit",
   "license": "MIT",
   "main": "dist/coloris.js",
+  "exports": {
+    "import": "./dist/coloris.js",
+    "require": "./dist/coloris.js"
+  },
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",

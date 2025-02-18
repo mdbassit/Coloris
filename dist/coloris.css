@@ -245,6 +245,11 @@ input.clr-color {
   box-shadow: none;
 }
 
+.clr-picker[data-eye-dropper="true"] input.clr-color {
+  width: calc(100% - 90px);
+  margin: 15px 10px 20px 0;
+}
+
 input.clr-color:focus {
   outline: none;
   border: 1px solid #1e90ff;
@@ -279,6 +284,10 @@ input.clr-color:focus {
   margin: 15px 0 20px 20px;
   border-radius: 50%;
   overflow: hidden;
+}
+
+.clr-picker[data-eye-dropper="true"] .clr-preview {
+  margin: 15px 0 20px 10px;
 }
 
 .clr-preview:before,
@@ -574,4 +583,13 @@ input.clr-color:focus {
 
 .clr-pill .clr-hue {
   margin-top: 20px;
+}
+
+.clr-eye-dropper {
+  display: none;
+}
+
+.clr-picker[data-eye-dropper="true"] .clr-eye-dropper {
+  display: block;
+  margin: auto;
 }
