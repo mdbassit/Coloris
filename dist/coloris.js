@@ -365,7 +365,7 @@
     }
 
     // Trigger an "open" event
-    currentEl.dispatchEvent(new Event('open', { bubbles: true }));
+    currentEl.dispatchEvent(new Event('open', { bubbles: false }));
   }
 
   /**
@@ -532,7 +532,7 @@
       }
 
       // Trigger a "close" event
-      prevEl.dispatchEvent(new Event('close', { bubbles: true }));
+      prevEl.dispatchEvent(new Event('close', { bubbles: false }));
 
       if (settings.focusInput) {
         prevEl.focus({ preventScroll: true });
@@ -1104,6 +1104,12 @@
 
       if (key === 'Escape') {
         closePicker(true);
+        return;
+
+        // Close the color picker and keep the selected color on press on Enter
+      } else if (key === 'Enter' && target.tagName !== 'BUTTON') {
+        closePicker();
+        return;
 
         // Display focus rings when using the keyboard
       } else if (navKeys.includes(key)) {
