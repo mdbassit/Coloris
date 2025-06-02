@@ -365,7 +365,7 @@
     }
 
     // Trigger an "open" event
-    currentEl.dispatchEvent(new Event('open', { bubbles: true }));
+    currentEl.dispatchEvent(new Event('open', { bubbles: false }));
   }
 
   /**
@@ -532,7 +532,7 @@
       }
 
       // Trigger a "close" event
-      prevEl.dispatchEvent(new Event('close', { bubbles: true }));
+      prevEl.dispatchEvent(new Event('close', { bubbles: false }));
 
       if (settings.focusInput) {
         prevEl.focus({ preventScroll: true });
