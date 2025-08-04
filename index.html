@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coloris - Elegant JavaScript Color Picker</title>
+    <meta name="description" content="A lightweight and elegant JavaScript color picker written in vanilla ES6. Zero dependencies, customizable, and fully accessible.">
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <svg viewBox="0 0 24 24">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M19 3h-4a2 2 0 0 0 -2 2v12a4 4 0 0 0 8 0v-12a2 2 0 0 0 -2 -2" />
+                    <path d="M13 7.35l-2 -2a2 2 0 0 0 -2.828 0l-2.828 2.828a2 2 0 0 0 0 2.828l9 9" />
+                    <path d="M7.3 13h-2.3a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h12" />
+                    <path d="M17 17l0 .01" />
+                </svg>
+                <span>Coloris</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#demo">Demo</a>
+                <a href="#get-started">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Elegant <span class="gradient-text">Color Picker</span>
+                    for the Modern Web
+                </h1>
+                <p class="hero-description">
+                    A lightweight and elegant JavaScript color picker written in vanilla ES6. 
+                    Zero dependencies, fully customizable, and accessible.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#demo" class="btn btn-primary">Try Demo</a>
+                    <a href="https://github.com/mdbassit/Coloris" class="btn btn-secondary" target="_blank" rel="noopener">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+            <div class="hero-demo">
+                <div class="demo-screenshot">
+                    <img src="images/coloris-light-dark.png" 
+                         alt="Coloris color picker in light and dark themes" 
+                         class="demo-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose Coloris?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3" />
+                            <path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3" />
+                            <path d="M15 9m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                        </svg>
+                    </div>
+                    <h3>Zero Dependencies</h3>
+                    <p>Written in vanilla ES6 with no external dependencies. Lightweight and fast.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/>
+                            <path d="M12 6V12L16 14"/>
+                        </svg>
+                    </div>
+                    <h3>Easy to Use</h3>
+                    <p>Just add a data attribute to any input field and you're ready to go.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25" />
+                            <path d="M8.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                            <path d="M12.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                            <path d="M16.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                        </svg>
+                    </div>
+                    <h3>Highly Customizable</h3>
+                    <p>Multiple themes, color formats, and configuration options.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M10 16.5l2 -3l2 3m-2 -3v-2l3 -1m-6 0l3 1" />
+                            <circle cx="12" cy="7.5" r=".5" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <h3>Fully Accessible</h3>
+                    <p>Built with accessibility in mind, supporting keyboard navigation and screen readers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        
+                        <svg viewBox="0 0 24 24">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M5 4a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v16a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1v-16z" />
+                            <path d="M11 17a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+                        </svg>
+                    </div>
+                    <h3>Touch Support</h3>
+                    <p>Optimized for touch devices. Usable on tablets and smartphones.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M4 8h16" />
+                            <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                            <path d="M8 4v4" />
+                        </svg>
+                    </div>
+                    <h3>Modern Browsers</h3>
+                    <p>Works on all modern browsers with JavaScript support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <h2 class="section-title">Interactive Playground</h2>
+            <p class="section-description">Try different configurations and see Coloris in action</p>
+            
+            <div class="playground">
+                <div class="playground-controls">
+                    <h3>Configuration</h3>
+                    <div class="control-group">
+                        <fieldset class="segmented-control" id="theme-control">
+                            <legend>Theme</legend>
+                            <div class="radio-group" role="radiogroup" aria-labelledby="theme-legend">
+                                <input type="radio" id="theme-default" name="theme" value="default" checked>
+                                <label for="theme-default">Default</label>
+<!--                                 <input type="radio" id="theme-large" name="theme" value="large">
+                                <label for="theme-large">Large</label> -->
+                                <input type="radio" id="theme-polaroid" name="theme" value="polaroid">
+                                <label for="theme-polaroid">Polaroid</label>
+                                <input type="radio" id="theme-pill" name="theme" value="pill">
+                                <label for="theme-pill">Pill</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="control-group">
+                        <fieldset class="segmented-control" id="theme-mode-control">
+                            <legend>Theme Mode</legend>
+                            <div class="radio-group" role="radiogroup" aria-labelledby="theme-mode-legend">
+                                <input type="radio" id="theme-mode-light" name="theme-mode" value="light" checked>
+                                <label for="theme-mode-light">Light</label>
+                                <input type="radio" id="theme-mode-dark" name="theme-mode" value="dark">
+                                <label for="theme-mode-dark">Dark</label>
+                                <input type="radio" id="theme-mode-auto" name="theme-mode" value="auto">
+                                <label for="theme-mode-auto">Auto</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="control-group">
+                        <fieldset class="segmented-control" id="format-control">
+                            <legend>Format</legend>
+                            <div class="radio-group" role="radiogroup" aria-labelledby="format-legend">
+                                <input type="radio" id="format-hex" name="format" value="hex" checked>
+                                <label for="format-hex">HEX</label>
+                                <input type="radio" id="format-rgb" name="format" value="rgb">
+                                <label for="format-rgb">RGB</label>
+                                <input type="radio" id="format-hsl" name="format" value="hsl">
+                                <label for="format-hsl">HSL</label>
+                                <input type="radio" id="format-mixed" name="format" value="mixed">
+                                <label for="format-mixed">Mixed</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="control-group">
+                        <label>
+                            <input type="checkbox" id="format-toggle-checkbox">
+                            Enable Format Toggle
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label>
+                            <input type="checkbox" id="alpha-checkbox" checked>
+                            Enable Alpha (transparency)
+                        </label>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>
+                            <input type="checkbox" id="swatches-checkbox">
+                            Add Color Swatches
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="playground-demo">
+                    <div class="demo-examples">
+                        <h3>Live Demo</h3>
+                        <div class="example-item">
+                            <input aria-label="Color input" type="text" data-coloris value="#e9c46a" class="playground-input">
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <h3>Configuration Code</h3>
+                        <div>
+                          <span>JavaScript</span>
+                          <button class="copy-code">Copy</button>
+                        </div>
+                        <pre><code id="config-code">Coloris({
+  onChange: (color, inputEl) => {
+   console.log(`The new color is ${color}`);
+  }
+});</code></pre>
+                        
+                    </div>
+                    <p>Options with default values are omitted. More configuration options are detailed in the <a href="https://github.com/mdbassit/Coloris/blob/main/README.md#customizing-the-color-picker" target="_blank">documentation</a>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="get-started" class="installation">
+        <div class="container">
+            <h2 class="section-title">Get Started</h2>
+                <div class="install-card">
+                    <h3>1. Include Coloris files</h3>
+                    <p><a href="https://github.com/mdbassit/Coloris/releases/latest" target="_blank" rel="noopener">Download the latest version</a> from GitHub and add the script and the style to your page.</p>
+                    <div class="code-block">
+                      <div>
+                        <span>HTML</span>
+                        <button class="copy-code">Copy</button>
+                      </div>
+                      <pre><code>&lt;link rel="stylesheet" href="coloris.min.css"/&gt;
+&lt;script src="coloris.min.js"&gt;&lt;/script&gt;</code></pre>
+                    </div>
+                    <p>Alternatively, you can include the script and the style from a CDN (not recommended in production).</p>
+                    <div class="code-block">
+                      <div>
+                        <span>HTML</span>
+                        <button class="copy-code">Copy</button>
+                      </div>
+                      <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"&gt;&lt;/script&gt;</code></pre>
+                    </div>
+                    <h3>2. Designate input fields</h3>
+                    <p>Add the data-coloris attribute to the input fields you want to convert to color fields.</p>
+                    <div class="code-block">
+                        <div>
+                            <span>HTML</span>
+                            <button class="copy-code">Copy</button>
+                        </div>
+                        <pre><code>&lt;input type="text" data-coloris&gt;</code></pre>
+                    </div>
+                    <h3>3. Configure Coloris (optional)</h3>
+                    <p>You can customize the appearance and behavior of the color picker.</p>
+                    <div class="code-block">
+                        <div>
+                            <span>JavaScript</span>
+                            <button class="copy-code">Copy</button>
+                        </div>
+                        <pre><code id="second-config-code">Coloris({
+  onChange: (color, inputEl) => {
+   console.log(`The new color is ${color}`);
+  }
+});</code></pre>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="https://github.com/mdbassit/Coloris" target="_blank" rel="noopener">GitHub</a>
+                    <a href="https://github.com/mdbassit/Coloris/releases/latest" target="_blank" rel="noopener">Download</a>
+                    <a href="https://github.com/mdbassit/Coloris/blob/main/README.md" target="_blank" rel="noopener">Docs</a>
+                    <a href="https://github.com/mdbassit/Coloris/blob/main/LICENSE" target="_blank" rel="noopener">License</a>
+                </div>
+                <div class="copyright">
+                    <p>&copy; Coloris by <a href="https://mbassit.com" target="_blank" rel="noopener">Momo Bassit</a>.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+    <script src="assets/script.js"></script>
+</body>
+</html> 
