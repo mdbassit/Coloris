@@ -34,6 +34,7 @@
     clearLabel: 'Clear',
     closeButton: false,
     closeLabel: 'Close',
+    domTree: document,
     onChange: () => undefined,
     a11y: {
       open: 'Open color picker',
@@ -63,6 +64,9 @@
     if (typeof options !== 'object') {
       return;
     }
+    if (options.domTree) {
+        settings.domTree = options.domTree
+    }
 
     for (const key in options) {
       switch (key) {
@@ -73,7 +77,10 @@
           }
           break;
         case 'parent':
-          container = options.parent instanceof HTMLElement ? options.parent : document.querySelector(options.parent);
+          container =
+				options.parent instanceof HTMLElement
+					? options.parent
+					: settings.domTree.querySelector(options.parent);
           if (container) {
             container.appendChild(picker);
             settings.parent = options.parent;
@@ -455,7 +462,7 @@
     } else if (Array.isArray(selector)) {
       selector.forEach(wrapColorField);
     } else  {
-      document.querySelectorAll(selector).forEach(wrapColorField);
+      settings.domTree.querySelectorAll(selector).forEach(wrapColorField);
     }
   }
 
@@ -751,7 +758,9 @@
     }
 
     // Select the current format in the format switcher
-    document.querySelector(`.clr-format [value="${format}"]`).checked = true;
+    settings.domTree.querySelector(
+		`.clr-format [value="${format}"]`
+	).checked = true;
   }
 
   /**
