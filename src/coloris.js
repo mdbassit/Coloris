@@ -56,6 +56,42 @@
   let hasInstance = false;
 
   /**
+   * Render a list of color swatches inside the picker.
+   * @param {string[]} swatchList List of CSS color strings.
+   */
+  function renderSwatches(swatchList) {
+    if (!Array.isArray(swatchList)) {
+      return;
+    }
+
+    const swatchesContainer = getEl('clr-swatches');
+    const swatches = document.createElement('div');
+
+    // Clear current swatches
+    swatchesContainer.textContent = '';
+
+    // Build new swatches
+    swatchList.forEach((swatch, i) => {
+      const button = document.createElement('button');
+
+      button.setAttribute('type', `button`);
+      button.setAttribute('id', `clr-swatch-${i}`);
+      button.setAttribute('aria-labelledby', `clr-swatch-label clr-swatch-${i}`);
+      button.style.color = swatch;
+      button.textContent = swatch;
+
+      swatches.appendChild(button);
+    });
+
+    // Append new swatches if any
+    if (swatchList.length) {
+      swatchesContainer.appendChild(swatches);
+    }
+
+    settings.swatches = swatchList.slice();
+  }
+
+  /**
    * Configure the color picker.
    * @param {object} options Configuration options.
    */
@@ -124,33 +160,7 @@
           }
           break;
         case 'swatches':
-          if (Array.isArray(options.swatches)) {
-            const swatchesContainer = getEl('clr-swatches');
-            const swatches = document.createElement('div');
-
-            // Clear current swatches
-            swatchesContainer.textContent = '';
-
-            // Build new swatches
-            options.swatches.forEach((swatch, i) => {
-              const button = document.createElement('button');
-
-              button.setAttribute('type', `button`);
-              button.setAttribute('id', `clr-swatch-${i}`);
-              button.setAttribute('aria-labelledby', `clr-swatch-label clr-swatch-${i}`);
-              button.style.color = swatch;
-              button.textContent = swatch;
-
-              swatches.appendChild(button);
-            });
-
-            // Append new swatches if any
-            if (options.swatches.length) {
-              swatchesContainer.appendChild(swatches);
-            }
-
-            settings.swatches = options.swatches.slice();
-          }
+          renderSwatches(options.swatches);
           break;
         case 'swatchesOnly':
           settings.swatchesOnly = !!options.swatchesOnly;
@@ -1239,6 +1249,7 @@
       setInstance: setVirtualInstance,
       removeInstance: removeVirtualInstance,
       updatePosition: updatePickerPosition,
+      updateSwatches: renderSwatches,
       ready: DOMReady
     };
 
