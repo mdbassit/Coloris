@@ -516,6 +516,11 @@
         }
       }
 
+      // Blur the colorValue field so its "change" event commits a typed value
+      if (document.activeElement === colorValue) {
+        colorValue.blur();
+      }
+
       // Trigger a "change" event if needed
       setTimeout(function () {// Add this to the end of the event loop
         if (oldColor !== prevEl.value) {
