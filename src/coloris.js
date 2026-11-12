@@ -591,6 +591,10 @@
    * @param {number} [color] Color value to override the active color.
    */
   function pickColor(color) {
+    if (currentEl?.matches(':disabled')) {
+      return;
+    }
+
     color = color !== undefined ? color : colorValue.value;
 
     if (currentEl) {
