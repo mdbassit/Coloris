@@ -177,7 +177,7 @@
           if (typeof options.clearButton === 'object') {
             if (options.clearButton.label) {
               settings.clearLabel = options.clearButton.label;
-              clearButton.innerHTML = settings.clearLabel;
+              clearButton.textContent = settings.clearLabel;
             }
 
             options.clearButton = options.clearButton.show;
@@ -188,7 +188,7 @@
           break;
         case 'clearLabel':
           settings.clearLabel = options.clearLabel;
-          clearButton.innerHTML = settings.clearLabel;
+          clearButton.textContent = settings.clearLabel;
           break;
         case 'closeButton':
           settings.closeButton = !!options.closeButton;
@@ -202,7 +202,7 @@
           break;
         case 'closeLabel':
           settings.closeLabel = options.closeLabel;
-          closeButton.innerHTML = settings.closeLabel;
+          closeButton.textContent = settings.closeLabel;
           break;
         case 'a11y':
           const labels = options.a11y;
@@ -221,8 +221,8 @@
             const openLabel = getEl('clr-open-label');
             const swatchLabel = getEl('clr-swatch-label');
 
-            openLabel.innerHTML = settings.a11y.open;
-            swatchLabel.innerHTML = settings.a11y.swatch;
+            openLabel.textContent = settings.a11y.open;
+            swatchLabel.textContent = settings.a11y.swatch;
             closeButton.setAttribute('aria-label', settings.a11y.close);
             clearButton.setAttribute('aria-label', settings.a11y.clear);
             hueSlider.setAttribute('aria-label', settings.a11y.hueSlider);
