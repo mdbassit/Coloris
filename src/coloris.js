@@ -972,42 +972,40 @@
   function init() {
     // Render the UI
     container = undefined;
-    picker = document.createElement('div');
-    picker.setAttribute('id', 'clr-picker');
-    picker.className = 'clr-picker';
-    picker.innerHTML =
-    `<input id="clr-color-value" name="clr-color-value" class="clr-color" type="text" value="" spellcheck="false" aria-label="${settings.a11y.input}">`+
-    `<div id="clr-color-area" class="clr-gradient" role="application" aria-label="${settings.a11y.instruction}">`+
-      '<div id="clr-color-marker" class="clr-marker" tabindex="0"></div>'+
-    '</div>'+
-    '<div class="clr-hue">'+
-      `<input id="clr-hue-slider" name="clr-hue-slider" type="range" min="0" max="360" step="1" aria-label="${settings.a11y.hueSlider}">`+
-      '<div id="clr-hue-marker"></div>'+
-    '</div>'+
-    '<div class="clr-alpha">'+
-      `<input id="clr-alpha-slider" name="clr-alpha-slider" type="range" min="0" max="100" step="1" aria-label="${settings.a11y.alphaSlider}">`+
-      '<div id="clr-alpha-marker"></div>'+
-      '<span></span>'+
-    '</div>'+
-    '<div id="clr-format" class="clr-format">'+
-      '<fieldset class="clr-segmented">'+
-        `<legend>${settings.a11y.format}</legend>`+
-        '<input id="clr-f1" type="radio" name="clr-format" value="hex">'+
-        '<label for="clr-f1">Hex</label>'+
-        '<input id="clr-f2" type="radio" name="clr-format" value="rgb">'+
-        '<label for="clr-f2">RGB</label>'+
-        '<input id="clr-f3" type="radio" name="clr-format" value="hsl">'+
-        '<label for="clr-f3">HSL</label>'+
-        '<span></span>'+
-      '</fieldset>'+
-    '</div>'+
-    '<div id="clr-swatches" class="clr-swatches"></div>'+
-    `<button type="button" id="clr-clear" class="clr-clear" aria-label="${settings.a11y.clear}">${settings.clearLabel}</button>`+
-    '<div id="clr-color-preview" class="clr-preview">'+
-      `<button type="button" id="clr-close" class="clr-close" aria-label="${settings.a11y.close}">${settings.closeLabel}</button>`+
-    '</div>'+
-    `<span id="clr-open-label" hidden>${settings.a11y.open}</span>`+
-    `<span id="clr-swatch-label" hidden>${settings.a11y.swatch}</span>`;
+    picker = createEl('div', { id: 'clr-picker', className: 'clr-picker' }, [
+      createEl('input', { id: 'clr-color-value', name: 'clr-color-value', className: 'clr-color', type: 'text', spellcheck: false, ariaLabel: settings.a11y.input }),
+      createEl('div', { id: 'clr-color-area', className: 'clr-gradient', role: 'application', ariaLabel: settings.a11y.instruction }, [
+        createEl('div', { id: 'clr-color-marker', className: 'clr-marker', tabIndex: 0 }),
+      ]),
+      createEl('div', { className: 'clr-hue' }, [
+        createEl('input', { id: 'clr-hue-slider', name: 'clr-hue-slider', type: 'range', min: '0', max: '360', step: '1', ariaLabel: settings.a11y.hueSlider }),
+        createEl('div', { id: 'clr-hue-marker' }),
+      ]),
+      createEl('div', { className: 'clr-alpha' }, [
+        createEl('input', { id: 'clr-alpha-slider', name: 'clr-alpha-slider', type: 'range', min: '0', max: '100', step: '1', ariaLabel: settings.a11y.alphaSlider }),
+        createEl('div', { id: 'clr-alpha-marker' }),
+        createEl('span'),
+      ]),
+      createEl('div', { id: 'clr-format', className: 'clr-format' }, [
+        createEl('fieldset', { className: 'clr-segmented' }, [
+          createEl('legend', {}, [settings.a11y.format]),
+          createEl('input', { id: 'clr-f1', type: 'radio', name: 'clr-format', value: 'hex' }),
+          createEl('label', { htmlFor: 'clr-f1' }, ['Hex']),
+          createEl('input', { id: 'clr-f2', type: 'radio', name: 'clr-format', value: 'rgb' }),
+          createEl('label', { htmlFor: 'clr-f2' }, ['RGB']),
+          createEl('input', { id: 'clr-f3', type: 'radio', name: 'clr-format', value: 'hsl' }),
+          createEl('label', { htmlFor: 'clr-f3' }, ['HSL']),
+          createEl('span'),
+        ])
+      ]),
+      createEl('div', { id: 'clr-swatches', className: 'clr-swatches' }),
+      createEl('button', { type: 'button', id: 'clr-clear', className: 'clr-clear', ariaLabel: settings.a11y.clear }, [settings.clearLabel]),
+      createEl('div', { id: 'clr-color-preview', className: 'clr-preview' }, [
+        createEl('button', { type: 'button', id: 'clr-close', className: 'clr-close', ariaLabel: settings.a11y.close }, [settings.closeLabel]),
+      ]),
+      createEl('span', { id: 'clr-open-label', hidden: true }, [settings.a11y.open]),
+      createEl('span', { id: 'clr-swatch-label', hidden: true }, [settings.a11y.swatch]),
+    ]);
 
     // Append the color picker to the DOM
     document.body.appendChild(picker);
@@ -1165,6 +1163,20 @@
     addListener(colorArea, 'click', moveMarker);
     addListener(hueSlider, 'input', setHue);
     addListener(alphaSlider, 'input', setAlpha);
+  }
+
+  /**
+   * Shortcut for createElement with child-setting support.
+   * @param {string} localName The type of element to be created.
+   * @param {Partial<HTMLElement>} properties Key-value properties to assign to the created element.
+   * @param {(string | Node)[]} children Array of child nodes to append to the created element.
+   * @return {HTMLElement} The created element.
+   */
+  function createEl(localName, properties = {}, children = []) {
+    const element = Object.assign(document.createElement(localName), properties);
+    element.replaceChildren(...children);
+
+    return element;
   }
 
   /**
