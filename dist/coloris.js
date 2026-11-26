@@ -9,7 +9,7 @@
   var currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   var container,picker,colorArea,colorMarker,colorPreview,colorValue,clearButton,closeButton,
   hueSlider,hueMarker,alphaSlider,alphaMarker,currentEl,currentFormat,oldColor,keyboardNav,
-  colorAreaDims = {};
+  formatChoice,colorAreaDims = {};
 
   // Default settings
   var settings = {
@@ -118,7 +118,7 @@
           break;
         case 'formatToggle':
           settings.formatToggle = !!options.formatToggle;
-          getEl('clr-format').style.display = settings.formatToggle ? 'block' : 'none';
+          formatChoice.style.display = settings.formatToggle ? 'block' : 'none';
           if (settings.formatToggle) {
             settings.format = 'auto';
           }
@@ -177,7 +177,7 @@
           if (typeof options.clearButton === 'object') {
             if (options.clearButton.label) {
               settings.clearLabel = options.clearButton.label;
-              clearButton.innerHTML = settings.clearLabel;
+              clearButton.textContent = settings.clearLabel;
             }
 
             options.clearButton = options.clearButton.show;
@@ -188,7 +188,7 @@
           break;
         case 'clearLabel':
           settings.clearLabel = options.clearLabel;
-          clearButton.innerHTML = settings.clearLabel;
+          clearButton.textContent = settings.clearLabel;
           break;
         case 'closeButton':
           settings.closeButton = !!options.closeButton;
@@ -202,7 +202,7 @@
           break;
         case 'closeLabel':
           settings.closeLabel = options.closeLabel;
-          closeButton.innerHTML = settings.closeLabel;
+          closeButton.textContent = settings.closeLabel;
           break;
         case 'a11y':
           var labels = options.a11y;
@@ -221,14 +221,15 @@
             var openLabel = getEl('clr-open-label');
             var swatchLabel = getEl('clr-swatch-label');
 
-            openLabel.innerHTML = settings.a11y.open;
-            swatchLabel.innerHTML = settings.a11y.swatch;
+            openLabel.textContent = settings.a11y.open;
+            swatchLabel.textContent = settings.a11y.swatch;
             closeButton.setAttribute('aria-label', settings.a11y.close);
             clearButton.setAttribute('aria-label', settings.a11y.clear);
             hueSlider.setAttribute('aria-label', settings.a11y.hueSlider);
             alphaSlider.setAttribute('aria-label', settings.a11y.alphaSlider);
             colorValue.setAttribute('aria-label', settings.a11y.input);
             colorArea.setAttribute('aria-label', settings.a11y.instruction);
+            formatChoice.querySelector('legend').textContent = settings.a11y.format;
           }
           break;
         default:
@@ -468,16 +469,20 @@
 
     if (!parentNode.classList.contains('clr-field')) {
       var wrapper = document.createElement('div');
+      var button = document.createElement('button');
       var classes = 'clr-field';
 
       if (settings.rtl || field.classList.contains('clr-rtl')) {
         classes += ' clr-rtl';
       }
 
-      wrapper.innerHTML = '<button type="button" aria-labelledby="clr-open-label"></button>';
-      parentNode.insertBefore(wrapper, field);
+      button.type = 'button';
+      button.setAttribute('aria-labelledby', 'clr-open-label');
       wrapper.className = classes;
       wrapper.style.color = field.value;
+      wrapper.appendChild(button);
+
+      parentNode.insertBefore(wrapper, field);
       wrapper.appendChild(field);
     }
   }
@@ -969,29 +974,30 @@
   /**
    * Init the color picker.
    */
-  function init() {
+  function init() {var _picker;
     // Render the UI
     container = undefined;
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
     picker.className = 'clr-picker';
-    picker.innerHTML =
-    "<input id=\"clr-color-value\" name=\"clr-color-value\" class=\"clr-color\" type=\"text\" value=\"\" spellcheck=\"false\" aria-label=\"" + settings.a11y.input + "\">" + ("<div id=\"clr-color-area\" class=\"clr-gradient\" role=\"application\" aria-label=\"" +
-    settings.a11y.instruction + "\">") +
+
+    var markup =
+    '<input id="clr-color-value" name="clr-color-value" class="clr-color" type="text" value="" spellcheck="false">' +
+    '<div id="clr-color-area" class="clr-gradient" role="application">' +
     '<div id="clr-color-marker" class="clr-marker" tabindex="0"></div>' +
     '</div>' +
-    '<div class="clr-hue">' + ("<input id=\"clr-hue-slider\" name=\"clr-hue-slider\" type=\"range\" min=\"0\" max=\"360\" step=\"1\" aria-label=\"" +
-    settings.a11y.hueSlider + "\">") +
+    '<div class="clr-hue">' +
+    '<input id="clr-hue-slider" name="clr-hue-slider" type="range" min="0" max="360" step="1">' +
     '<div id="clr-hue-marker"></div>' +
     '</div>' +
-    '<div class="clr-alpha">' + ("<input id=\"clr-alpha-slider\" name=\"clr-alpha-slider\" type=\"range\" min=\"0\" max=\"100\" step=\"1\" aria-label=\"" +
-    settings.a11y.alphaSlider + "\">") +
+    '<div class="clr-alpha">' +
+    '<input id="clr-alpha-slider" name="clr-alpha-slider" type="range" min="0" max="100" step="1">' +
     '<div id="clr-alpha-marker"></div>' +
     '<span></span>' +
     '</div>' +
     '<div id="clr-format" class="clr-format">' +
-    '<fieldset class="clr-segmented">' + ("<legend>" +
-    settings.a11y.format + "</legend>") +
+    '<fieldset class="clr-segmented">' +
+    '<legend></legend>' +
     '<input id="clr-f1" type="radio" name="clr-format" value="hex">' +
     '<label for="clr-f1">Hex</label>' +
     '<input id="clr-f2" type="radio" name="clr-format" value="rgb">' +
@@ -1001,13 +1007,16 @@
     '<span></span>' +
     '</fieldset>' +
     '</div>' +
-    '<div id="clr-swatches" class="clr-swatches"></div>' + ("<button type=\"button\" id=\"clr-clear\" class=\"clr-clear\" aria-label=\"" +
-    settings.a11y.clear + "\">" + settings.clearLabel + "</button>") +
-    '<div id="clr-color-preview" class="clr-preview">' + ("<button type=\"button\" id=\"clr-close\" class=\"clr-close\" aria-label=\"" +
-    settings.a11y.close + "\">" + settings.closeLabel + "</button>") +
-    '</div>' + ("<span id=\"clr-open-label\" hidden>" +
-    settings.a11y.open + "</span>") + ("<span id=\"clr-swatch-label\" hidden>" +
-    settings.a11y.swatch + "</span>");
+    '<div id="clr-swatches" class="clr-swatches"></div>' +
+    '<button type="button" id="clr-clear" class="clr-clear"></button>' +
+    '<div id="clr-color-preview" class="clr-preview">' +
+    '<button type="button" id="clr-close" class="clr-close"></button>' +
+    '</div>' +
+    '<span id="clr-open-label" hidden></span>' +
+    '<span id="clr-swatch-label" hidden></span>';
+
+    var doc = new DOMParser().parseFromString(markup, 'text/html');
+    (_picker = picker).append.apply(_picker, doc.body.childNodes);
 
     // Append the color picker to the DOM
     document.body.appendChild(picker);
@@ -1023,6 +1032,14 @@
     hueMarker = getEl('clr-hue-marker');
     alphaSlider = getEl('clr-alpha-slider');
     alphaMarker = getEl('clr-alpha-marker');
+    formatChoice = getEl('clr-format');
+
+    // Apply the default labels
+    configure({
+      a11y: settings.a11y,
+      clearLabel: settings.clearLabel,
+      closeLabel: settings.closeLabel });
+
 
     // Bind the picker to the default selector
     bindFields(settings.el);
@@ -1072,7 +1089,7 @@
       closePicker();
     });
 
-    addListener(getEl('clr-format'), 'click', '.clr-format input', function (event) {
+    addListener(formatChoice, 'click', '.clr-format input', function (event) {
       currentFormat = event.target.value;
       updateColor();
       pickColor();
